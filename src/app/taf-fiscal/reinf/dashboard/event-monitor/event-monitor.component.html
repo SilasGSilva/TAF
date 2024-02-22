@@ -1,0 +1,76 @@
+<po-page-default>
+  <app-header></app-header>
+  <div class="container po-md-12 po-mb-5">
+    <div class="container-row">
+      <app-button-back></app-button-back>
+      <div class="po-xl-11 po-lg-11 po-md-11 po-sm-11">
+        <app-stepper [taf-stepperItems]="stepperItems"> </app-stepper>
+      </div>
+    </div>
+
+    <div class="container-row po-mt-1">
+      <div>
+        <div class="text-muted po-font-title grey-title">
+          {{ params.event }}
+        </div>
+        <div class="text-muted po-font-text-large grey-title">
+          {{ description }}
+        </div>
+      </div>
+
+      <div class="text-muted po-font-subtitle grey-title">
+        {{ literals['eventMonitor']['period'] }} :
+        {{ params.period | slice: 0:2 }}/{{ params.period | slice: 2:6 }}
+      </div>
+    </div>
+
+    <div>
+      <app-status-environment>
+      </app-status-environment>
+    </div>
+  </div>
+  <div class="po-mb-4">
+    <app-event-status-card-list (taf-selected)="setStatus($event)" (taf-return)="toggleButton($event)">
+    </app-event-status-card-list>
+  </div>
+
+  <div class="row po-font-subtitle po-md-12 po-mt-2 " *ngIf="currentStatus === 'waitingReturn'">
+    <p class="grey-title">{{ statusDescription }}</p>
+    <div class="align-right">
+      <p class="po-font-text-large grey-title">
+        {{ literals['eventMonitor']['lastConsult'] }}:
+        {{ lastUpdate | date: 'dd/MM/yy, hh:mm:ss a' }}
+      </p>
+      <po-button class="align-right" [p-label]="literals['eventMonitor']['gorvernConsult']"
+        [p-disabled]="governmentReturn" p-type="primary" p-small="false" [p-loading]="loadingButton"
+        (p-click)="queryGovernment()">
+      </po-button>
+    </div>
+  </div>
+
+  <div class="row po-font-subtitle po-md-12 po-mt-2 " *ngIf="enableButtonRelay()">
+    <div class="align-right">
+      <po-button class="align-right" [p-label]="literals['eventMonitor']['relay']" [p-disabled]="isDisableButton"
+        p-type="primary" p-small="false" [p-loading]="loadingButton" (p-click)="relayEvent()">
+      </po-button>
+    </div>
+  </div>
+
+  <div class="row po-font-subtitle po-md-12 po-mt-3" *ngIf="enableButtonDelete()">
+
+    <div class="align-right">
+      <po-dropdown class="align-right" [p-label]="literals['eventMonitor']['deleteEvent']" [p-actions]="actions"
+        [p-loading]="loadingButton" [p-disabled]="isDisableButton">
+      </po-dropdown>
+    </div>
+  </div>
+  <div class="row po-md-12 po-mt-3">
+    <app-event-monitor-table [taf-status]="currentStatus" [taf-event]="params.event" [taf-period]="params.period"
+      (taf-selected-entry)="selectedEntry = $event" (taf-button-emit)="toggleDropDownButton($event)">
+    </app-event-monitor-table>
+  </div>
+</po-page-default>
+
+<po-loading-overlay *ngIf="loadingOverlay" p-screen-lock="true" [p-text]="literals['eventMonitor']['loading']">
+</po-loading-overlay>
+<app-delete-event-dialog></app-delete-event-dialog>

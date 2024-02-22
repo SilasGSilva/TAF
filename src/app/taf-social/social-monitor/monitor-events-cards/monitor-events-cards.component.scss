@@ -1,0 +1,43 @@
+.font-icon-exclamation {
+  font-size: 20px;
+  color: #c64840;
+}
+
+.font-icon-clock {
+  font-size: 20px;
+  color: #0c9abe;
+}
+
+.container-space-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.description-event {
+  height: 20px;
+}
+
+.base {
+  background-color: #eceeee;
+  height: 24px;
+}
+
+.content-container {
+  padding-top: 18px;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.header {
+  padding-top: 18px;
+}
+
+.color-blue {
+  color: #0c9abe;
+}
+
+.text-right {
+  float: right;
+}

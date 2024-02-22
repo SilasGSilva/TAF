@@ -1,0 +1,125 @@
+<div class="po-lg-3 po-xl-3 align-button-27">
+  <po-button
+    p-icon="po-icon po-icon-download"
+    [p-loading]="isLoadingButton"
+    [p-label]="literals['fgtsReport']['export']"
+    (p-click)="exportReport()"
+  ></po-button>
+</div>
+<div
+  class="po-offset-lg-6 po-offset-xl-6 po-xl-3 po-lg-3 po-md-5 po-sm-12 space-30"
+>
+  <po-input
+    [p-placeholder]="literals['fgtsReport']['InfNameCpf']"
+    p-icon="po-icon po-icon-search"
+    (keyup)="debounce.next($event.target.value)"
+  >
+  </po-input>
+</div>
+<div class="po-md-12 space-30">
+  <po-table
+    [p-columns]="columns"
+    [p-items]="itemsTable | filterPipe: filter"
+    p-sort="true"
+    [p-striped]="true"
+    [p-loading]="loadingTable"
+    [p-show-more-disabled]="hasNext"
+    (p-show-more)="showMoreRegisters($event)"
+    [p-loading-show-more]="loadingShowMore"
+    p-hide-text-overflow="true"
+  >
+  </po-table>
+</div>
+<po-modal
+  p-click-out="true"
+  p-size="auto"
+  p-title="{{ title }}"
+  [p-primary-action]="primaryAction"
+>
+  <p class="po-row po-font-text-large space-30 blueColor">
+    {{ literals['fgtsReport']['workerInformation'] }}
+  </p>
+  <hr />
+  <po-info
+    class="po-lg-3 po-xl-3 po-md-12 po-sm-12"
+    p-label="{{ literals['fgtsReport']['name'] }}"
+    p-value="{{ name }}"
+  >
+  </po-info>
+  <po-info
+    class="po-lg-3 po-xl-3 po-md-12 po-sm-12"
+    p-label="{{ literals['fgtsReport']['cpf'] }}"
+    p-value="{{ cpfNumberFormatted }}"
+  >
+  </po-info>
+  <po-info
+    class="po-lg-3 po-xl-3 po-md-12 po-sm-12"
+    p-label="{{ literals['fgtsReport']['registration'] }}"
+    p-value="{{ esocialRegistration }}"
+  >
+  </po-info>
+  <po-info
+    class="po-lg-3 po-xl-3 po-md-12 po-sm-12"
+    p-label="Categoria"
+    p-value="{{ esocialCategory }}"
+  >
+  </po-info>
+  <p class="po-row po-font-text-large space-20 blueColor">
+    {{ literals['fgtsReport']['fgtsValues'] }}
+  </p>
+  <hr />
+  <table>
+    <tr>
+      <th></th>
+      <th class="po-info-label">
+        {{ literals['fgtsReport']['rhValue'] }}
+      </th>
+      <th *ngIf="taffull" class="po-info-label">
+        {{ literals['fgtsReport']['tafValue'] }}
+      </th>
+      <th class="po-info-label">
+        {{ literals['fgtsReport']['governmentValue'] }}
+      </th>
+    </tr>
+    <tr>
+      <td class="po-info-label">
+        {{ literals['fgtsReport']['fgtsMensalDeposit'] }}
+      </td>
+      <td class="po-font-text-large">{{ fgtsValue }}</td>
+      <td *ngIf="taffull" class="po-font-text-large">{{ fgtsTafValue }}</td>
+      <td class="po-font-text-large">{{ fgtsRetValue }}</td>
+    </tr>
+    <tr>
+      <td class="po-info-label">
+        {{ literals['fgtsReport']['fgts13Deposit'] }}
+      </td>
+      <td class="po-font-text-large">{{ fgts13Value }}</td>
+      <td *ngIf="taffull" class="po-font-text-large">{{ fgts13TafValue }}</td>
+      <td class="po-font-text-large">{{ fgts13RetValue }}</td>
+    </tr>
+    <tr>
+      <td class="po-info-label">
+        {{ literals['fgtsReport']['fgtsTerminationDeposit'] }}
+      </td>
+      <td class="po-font-text-large">{{ fgtsRescissionValue }}</td>
+      <td *ngIf="taffull" class="po-font-text-large">
+        {{ fgtsRescissionTafValue }}
+      </td>
+      <td class="po-font-text-large">{{ fgtsRescissionRetValue }}</td>
+    </tr>
+  </table>
+
+  <p class="po-row po-font-text-large space-20 blueColor">
+    {{ literals['fgtsReport']['fgtsBasisValues'] }}
+  </p>
+  <hr />
+  <po-table
+    p-hide-text-overflow="true"
+    [p-columns]="columnsBasis"
+    [p-items]="itemsTableBasis"
+    p-sort="true"
+    [p-loading]="loadingTable"
+  >
+  </po-table>
+</po-modal>
+<app-messenger></app-messenger>

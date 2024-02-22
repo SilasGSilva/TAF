@@ -1,0 +1,43 @@
+<div *ngIf="lastStamp">
+  <span class="span-last-stamp"
+    (click)="openModal()">
+      {{labelTag}}
+  </span>
+</div>
+
+<po-modal
+    [p-hide-close]="true"
+    [p-title]="this.literals['tsiLastStamp']['titleModal']"
+    [p-primary-action]="primaryAction"
+    [p-secondary-action]="secondaryAction" >
+  <div class="po-row row-space-evenly">
+    <span class="span-label-field">
+        {{this.literals['tsiLastStamp']['labelField']}}
+    </span>
+    <form [formGroup]="formDateStamp">
+      <po-datepicker
+        name="dateStamp"
+        p-placeholder="DD/MM/AAAA"
+        formControlName="dateStamp"
+        [p-clean]="false"
+        [p-required]="true"
+        p-locale="pt"
+        [p-min-date]="minDate">
+
+      </po-datepicker>
+    </form>
+  </div>
+
+  <div class="po-row label-help po-mt-2">
+    <span>
+        {{this.literals['tsiLastStamp']['labelHelp']}}
+    </span>
+  </div>
+</po-modal>
+
+<app-messenger></app-messenger>
+<po-loading-overlay
+*ngIf="loadingAtuStamp"
+p-screen-lock="true"
+[p-text]="literals['tsiLastStamp']['loading']">
+</po-loading-overlay>

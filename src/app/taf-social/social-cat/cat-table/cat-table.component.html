@@ -1,0 +1,42 @@
+<div class="po-sm-12 po-md-12 po-lg-12 po-xl-12 space-20 flex-end">
+  <po-button
+    class="po-sm-12 po-md-2 po-lg-2 po-xl-2"
+    p-icon="po-icon po-icon-print po-mr-1"
+    (p-click)="printOutCat()"
+    [p-loading]="isLoadingPrint"
+    [p-label]="literals['socialCat']['printOutCat']"
+    [p-disabled]="!this.selectedCatsKeys.length"
+    >
+  </po-button>
+  <po-input
+    class="po-sm-12 po-md-3 po-lg-3 po-xl-3"
+    [p-placeholder]="literals['socialCat']['infNameCpf']"
+    p-icon="po-icon po-icon-search"
+    (keyup)="debounce.next($event.target.value)"
+  >
+  </po-input>
+</div>
+<div class="po-md-12 space-20">
+  <po-table
+    [p-columns]="columns"
+    [p-items]="itemsTable | filterPipe: filter"
+    [p-sort]="true"
+    p-selectable="true"
+    (p-selected)="onSelectCat($event)"
+    (p-unselected)="onUnselectCat($event)"
+    (p-all-selected)="onSelectCat($event)"
+    (p-all-unselected)="onUnselectCat($event)"
+    [p-striped]="true"
+    [p-loading]="loadingTable"
+    [p-show-more-disabled]="hasNext"
+    (p-show-more)="showMoreRegisters($event)"
+    [p-loading-show-more]="loadingShowMore"
+    p-hide-text-overflow="true"
+  >
+  </po-table>
+</div>
+
+<app-cat-report
+  (loading-report-view)="updateIsLoadingPrint($event)"
+>
+</app-cat-report>

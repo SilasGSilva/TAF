@@ -1,0 +1,70 @@
+<div class="flex-end po-row po-mt-1 po-mb-1">
+  <po-button
+    *ngIf="canCreateNewItem"
+    class="po-sm-2"
+    p-label=" Incluir informação"
+    p-type="primary"
+    p-icon="po-icon po-icon-plus-circle"
+    (p-click)="create()"
+    [p-disabled]="isExcluded"
+  ></po-button>
+</div>
+
+<form class="po-sm-12 po-mb-3" [hidden]="!isSelected" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-p-0">
+    <po-input
+      class="po-sm-6"
+      p-label="Número de inscrição no CPF"
+      formControlName="cpfDep"
+      p-mask="999.999.999-99"
+      p-required
+      [p-disabled]="isExcluded"
+    ></po-input>
+
+    <app-financial-input
+      class="po-sm-6"
+      fieldTitle="Valor da informação relativa a dependentes ou a pensão alimentícia com exigibilidade suspensa"
+      [control]="subFormGroup.get('vlrDepenSusp')"
+      [decimalLength]="14"
+      [isRequired]="true"
+    ></app-financial-input>
+  </div>
+
+  <div class="po-row po-mb-3">
+    <app-error-message
+      *ngIf="subFormGroup.get('cpfDep')?.errors && this.subFormGroup.get('cpfDep').touched"
+      class="po-sm-6"
+      [message]="errorMessageCpfDep"
+    ></app-error-message>
+  </div>
+
+  <div class="flex-end po-row po-mb-1">
+    <po-button
+      class="po-sm-2"
+      p-label="Cancelar"
+      (p-click)="cancel()"
+    ></po-button>
+
+    <po-button
+      class="po-sm-2"
+      [p-label]="isEdit ? ' Editar informação' : ' Incluir informação'"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="isEdit ? update() : save()"
+      [p-disabled]="subFormGroup.invalid"
+    ></po-button>
+  </div>
+</form>
+
+<p class="subtitle po-mb-1">
+  Informações existentes
+</p>
+
+<po-table
+  class="po-sm-12 po-mb-2"
+  [p-height]="formArrayValue.length > 3 ? 170 : null"
+  [p-columns]="columns"
+  [p-items]="rows"
+  [p-actions]="actions"
+  p-hide-columns-manager
+></po-table>

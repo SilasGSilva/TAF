@@ -1,0 +1,67 @@
+<div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-mb-5">
+  <po-table
+    [p-items]="tableItems"
+    [p-columns]="tableColumns"
+    [p-selectable]="selectable"
+    [p-selectable]="enableCheckBox"
+    (p-all-selected)="onSelectionChange()"
+    (p-all-unselected)="onSelectionChange()"
+    (p-selected)="onSelectionChange()"
+    (p-unselected)="onSelectionChange()"
+    [p-show-more-disabled]="!hasNext"
+    (p-show-more)="showMore()"
+    [p-loading-show-more]="loadingShowMore"
+    p-single-select="false"
+    p-sort="true"
+    p-striped="true"
+    [p-literals]="customLiterals"
+    p-hide-select-all="false"
+    p-hide-text-overflow="true"
+    [p-loading]="loadingOverlay"
+  >
+    <ng-template
+      p-table-row-template
+      let-rowItem
+      [p-table-row-template-show]="setShowDetails"
+    >
+      <app-validation-pending-table-detail
+        *ngIf="path === 'validation'"
+        [taf-id]="rowItem.key"
+        [taf-event]="event"
+        [taf-period]="period"
+        [taf-branch-id]="rowItem.branchId"
+        [taf-table-item]="rowItem"
+        [taf-size-add-more]="addMoreItems"
+      >
+      </app-validation-pending-table-detail>
+
+      <app-transmission-pending-table-detail
+        *ngIf="path === 'transmission'"
+        [taf-id]="rowItem.key"
+        [taf-event]="event"
+        [taf-period]="period"
+        [taf-branch-id]="rowItem.branchId"
+        [taf-size-add-more]="addMoreItems"
+      >
+      </app-transmission-pending-table-detail>
+
+      <app-report-validation-table-detail
+        *ngIf="path === 'eventsReport'"
+        [taf-id]="rowItem.key"
+        [taf-event]="event"
+        [taf-period]="period"
+        [taf-branch-id]="rowItem.branchId"
+        [taf-table-item]="rowItem"
+        [taf-size-add-more]="addMoreItems"
+      >
+      </app-report-validation-table-detail>
+    </ng-template>
+  </po-table>
+</div>
+
+<po-loading-overlay
+  *ngIf="loadingTable"
+  p-screen-lock="true"
+  [p-text]="literals['table']['loadding']"
+>
+</po-loading-overlay>

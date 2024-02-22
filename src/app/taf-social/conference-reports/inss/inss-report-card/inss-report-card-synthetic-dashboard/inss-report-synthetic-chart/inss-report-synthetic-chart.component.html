@@ -1,0 +1,22 @@
+<div class="po-row">
+    <po-chart
+        class="po-xl-4 po-lg-4 po-md-4 po-sm-1"
+        p-title="{{ literals['inssReport']['chartRhTitle'] }}"
+        [p-series]="chartDashboardRhData"
+        [p-type]="syntheticChartType">
+    </po-chart>
+
+    <po-chart
+        class="po-xl-4 po-lg-4 po-md-4 po-sm-1"
+        p-title="{{ literals['inssReport']['chartTafTitle'] }}"
+        [p-series]="chartDashboardTafData"
+        [p-type]="syntheticChartType">
+    </po-chart>
+
+    <po-chart
+        class="po-xl-4 po-lg-4 po-md-4 po-sm-1"
+        p-title="{{ literals['inssReport']['chartRetTitle'] }}"
+        [p-series]="chartDashboardRetData"
+        [p-type]="syntheticChartType">
+    </po-chart>
+</div>

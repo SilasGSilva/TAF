@@ -1,0 +1,74 @@
+.text-icon-blue {
+  color: #0c9abe;
+  font-weight: bold;
+  position: relative;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.container-space-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.container-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.align-end {
+  align-self: flex-end;
+  float: right;
+  height: 40px;
+}
+
+.font-icon-clock {
+  font-size: 24px;
+  color: #0c9abe;
+}
+
+.font-icon-exclamation {
+  font-size: 20px;
+  color: #c64840;
+}
+
+.base {
+  background-color: #eceeee;
+  height: 24px;
+}
+
+.align-event {
+  line-height: 0%;
+  font-size: 24px;
+  padding-top: 5px;
+}
+
+.text-right {
+  float: right;
+}
+
+.color-black {
+  color: #1d2426;
+}
+
+.color-blue {
+  color: #0c9abe;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.transparent {
+  opacity: 0;
+}
+
+.event-height {
+  height: 32px;
+}

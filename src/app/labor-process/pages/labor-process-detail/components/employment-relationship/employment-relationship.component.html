@@ -1,0 +1,324 @@
+<div class="content-detail" *ngIf="currentFormGroup">
+  <form [formGroup]="currentFormGroup">
+    <div formGroupName="infoCompl">
+      <div formGroupName="infoVinc">
+        <div class="po-row line-container">
+          <po-select
+            class="po-sm-3"
+            p-label="Tipo de regime trabalhista"
+            formControlName="tpRegTrab"
+            [p-options]="optionsTpRegTrab"
+            [p-disabled]="isExcluded"
+            (p-change)="updateTpRegTrab()"
+          ></po-select>
+
+          <po-select
+            class="po-sm-3"
+            p-label="Tipo de regime previdenciário"
+            formControlName="tpRegPrev"
+            [p-options]="optionsTpRegPrev"
+            [p-disabled]="isExcluded"
+          ></po-select>
+
+          <po-datepicker
+            class="po-sm-2"
+            p-label="Data de admissão"
+            formControlName="dtAdm"
+            [p-min-date]="mainFormGroup.value.ideTrab.dtNascto"
+            [p-disabled]="isExcluded"
+          ></po-datepicker>
+
+          <po-select
+            class="po-sm-3"
+            p-label="Tipo contrato em tempo parcial"
+            formControlName="tmpParc"
+            [p-options]="optionsTmpParc"
+            [p-disabled]="isExcluded || isTmpParcDisabled"
+          ></po-select>
+        </div>
+
+        <div class="po-row">
+          <app-error-message
+            *ngIf="currentFormGroup.get('infoCompl.infoVinc.tpRegTrab').errors?.invalidValue1"
+            message="Verifique o valor selecionado, pois está em desacordo com o campo Código da Categoria"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('infoCompl.infoVinc.tpRegPrev').errors?.invalidValue1"
+            class="po-offset-md-3 po-offset-sm-3 po-offset-lg-3 po-offset-xl-3"
+            message="Verifique o valor selecionado, pois está em desacordo com o campo Código da Categoria"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('infoCompl.infoVinc.tmpParc').errors?.invalidValue1"
+            class="po-offset-md-8 po-offset-sm-8 po-offset-lg-8 po-offset-xl-8"
+            message="Verifique o valor selecionado, pois está em desacordo com o campo Código da Categoria"
+          ></app-error-message>
+        </div>
+
+        <div formGroupName="duracao">
+          <p class="subtitle">
+            Duração do contrato de trabalho
+          </p>
+
+          <div class="po-row line-container">
+            <po-select
+              class="po-sm-3"
+              p-label="Tipo contrato"
+              formControlName="tpContr"
+              [p-options]="optionsTpContr"
+              [p-disabled]="isExcluded || isDisabledDuracao"
+              (p-change)="handleChangeTpContr($event)"
+            ></po-select>
+
+            <po-datepicker
+              p-label="Data de término"
+              class="po-sm-2"
+              formControlName="dtTerm"
+              [p-min-date]="
+                currentFormGroup.value.infoCompl.infoVinc.sucessaoVinc.dtTransf !== null
+                  ? currentFormGroup.value.infoCompl.infoVinc.sucessaoVinc.dtTransf
+                  : currentFormGroup.value.dtAdmOrig
+              "
+              [p-disabled]="isExcluded || isDisabledDuracao || isDisabledDtTerm"
+              [p-optional]="isOptionalDtTerm"
+            ></po-datepicker>
+
+            <po-select
+              class="po-sm-3"
+              p-label="Cláusula assecuratória"
+              formControlName="clauAssec"
+              [p-options]="optionsClauAssec"
+              [p-disabled]="isExcluded || isDisabledDuracao || isDisabledClauAssec"
+            ></po-select>
+          </div>
+
+          <div class="po-row">
+            <po-input
+              class="po-sm-12"
+              p-label="Objeto de contratação"
+              formControlName="objDet"
+              p-maxlength="255"
+              [p-disabled]="isExcluded || isDisabledDuracao || isDisabledObjDet"
+            ></po-input>
+          </div>
+        </div>
+
+        <div formGroupName="sucessaoVinc">
+          <p class="subtitle">Sucessão do vínculo trabalhista</p>
+
+          <div class="po-row line-container">
+            <po-select
+              p-label="Tipo inscrição"
+              class="po-sm-2"
+              [p-options]="optionsTpInsc"
+              formControlName="tpInsc"
+              p-optional
+              [p-disabled]="isExcluded"
+            ></po-select>
+
+            <po-input
+              class="po-sm-2"
+              p-label="Número inscrição"
+              formControlName="nrInsc"
+              [p-maxlength]="
+                currentFormGroup.value.infoCompl.infoVinc.sucessaoVinc.tpInsc == tpInscEnum.Cei
+                  ? 12
+                  : 14
+              "
+              [p-mask]="maskNrInsc"
+              p-optional
+              [p-disabled]="isExcluded"
+            ></po-input>
+
+            <po-input
+              class="po-sm-3"
+              p-label="Matrícula anterior"
+              formControlName="matricAnt"
+              p-maxlength="30"
+              p-optional
+              [p-disabled]="isExcluded"
+            ></po-input>
+
+            <po-datepicker
+              class="po-sm-3"
+              p-label="Data da transferência"
+              formControlName="dtTransf"
+              [p-max-date]="
+                currentFormGroup.value.tpInsc === tpInscEnum.Cgc
+                  ? '1999-06-30'
+                  : currentFormGroup.value.tpInsc === tpInscEnum.Cei
+                    ? '2011-12-31'
+                    : ''
+              "
+              [p-min-date]="currentFormGroup.value.dtAdmOrig"
+              p-optional
+              [p-disabled]="isExcluded"
+              (p-change)="changeDtTransf()"
+            ></po-datepicker>
+          </div>
+
+          <div class="po-row">
+            <app-error-message
+              *ngIf="currentFormGroup.get('infoCompl.infoVinc.sucessaoVinc.nrInsc').errors?.cnpj"
+              class="po-offset-md-2 po-offset-sm-2 po-offset-lg-2 po-offset-xl-2"
+              message="CNPJ inválido"
+            ></app-error-message>
+
+            <app-error-message
+              *ngIf="currentFormGroup.get('infoCompl.infoVinc.sucessaoVinc.nrInsc').errors?.cpf"
+              class="po-offset-md-2 po-offset-sm-2 po-offset-lg-2 po-offset-xl-2"
+              message="CPF inválido"
+            ></app-error-message>
+
+            <app-error-message
+              *ngIf="currentFormGroup.get('infoCompl.infoVinc.sucessaoVinc.tpInsc').errors?.invalidTpTransfWithDtTransfGreater19990630"
+              class="po-offset-md-3"
+              message="Tipo inválido porque a 'data de transferencia' é maior que 30/06/1999"
+            ></app-error-message>
+
+            <app-error-message
+              *ngIf="currentFormGroup.get('infoCompl.infoVinc.sucessaoVinc.tpInsc').errors?.invalidTpTransfWithDtTransfGreater20111231"
+              class="po-offset-md-3"
+              message="Tipo inválido porque a 'data de transferencia' é maior que 31/12/2011"
+            ></app-error-message>
+          </div>
+        </div>
+
+        <div formGroupName="infoDeslig">
+          <p class="subtitle">Informações sobre o desligamento</p>
+
+          <div class="po-row line-container">
+            <po-datepicker
+              class="po-sm-3"
+              p-label="Data do desligamento"
+              formControlName="dtDeslig"
+              [p-optional]="!isRequiredDtDeslig"
+              [p-min-date]="currentFormGroup.value.dtAdmOrig"
+              [p-max-date]="maxDate"
+              [p-disabled]="isExcluded"
+            ></po-datepicker>
+
+            <po-combo
+              p-label="Motivo"
+              class="po-sm-4"
+              formControlName="mtvDeslig"
+              [p-options]="optionsMtvDeslig"
+              [p-optional]="!isRequiredMtvDeslig"
+              (p-change)="handleResetMtvDesligAndTpRegTrab()"
+              [p-disabled]="isExcluded"
+              (p-input-change)="renderMtvDeslig()"
+              (click)="renderMtvDeslig()"
+              #mtvDeslig
+            ></po-combo>
+
+            <po-datepicker
+              class="po-sm-3"
+              p-label="Data aviso prévio"
+              formControlName="dtProjFimAPI"
+              p-optional="true"
+              [p-min-date]="currentFormGroup.value.infoCompl.infoVinc.infoDeslig.dtDeslig"
+              [p-disabled]="isExcluded"
+            ></po-datepicker>
+          </div>
+
+          <div *ngIf="!isV1" class="po-row line-container po-mt-1">
+            <po-select
+              class="po-sm-4"
+              p-label="Indicativo de pensão alimentícia para fins de retenção de FGTS"
+              formControlName="pensAlim"
+              [p-options]="optionsPensAlim"
+              [p-optional]="isDisabledPensAlim || isOptionalPensAlim"
+              [p-disabled]="isDisabledPensAlim || isExcluded"
+            ></po-select>
+
+            <po-number
+              class="po-sm-3"
+              p-label="Percentual a ser destinado a pensão alimentícia"
+              formControlName="percAliment"
+              p-pattern="^(100(\.00)?|\d{0,2}(\.\d{1,2})?)$"
+              [p-max]="100"
+              [p-maxlength]="6"
+              [p-min]="0"
+              [p-show-required]="true"
+              [p-optional]="!isRequiredPercAliment"
+              [p-disabled]="!isRequiredPercAliment || isExcluded"
+            ></po-number>
+
+            <app-financial-input
+              class="po-sm-3"
+              fieldTitle="Valor da pensão alimentícia"
+              [control]="currentFormGroup.get('infoCompl.infoVinc.infoDeslig.vrAlim')"
+              [isRequired]="isRequiredVrAlim"
+              [isDisabled]="!isRequiredVrAlim"
+              [decimalLength]="14"
+            ></app-financial-input>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <po-accordion class="po-sm-12 po-mt-2">
+    <po-accordion-item p-label="Observação">
+      <form [hidden]="!isSelected" [formGroup]="subFormGroup">
+        <div class="text-area">
+          <po-textarea
+            name="textarea"
+            p-label="Observação"
+            formControlName="observacao"
+            p-maxlength="255"
+            p-optional
+          ></po-textarea>
+        </div>
+
+        <div class="po-row buttons-internal">
+          <po-button
+            p-label="Cancelar"
+            p-tooltip="Ao clicar neste botão você o formulário será limpo, sem salvar suas alterações."
+            (p-click)="cancel()"
+          ></po-button>
+
+          <po-button
+            class="po-sm-2"
+            [p-label]="isEdit ? ' Atualizar observação' : ' Incluir observação'"
+            p-type="primary"
+            p-icon="po-icon po-icon-plus-circle"
+            (p-click)="isEdit ? updateObservacao() : saveObservacao()"
+            [p-disabled]="
+              subFormGroup.invalid ||
+              subFormGroup.value.observacao == null ||
+              subFormGroup.value.observacao == '' ||
+              isExcluded
+            "
+          ></po-button>
+        </div>
+      </form>
+
+      <div class="po-row space-btn">
+        <p class="subtitle">
+          Observações existentes
+        </p>
+
+        <po-button
+          *ngIf="!isSelected && !isExcluded"
+          class="po-offset-md-7 po-offset-lg-7 po-offset-xl-7"
+          p-label=" Incluir observação"
+          p-type="primary"
+          p-icon="po-icon po-icon-plus-circle"
+          (p-click)="create()"
+        ></po-button>
+      </div>
+
+      <po-table
+        *ngIf="formArray"
+        class="po-sm-12"
+        [p-height]="formArrayValue.length > 3 ? 170 : null"
+        [p-columns]="columns"
+        [p-items]="formArrayValue"
+        [p-actions]="isExcluded ? [] : actions"
+        p-hide-columns-manager
+      ></po-table>
+    </po-accordion-item>
+  </po-accordion>
+</div>

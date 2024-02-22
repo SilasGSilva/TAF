@@ -1,0 +1,32 @@
+<po-modal
+  [p-primary-action]="modalPrimaryAction"
+  [p-secondary-action]="modalSecondaryAction"
+  p-size="auto"
+  [p-title]="'Inclua informações de tributos para o(a) trabalhador(a) ' + workerName"
+  p-size="auto"
+>
+  <div class="content">
+    <po-tabs>
+      <po-tab *ngIf="!isV1" [p-active]="!isV1" p-label="Informações de retenção na fonte e Dependentes">
+        <app-withholding-and-dependent-information
+          [currentFormGroup]="formGroup"
+          [excluidoERP]="excluidoERP"
+        ></app-withholding-and-dependent-information>
+      </po-tab>
+
+      <po-tab [p-active]="isV1" p-label="Identificação do período e da base de cálculo dos tributos">
+        <app-calculation-period-and-basis
+          [currentFormGroup]="formGroup"
+          [excluidoERP]="excluidoERP"
+        ></app-calculation-period-and-basis>
+      </po-tab>
+
+      <po-tab p-label="Informações de IRRF">
+        <app-irrf-information
+          [currentFormGroup]="formGroup"
+          [excluidoERP]="excluidoERP"
+        ></app-irrf-information>
+      </po-tab>
+    </po-tabs>
+  </div>
+</po-modal>

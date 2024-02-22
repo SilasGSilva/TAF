@@ -1,0 +1,70 @@
+<po-widget p-no-shadow="true">
+  <form [formGroup]="formFilter">
+    <div class="container">
+      <div class="po-row po-sm-12 po-md-12 po-lg-12 po-xl-12">
+        <po-select class="po-sm-4 po-md-4 po-lg-3 po-xl-3"
+          formControlName="branchCode"
+          name="branchCode"
+          [p-label]="literals['tsiFilter']['branch']"
+          [p-placeholder]="literals['tsiFilter']['selectBranch']"
+          [p-required]="true"
+          [p-options]="branchesOptions">
+        </po-select>
+        <po-datepicker class="po-sm-4 po-md-4 po-lg-3 po-xl-3"
+          name="periodFrom"
+          p-placeholder="DD/MM/AAAA"
+          formControlName="periodFrom"
+          [p-clean]="false"
+          [p-required]="false"
+          [p-optional]="true"
+          p-locale="pt"
+          [p-label]="getDateLabel('periodFrom')"
+          [p-max-date]="formFilter.get('periodTo').value">
+        </po-datepicker>
+        <po-datepicker class="po-sm-4 po-md-4 po-lg-3 po-xl-3"
+          name="periodTo"
+          p-placeholder="DD/MM/AAAA"
+          formControlName="periodTo"
+          [p-clean]="false"
+          [p-required]="false"
+          [p-optional]="true"
+          p-locale="pt"
+          [p-label]="getDateLabel('periodTo')"
+          [p-error-pattern]="literals['tsiFilter']['invalidDate']"
+          [p-min-date]="formFilter.get('periodFrom').value">
+        </po-datepicker>
+        <po-select class="po-sm-4 po-md-4 po-lg-3 po-xl-3"
+          *ngIf="!divergentDocuments"
+          formControlName="type"
+          name="type"
+          [p-label]="literals['tsiFilter']['type']"
+          [p-placeholder]="literals['tsiFilter']['selectType']"
+          [p-required]="false"
+          [p-options]="typeOptions">
+        </po-select>
+        <div class="po-row row-space-between">
+          <app-tsi-last-stamp class="last-stamp po-xl-10 po-lg-10 po-md-9 po-sm-9"
+            [tsi-branch-code]="branchCode">
+          </app-tsi-last-stamp>
+        </div>
+        <div class="po-row button-space-between">
+          <po-button class="po-xl-2 po-lg-2 po-md-3 po-sm-3"
+            [p-label]="literals['tsiFilter']['apply']"
+            p-type="primary"
+            p-small="true"
+            [p-disabled]="formFilter.invalid"
+            (p-click)="applyFilter()">
+          </po-button>
+          <po-button class="po-xl-2 po-lg-2 po-md-3 po-sm-3"
+            *ngIf="divergentDocuments&&svConfigured"
+            p-label="Smart View"
+            p-type="primary"
+            p-small="true"
+            [p-disabled]="btnDisabled"
+            (p-click)="callSmartView()">
+          </po-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</po-widget>

@@ -1,0 +1,258 @@
+<div class="container po-xl-12 po-mt-4 po-mb-2 po-row">
+  <div class="po-xl-3">
+    <div *ngIf="closingEvent2099 || closingEvent4099" class="text-color">
+      <p class="po-font-subtitle">
+        {{ literals['closingEvent']['closedPeriod'] }}
+      </p>
+
+      <div *ngIf="protocol2099" class="po-row">
+        <po-info
+          [p-label]="literals['closingEvent']['protocol']"
+          [p-value]="protocol2099"
+          p-orientation="horizontal">
+        </po-info>
+
+        <po-tag class="po-ml-1"
+          [p-value]="literals['reinfFilter']['bloc20']"
+          p-color="color-09">
+        </po-tag>
+      </div>
+
+      <div *ngIf="protocol4099" class="po-row">
+        <po-info
+          [p-label]="literals['closingEvent']['protocol']"
+          [p-value]="protocol4099"
+          p-orientation="horizontal">
+        </po-info>
+
+        <po-tag class="po-ml-1"
+          [p-value]="literals['reinfFilter']['bloc40']"
+          p-color="color-09">
+        </po-tag>
+      </div>
+    </div>
+  </div>
+
+  <div class="po-xl-9 buttons">
+    <div *ngIf="isProductionRestrict && isR1000Valid && !closingEvent2099 && !closingEvent4099">
+      <p class="transparent">
+        .
+      </p>
+      <div>
+        <app-remove-company (taf-remove-company-loading)="emitLoadingRemoveCompany($event)">
+        </app-remove-company>
+      </div>
+    </div>
+
+    <div *ngIf="!disableButtonClosingPeriod2099" class="po-mr-2">
+      <p>
+        {{ literals['reinfFilter']['bloc20'] }}
+      </p>
+      <div *ngIf="statusButton2099 === '1'">
+        <po-button
+          [p-label]="literals['closingEvent']['closingPeriod']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          (p-click)="onCloseButton('R-2099')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton2099 === '2'">
+        <po-button
+          [p-label]="literals['closingEvent']['cancel']"
+          p-disabled="false"
+          p-type="default"
+          p-small="false"
+          (p-click)="onCancel('R-2099')"
+        >
+        </po-button>
+
+        <po-button
+          class="po-ml-2"
+          [p-label]="literals['closingEvent']['transmitting']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          [p-loading]="isLoading2099"
+          (p-click)="onTransmitting('R-2099')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton2099 === '3'">
+        <po-button
+          [p-label]="literals['closingEvent']['queryingClosed']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          [p-loading]="isLoading2099"
+          (p-click)="onQuerying('R-2099')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton2099 === '4'">
+        <po-button
+          [p-label]="literals['closingEvent']['reopeningPeriod']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          (p-click)="onReopening('R-2098')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton2099 === '5'">
+        <po-button
+          [p-label]="literals['closingEvent']['queryingReopeningPeriod']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          [p-loading]="isLoading2099"
+          (p-click)="onQuerying('R-2098')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton2099 === '6'">
+        <po-button
+          [p-label]="literals['closingEvent']['cancel']"
+          p-disabled="false"
+          p-type="default"
+          p-small="false"
+          (p-click)="onCancel('R-2098')"
+        >
+        </po-button>
+
+        <po-button
+          class="po-ml-2"
+          [p-label]="literals['closingEvent']['transmitting']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          [p-loading]="isLoading2099"
+          (p-click)="onTransmitting('R-2098')"
+        >
+        </po-button>
+      </div>
+    </div>
+
+    <div *ngIf="!disableButtonClosingPeriod4099" class="po-mr-2">
+      <p>
+        {{ literals['reinfFilter']['bloc40'] }}
+      </p>
+      <div *ngIf="statusButton4099 === '1'">
+        <po-button
+          [p-label]="literals['closingEvent']['closingPeriod']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          (p-click)="onCloseButton('R-4099')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton4099 === '2'">
+        <po-button
+          [p-label]="literals['closingEvent']['cancel']"
+          p-disabled="false"
+          p-type="default"
+          p-small="false"
+          (p-click)="onCancel('R-4099')"
+        >
+        </po-button>
+
+        <po-button
+          class="po-ml-2"
+          [p-label]="literals['closingEvent']['transmitting']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          [p-loading]="isLoading4099"
+          (p-click)="onTransmitting('R-4099')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton4099 === '3'">
+        <po-button
+          [p-label]="literals['closingEvent']['queryingClosed']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          [p-loading]="isLoading4099"
+          (p-click)="onQuerying('R-4099')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton4099 === '4'">
+        <po-button
+          [p-label]="literals['closingEvent']['reopeningPeriod']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          (p-click)="onReopening('R-4099')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton4099 === '5'">
+        <po-button
+          [p-label]="literals['closingEvent']['queryingReopeningPeriod']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          [p-loading]="isLoading4099"
+          (p-click)="onQuerying('R-4099')"
+        >
+        </po-button>
+      </div>
+
+      <div *ngIf="statusButton4099 === '6'">
+        <po-button
+          [p-label]="literals['closingEvent']['cancel']"
+          p-disabled="false"
+          p-type="default"
+          p-small="false"
+          (p-click)="onCancel('R-4099')"
+        >
+        </po-button>
+
+        <po-button
+          class="po-ml-2"
+          [p-label]="literals['closingEvent']['transmitting']"
+          p-disabled="false"
+          p-type="primary"
+          p-small="false"
+          [p-loading]="isLoading4099"
+          (p-click)="onTransmitting('R-4099')"
+        >
+        </po-button>
+      </div>
+    </div>
+
+    <div *ngIf="!disableButtonLogPeriod">
+      <p class="transparent">
+        .
+      </p>
+      <po-button
+        p-icon="po-icon-exclamation"
+        p-type="danger"
+        p-small="false"
+        (p-click)="statusTSS()"
+      >
+      </po-button>
+    </div>
+  </div>
+</div>
+
+<app-event-error-message
+  [taf-button-message]="literals['closingEvent']['closed']"
+  (taf-on-click)="onClosing()"
+>
+</app-event-error-message>
+
+<app-messenger></app-messenger>

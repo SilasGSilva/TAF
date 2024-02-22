@@ -1,0 +1,9 @@
+.content{    
+    overflow-y: auto;
+    max-height:calc(90vh - 200px);
+}
+
+
+:host ::ng-deep .po-modal-content.po-modal-auto{
+    max-width:98%
+}

@@ -1,0 +1,30 @@
+<po-button
+    class="po-ml-2"
+    [p-label]="labelBtn"
+    p-small="true"
+    p-type="primary"
+    [p-disabled]="disabledButton"
+    (p-click)="executePenddingValidation()">
+</po-button>
+
+<po-modal
+  [p-title]="statusMessageHeader">
+    <p *ngIf="messageSucess">
+      {{ statusMessage }}
+    </p>
+    <po-textarea
+      *ngIf="!messageSucess"
+      class="textarea"
+      [(ngModel)]="statusMessage"
+      [p-rows]="rowsTextArea"
+      [p-disabled]="true">
+    </po-textarea>
+</po-modal>
+
+<po-loading-overlay
+    *ngIf="loadingOverlay"
+    p-screen-lock="true"
+    [p-text]= "literals['sendValidation']['validatting']">
+</po-loading-overlay>
+
+<app-messenger></app-messenger>

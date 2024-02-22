@@ -1,0 +1,25 @@
+<div
+  [ngClass]="{
+    'space-20': true,
+    'po-sm-12': true,
+    'po-md-12 po-mt-2': currentUrl === undefined,
+    'po-lg-12 po-mt-2': currentUrl === undefined,
+    'po-xl-12 po-mt-2': currentUrl === undefined,
+    'po-xl-3': currentUrl !== undefined,
+    'po-lg-3': currentUrl !== undefined,
+    'po-md-3': currentUrl !== undefined
+  }">
+  <po-button
+    class='po-sm-12 po-md-12 po-lg-12 po-xl-12'
+    [p-label]="literals['monitorHeaderActions']['send']"
+    (p-click)="onClickTransmit()"
+    [p-disabled]="isButtonTransmissionDisabled"
+    p-type="primary"
+  >
+  </po-button>
+
+  <po-loading-overlay *ngIf="showPageLoading" p-screen-lock="true">
+  </po-loading-overlay>
+
+</div>
+<app-messenger></app-messenger>

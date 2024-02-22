@@ -1,0 +1,80 @@
+<div class="container-card">
+  <po-widget class="po-xl-12" p-no-shadow="true">
+    <form [formGroup]="formFilter">
+      <div class="po-row">
+        <po-input
+          class="po-xl-2 po-lg-2 po-md-6 po-sm-12"
+          formControlName="period"
+          [name]="period"
+          [p-label]="literals['filter']['period']"
+          [p-placeholder]="literals['filter']['enterPeriod']"
+          p-mask="99/9999"
+          p-pattern="^(0[1-9]|1[0-2])(19[0-9]{2}|2[0-9]{3})$"
+          p-mask-format-model="false"
+          p-auto-focus="true"
+          p-required="true"
+          (keyup.enter)="findDashboard()"
+          (p-change)="findEvents()"
+        >
+        </po-input>
+        <po-select
+          class="po-xl-3 po-lg-3 po-md-6 po-sm-12"
+          formControlName="status"
+          name="status"
+          [p-label]="literals['filter']['status']"
+          [p-placeholder]="literals['filter']['selectStatus']"
+          [p-options]="statusOptions"
+          p-required="true"
+        >
+        </po-select>
+        <po-select
+          class="po-xl-2 po-lg-2 po-md-6 po-sm-12"
+          formControlName="groupType"
+          name="groupType"
+          [p-label]="literalsReinf['reinfFilter']['group']"
+          [p-placeholder]="literalsReinf['reinfFilter']['all']"
+          [p-options]="groupOptions"
+          p-required="true"
+          (p-change)="findEvents()"
+        >
+        </po-select>
+        <po-multiselect
+          class="po-xl-2 po-lg-2 po-md-6 po-sm-12"
+          formControlName="events"
+          name="events"
+          [p-disabled]="disableEvents"
+          [p-optional]="true"
+          p-filter-mode="contains"
+          [p-label]="literals['filter']['events']"
+          [p-placeholder]="literals['filter']['selectEvent']"
+          [p-options]="eventsOptions"
+        >
+        </po-multiselect>
+        <po-multiselect
+          class="po-xl-3 po-lg-3 po-md-6 po-sm-12"
+          formControlName="eventType"
+          [p-optional]="true"
+          name="eventType"
+          [p-label]="literals['filter']['eventType']"
+          [p-placeholder]="literals['filter']['selectEventType']"
+          [p-options]="eventTypeOptions"
+        >
+        </po-multiselect>
+        <app-vmessage
+          class="po-xl-2 po-lg-2 po-md-6 po-sm-12"
+          [text]="literals['filter']['invalidPeriod']"
+          *ngIf="formFilter.get('period').errors?.pattern"
+        >
+        </app-vmessage>
+        <po-button
+          class="po-offset-xl-10 po-xl-3 po-offset-lg-10 po-lg-2 po-offset-md-10 po-md-3 po-offset-sm-8 po-sm-5 po-mt-1"
+          [p-label]="literals['filter']['consult']"
+          [p-disabled]="ifFormValid()"
+          p-type="default"
+          (p-click)="findDashboard()"
+        >
+        </po-button>
+      </div>
+    </form>
+  </po-widget>
+</div>

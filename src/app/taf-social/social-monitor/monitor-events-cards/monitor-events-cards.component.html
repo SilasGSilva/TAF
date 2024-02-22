@@ -1,0 +1,101 @@
+<po-widget
+  class="po-xl-3 po-lg-4 po-md-6 po-sm-12 po-mb-3"
+  p-height="296"
+  [p-disabled]="isDisable"
+>
+  <div class="po-row header">
+    <div class="po-xl-1 po-lg-1 po-md-1 po-sm-1 event-mark">
+      <po-checkbox
+      [(ngModel)]="mark"
+      [p-disabled]="isDisable"
+      (p-change)="onChangeSelectedEvents($event)"
+      >
+    </po-checkbox>
+    </div>
+
+    <div
+      [ngClass]="{
+        'po-xl-5': true,
+        'po-lg-5': true,
+        'po-md-5': true,
+        'po-sm-5': true,
+        'po-ml-1': true,
+        'po-font-subtitle': true,
+        'color-blue': !isDisable
+      }"
+    >
+      <span [ngClass]="applyClass()" (click)="onClickEvent()">
+        {{ event.eventCode }}
+      </span>
+    </div>
+
+    <div class="quantity-event po-xl-5 po-lg-5 po-md-5 po-sm-5">
+      <a class="po-font-text">
+        {{ literals['monitorCardEvents']['totalizer'] }}:
+        <a class="po-font-subtitle">
+          {{ event.total }}
+        </a></a
+      >
+    </div>
+  </div>
+
+  <div class="po-row description-event">
+    <div class="po-font-text-small">
+      <div class="text-line">
+        {{ event.eventDescription }}
+      </div>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <div class="po-row base po-font-text-small container-space-around">
+      <div class="po-xl-6 po-lg-6 po-md-6 po-sm-7 po-ml-2">
+        {{ literals['monitorCardEvents']['status'] }}
+      </div>
+      <div class="po-xl-4 po-lg-4 po-md-4 po-sm-5 po-text-center">
+        {{ literals['monitorCardEvents']['quantity'] }}
+      </div>
+    </div>
+
+    <div *ngFor="let card of detailCard" class="po-row">
+      <span *ngIf="card.warning" [ngClass]="applyClassIcon(card.type)"> </span>
+
+      <div
+        *ngIf="card.warning"
+        class="po-xl-8 po-lg-8 po-md-8 po-sm-8 color-black"
+        [style.background-color]="setPending(card)"
+      >
+        {{ card.title }}
+      </div>
+
+      <div
+        *ngIf="!card.warning"
+        class="po-offset-xl-1 po-xl-8 po-offset-lg-1 po-lg-8 po-offset-md-1 po-md-8 po-offset-sm-1 po-sm-8 color-black"
+        [style.background-color]="setPending(card)"
+      >
+        {{ card.title }}
+      </div>
+
+      <div
+        [ngClass]="{
+          'po-xl-3': true,
+          'po-lg-3': true,
+          'po-md-3': true,
+          'po-sm-3': true,
+          'po-font-text-large-bold': true,
+          'po-text-center': true,
+          'color-blue': !isDisable
+        }"
+        [style.background-color]="setPending(card)"
+      >
+        <span
+          [ngClass]="applyClass()"
+          (click)="onClickEvent(card.type)"
+          value="card.type"
+        >
+          {{ card.value }}
+        </span>
+      </div>
+    </div>
+  </div>
+</po-widget>

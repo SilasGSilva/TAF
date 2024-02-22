@@ -1,0 +1,14 @@
+.faqButton {
+  font-size: 50px;
+  position: fixed;
+  right: 40px;
+  left: auto;
+  top: auto;
+  bottom: 50px;
+  text-align: right;
+  color: #0c9abe;
+
+  :not(:disabled):hover {
+    color: #097b98;
+  }
+}

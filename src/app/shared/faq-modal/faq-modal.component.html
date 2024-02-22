@@ -1,0 +1,37 @@
+<po-modal
+  p-click-out="true"
+  p-size="lg"
+  p-title="{{ title }}"
+  [p-primary-action]="primaryAction">
+  <p class="po-pb-2">
+    {{ informationSummary }}
+  </p>
+
+  <po-container p-height="400">
+    <div *ngFor="let itemfaqQuestionsSections of faqQuestionsSections">
+      <h2 class="po-pb-2">
+        {{ itemfaqQuestionsSections.questionSectionTitle }}
+      </h2>
+
+      <po-accordion *ngFor="let itemFaqQuestions of itemfaqQuestionsSections.questions">
+        <po-accordion-item
+          [p-label]="itemFaqQuestions.questionTitle">
+          <p *ngFor="let answerLine of itemFaqQuestions.questionAnswer">
+            {{ answerLine }}
+          </p>
+        </po-accordion-item>
+      </po-accordion>
+      <div class="po-mt-4"></div>
+    </div>
+  </po-container>
+
+  <div *ngIf="moreInformations"
+    class="po-pt-1">
+    {{ this.literals['faqModal']['moreInformations'] }}
+    <po-link
+      [p-label]="moreInformations.linkDescription"
+      [p-url]="moreInformations.link"
+      p-open-new-tab="true">
+    </po-link>
+  </div>
+</po-modal>

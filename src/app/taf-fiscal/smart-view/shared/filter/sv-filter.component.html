@@ -1,0 +1,73 @@
+<po-widget p-no-shadow="true">
+  <form [formGroup]="formFilter">
+    <div class="container">
+      <div class="po-row row-space-between">
+        <po-select class="po-sm-3 po-md-3 po-lg-3 po-xl-3"
+          formControlName="svOptions"
+          name="svOptions"
+          (p-change)="refreshBtn()"
+          [p-disabled]="comboDisabled"
+          [p-label]="literals['svMonitor']['businessObject']"
+          [p-placeholder]="literals['svMonitor']['selectObject']"
+          [p-required]="true"
+          [p-options]="svOptions">
+        </po-select>
+        <po-button class="row-button-between po-sm-2 po-md-2 po-lg-2 po-xl-2"
+          [p-label]="literals['svMonitor']['execute']"
+          p-type="primary"
+          p-small="false"
+          [p-disabled]="btnDisabled"
+          (p-click)="callSmartView()">
+        </po-button>
+      </div>
+    </div>
+  </form>
+</po-widget>
+<po-widget *ngIf="infoMsg">
+  <div class="po-row row-space-between">
+    <po-info class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+      [p-label]="literals['svMonitor']['infoTitle']"
+      p-label-size=200
+      p-orientation="PoInfoOrientation"
+      [p-value]="title">
+    </po-info>
+  </div>
+  <div class="po-row row-space-between">
+    <po-info class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+      [p-label]="literals['svMonitor']['infoDescription']"
+      p-label-size=1000
+      p-orientation="PoInfoOrientation"
+      [p-value]="description">
+    </po-info>
+  </div>
+  <div class="po-row row-space-between">
+    <po-info class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+      [p-label]="literals['svMonitor']['documentName']"
+      p-label-size=200
+      [p-url]="url"
+      p-orientation="PoInfoOrientation"
+      [p-value]="name">
+    </po-info>
+  </div>
+  <div class="po-row row-space-between">
+    <po-info class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+      [p-label]="literals['svMonitor']['disponibleOption']"
+      p-label-size=100
+      p-orientation="PoInfoOrientation"
+      [p-value]="mode">
+    </po-info>
+  </div>
+  <div class="po-row row-space-between">
+    <po-info class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+      [p-label]="literals['svMonitor']['table']"
+      p-label-size=200
+      p-orientation="PoInfoOrientation"
+      [p-value]="tables">
+    </po-info>
+  </div>
+</po-widget>
+<po-loading-overlay
+  *ngIf="loadingOverlay"
+  p-screen-lock="true"
+  [p-text]= "literals['svMonitor']['loadingObject']">
+</po-loading-overlay>

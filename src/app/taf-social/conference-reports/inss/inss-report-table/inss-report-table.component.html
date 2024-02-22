@@ -1,0 +1,158 @@
+<div class="po-lg-3 po-xl-3 align-button-38">
+  <po-dropdown
+    [p-label]="literals['inssReport']['export']"
+    [p-actions]="exportButtonAction"
+  >
+  </po-dropdown>
+</div>
+<div
+  class="po-offset-lg-6 po-offset-xl-6 po-xl-3 po-lg-3 po-md-5 po-sm-12 space-30"
+>
+  <po-input
+    [p-placeholder]="literals['inssReport']['InfNameCpf']"
+    p-icon="po-icon po-icon-search"
+    (keyup)="debounce.next($event.target.value)"
+  >
+  </po-input>
+</div>
+
+<div class="po-lg-12 po-xl-12 po-md-12 po-sm-12">
+  <po-table
+    [p-columns]="columns"
+    [p-items]="itemsTable | filterPipe: filter"
+    [p-sort]="true"
+    [p-striped]="true"
+    [p-loading]="loadingTable"
+    [p-show-more-disabled]="hasNext"
+    (p-show-more)="showMoreRegisters($event)"
+    [p-loading-show-more]="loadingShowMore"
+    [p-hide-text-overflow]="true"
+    p-height="300"
+    p-container="shadow"
+  >
+  </po-table>
+
+  <div class="fabButton">
+    <span
+      #fabButton
+      class="po-clickable po-icon po-icon-help"
+      (click)="modalInformation()"
+      (mouseover)="popup.toggle()"
+      (mouseout)="popup.toggle()"
+    ></span>
+
+    <po-popup
+      #popup
+      p-position="left"
+      [p-target]="fabButton"
+      [p-actions]="fabButtonPopUp"
+    >
+    </po-popup>
+  </div>
+</div>
+
+<po-modal
+  p-click-out="true"
+  p-size="auto"
+  p-title="{{ title }}"
+  [p-primary-action]="primaryAction"
+>
+  <p class="po-row po-font-text-large space-30 blueColor">
+    {{ literals['inssReport']['workerInformation'] }}
+  </p>
+  <hr />
+  <po-info
+    class="po-lg-3 po-xl-3 po-md-12 po-sm-12"
+    p-label="{{ literals['inssReport']['name'] }}"
+    p-value="{{ name }}"
+  >
+  </po-info>
+
+  <po-info
+    class="po-lg-3 po-xl-3 po-md-12 po-sm-12"
+    p-label="{{ literals['inssReport']['cpf'] }}"
+    p-value="{{ cpfNumberFormatted }}"
+  >
+  </po-info>
+
+  <p class="po-row po-font-text-large space-20 blueColor">
+    {{ literals['inssReport']['inssValues'] }}
+  </p>
+
+  <hr />
+
+  <div class="align-cards">
+    <div (mouseover)="changeInssRet = true" (mouseout)="changeInssRet = false">
+      <po-widget
+        [p-primary]="changeInssRet"
+        class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-20"
+        p-height="150"
+      >
+        <p
+          class="po-font-text-large-bold po-text-center space-30 font-main-card"
+        >
+          {{ totalInssRet }}
+        </p>
+
+        <p class="po-font-text-large-bold po-text-center space-20">
+          {{ literals['inssReport']['inssRetGrossValue'] }}
+        </p>
+      </po-widget>
+    </div>
+
+    <div
+      (mouseover)="changeInss13Ret = true"
+      (mouseout)="changeInss13Ret = false"
+    >
+      <po-widget
+        [p-primary]="changeInss13Ret"
+        class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-20"
+        p-height="150"
+      >
+        <p
+          class="po-font-text-large-bold po-text-center space-30 font-main-card"
+        >
+          {{ totalInss13Ret }}
+        </p>
+
+        <p class="po-font-text-large-bold po-text-center space-20">
+          {{ literals['inssReport']['inss13RetGrossValue'] }}
+        </p>
+      </po-widget>
+    </div>
+  </div>
+
+  <div class="po-lg-3 po-xl-3 align-button-38">
+    <po-button
+      p-icon="po-icon po-icon-download"
+      [p-loading]="isLoadingButton"
+      [p-label]="literals['inssReport']['export']"  
+      (p-click)="exportReport(false, this.analyticalFilterParams)"   
+    ></po-button>
+  </div>
+
+  <div class="po-md-12 space-30">
+    <po-table
+      p-hide-text-overflow="true"
+      [p-columns]="columnsBasis"
+      [p-items]="itemsTableInss"
+      [p-sort]="true"
+      [p-striped]="true"
+      [p-hide-text-overflow]="true"
+      [p-loading]="loadingTable"
+      (p-collapsed)="onCollapseDetail()"
+      (p-expanded)="onExpandDetail()"
+      p-height="200"
+      p-container="shadow"
+    >
+    </po-table>
+  </div>
+</po-modal>
+<app-faq-modal
+  [title]="literals['inssReport']['inssValues']"
+  [information-summary]="literals['inssReport']['inssModalInformation']"
+  [faq-questions-sections]="inssFaqQuestionsSections"
+  [more-informations]="inssMoreInformations"
+>
+</app-faq-modal>
+<app-messenger></app-messenger>

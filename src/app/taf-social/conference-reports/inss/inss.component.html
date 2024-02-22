@@ -1,0 +1,57 @@
+<div class="po-wrapper">
+  <app-menu></app-menu>
+  <po-page-default>
+    <app-header
+      showHeaderTitle="true"
+      [headerTitle]="literals['inssReport']['titleReport']"
+    ></app-header>
+    <app-inss-report-filter
+      (taf-emit-sent)="loadBar($event)"
+      (taf-payloadCard)="loadCard($event)"
+      (taf-payloadTable)="loadTable($event)"
+      (taf-analyticalFilterParamns)="setAnalyticalFilterParams($event)"
+      (taf-reset)="reset()"
+      (taf-requestId)="setRequestId($event)"
+      (taf-sending-started)="sendingStarted($event)"
+      (taf-loadingReport)="loadingReport($event)"
+    >
+    </app-inss-report-filter>
+    <app-inss-report-progress
+      class="po-lg-12 po-xl-12 po-md-12 po-sm-12"
+      *ngIf="progressBarValue"
+      [progressBarValue]="progressBarValue"
+      [progressBarInfo]="progressBarInfo"
+    >
+    </app-inss-report-progress>
+    <app-inss-report-card
+      *ngIf="verifyRegisters"
+      [quantityInssRh]="quantityInssRh"
+      [quantityInssGov]="quantityInssGov"
+      [quantityInssTaf]="quantityInssTaf"
+      [isTAFFull]="isTAFFull"
+    >
+    </app-inss-report-card>
+    <app-inss-report-table
+      *ngIf="verifyRegisters"
+      [itemsTable]="itemsTable"
+      [loadingTable]="loadingTable"
+      [loadingShowMore]="loadingTable"
+      [hasNext]="hasNext"
+      (taf-showMore)="showMoreRegisters($event)"
+      [isTAFFull]="isTAFFull"
+      [requestId]="requestId"
+      [analyticalFilterParams]="analyticalFilterParams"
+    >
+    </app-inss-report-table>
+    <div class="message" *ngIf="!verifyRegisters && emptyResult">
+      <p>{{ literals['inssReport']['messageNotFound'] }}</p>
+      <p>{{ literals['inssReport']['messageNotFoundContinued'] }}</p>
+    </div>
+    <div class="image" *ngIf="!verifyRegisters && emptyResult">
+      <img src="assets/_base.svg" />
+    </div>
+    <div class="loadingReport">
+      <po-loading-overlay [hidden]="loadingHidden"></po-loading-overlay>
+    </div>
+  </po-page-default>
+</div>

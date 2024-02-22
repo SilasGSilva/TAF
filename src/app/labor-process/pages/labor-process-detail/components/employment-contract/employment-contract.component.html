@@ -1,0 +1,478 @@
+<div class="content-detail">
+  <form [formGroup]="currentFormGroup">
+    <p class="subtitle">
+      Informações sobre o contrato de trabalho
+    </p>
+
+    <div class="po-row line-container">
+      <po-select
+        class="po-sm-3"
+        p-label="Tipo"
+        formControlName="tpContr"
+        [p-options]="optionsTpContr"
+        p-required
+        [p-disabled]="isExcluded"
+      ></po-select>
+
+      <po-select
+        class="po-sm-5"
+        p-label="Possui informação no evento S-2190, S-2200 ou S-2300 no declarante?"
+        formControlName="indContr"
+        p-tooltip="Indicativo se o contrato possui informação no evento S-2190, S-2200 ou S-2300 no declarante."
+        [p-options]="optionsAnswer"
+        p-required
+        [p-disabled]="isExcluded"
+      ></po-select>
+
+      <po-datepicker
+        class="po-sm-2"
+        p-label="Data de admissão"
+        formControlName="dtAdmOrig"
+        p-optional
+        [p-required]="isRequiredDtAdmOrig"
+        [p-disabled]="isExcluded"
+      ></po-datepicker>
+
+      <po-select
+        class="po-sm-2"
+        p-label="Reintegração"
+        [p-options]="optionsIndReint"
+        formControlName="indReint"
+        p-optional
+        [p-required]="
+          currentFormGroup.value.tpContr !== null &&
+          currentFormGroup.value.tpContr !== typeContractEnum.TrabSemVinculo &&
+          currentFormGroup.value.indContr === optionsAnswerEnum.Yes
+        "
+        [p-disabled]="isExcluded"
+      ></po-select>
+    </div>
+
+    <div class="po-row">
+      <app-error-message
+        *ngIf="currentFormGroup.get('indContr').errors?.notPermitted"
+        class="po-offset-md-3 po-offset-sm-3 po-offset-lg-3 po-offset-xl-3"
+        message="Como o número inscrição foi informado, este campo não pode ser Sim"
+        [p-disabled]="isExcluded"
+      ></app-error-message>
+    </div>
+
+    <div class="po-row line-container">
+      <po-select
+        class="po-sm-3"
+        p-label="Reconhecimento de categoria"
+        formControlName="indCateg"
+        [p-options]="optionsAnswer"
+        p-required
+        [p-disabled]="isExcluded"
+      ></po-select>
+
+      <po-select
+        class="po-sm-3"
+        p-label="Reconhecimento da natureza atividade"
+        formControlName="indNatAtiv"
+        [p-options]="optionsAnswer"
+        p-required
+        [p-disabled]="isExcluded"
+      ></po-select>
+
+      <po-select
+        class="po-sm-3"
+        p-label="Reconhecimento motivo desligamento"
+        formControlName="indMotDeslig"
+        [p-options]="optionsAnswer"
+        p-required
+        [p-disabled]="isExcluded"
+      ></po-select>
+
+      <po-select
+        *ngIf="isV1"
+        class="po-sm-3"
+        p-label="Reconhecimento de unicidade"
+        formControlName="indUnic"
+        [p-options]="optionsIndUnic"
+        p-optional
+        [p-disabled]="isExcluded"
+      ></po-select>
+    </div>
+
+    <div class="po-row">
+      <app-error-message
+        *ngIf="isV1 && currentFormGroup.get('indUnic').errors?.notPermitted"
+        class="po-offset-sm-9 po-offset-md-9 po-offset-lg-9 po-offset-xl-9"
+        message="Como o Número de inscrição foi informado, este campo não pode ser Sim"
+      ></app-error-message>
+    </div>
+
+    <div class="po-row line-container">
+      <po-input
+        class="po-sm-3"
+        p-label="Matrícula"
+        formControlName="matricula"
+        [p-optional]="!isRequiredMatricula"
+        p-maxlength="30"
+        [p-disabled]="(isEditMode && isEdit) || isExcluded"
+      ></po-input>
+
+      <po-combo
+        p-label="Código da categoria"
+        class="po-sm-3"
+        formControlName="codCateg"
+        [p-options]="optionsCodCateg"
+        p-maxlength="3"
+        [p-required]="isRequiredCodCateg"
+        [p-disabled]="(isEditMode && isEdit) || isExcluded || !isRequiredCodCateg"
+        (p-input-change)="renderCodCateg()"
+        (click)="renderCodCateg()"
+        #codCateg
+      ></po-combo>
+
+      <po-datepicker
+        class="po-sm-3 po-md-3"
+        p-label="Data de início TSVE"
+        formControlName="dtInicio"
+        [p-disabled]="isEditing || isExcluded || isDisabledDtInicio"
+      ></po-datepicker>
+    </div>
+
+    <div formGroupName="ideEstab">
+      <p class="subtitle">
+        Identificação do estabelecimento
+      </p>
+
+      <div class="po-row line-container">
+        <po-select
+          class="po-sm-3"
+          p-label="Tipo de inscrição"
+          formControlName="tpInsc"
+          [p-options]="optionsTypeInsc"
+          p-required
+          [p-disabled]="isExcluded"
+        ></po-select>
+
+        <po-input
+          class="po-sm-3"
+          p-label="Número de inscrição"
+          formControlName="nrInsc"
+          p-maxlength="14"
+          [p-mask]="maskNrInsc"
+          p-required
+          [p-disabled]="isExcluded"
+        ></po-input>
+      </div>
+
+      <div class="po-row">
+        <app-error-message
+          *ngIf="currentFormGroup.get('ideEstab.nrInsc').errors?.cnpj"
+          class="po-offset-md-3 po-offset-sm-3 po-offset-lg-3 po-offset-xl-3"
+          message="CNPJ inválido"
+        ></app-error-message>
+      </div>
+
+      <div formGroupName="infoVlr">
+        <p class="subtitle">
+          Informações dos períodos e valores decorrentes de processo trabalhista e ainda não declarados no eSocial
+        </p>
+
+        <div class="po-row line-container">
+          <po-input
+            class="po-sm-2"
+            p-label="Competência inicial"
+            formControlName="compIni"
+            type="month"
+            p-placeholder="AAAA-MM"
+            p-mask-format-model
+            p-mask="9999-99"
+            (p-blur)="validateCompIni()"
+            [class.custom-invalid]="
+              this.currentFormGroup.errors?.invalidDate1 ||
+              this.currentFormGroup.errors?.invalidDate2 ||
+              this.currentFormGroup.errors?.invalidDate3
+            "
+            p-pattern="^\d{4}-(0[1-9]|1[012])$"
+            [p-disabled]="isExcluded"
+          ></po-input>
+
+          <po-input
+            class="po-sm-2"
+            p-label="Competência final"
+            formControlName="compFim"
+            p-placeholder="AAAA-MM"
+            p-mask="9999-99"
+            p-required
+            p-mask-format-model
+            (p-blur)="validateCompFim()"
+            [class.custom-invalid]="
+              this.currentFormGroup.errors?.invalidDateFim1 ||
+              this.currentFormGroup.errors?.invalidDateFim2 ||
+              this.currentFormGroup.errors?.invalidDateFim3 ||
+              this.currentFormGroup.errors?.invalidDateFim4 ||
+              this.currentFormGroup.errors?.invalidDateFim5
+            "
+            p-pattern="^\d{4}-(0[1-9]|1[012])$"
+            [p-disabled]="isExcluded"
+          ></po-input>
+
+          <po-select
+            *ngIf="isV1"
+            class="po-sm-3"
+            p-label="Repercussão"
+            formControlName="repercProc"
+            [p-options]="[
+              { label: 'Decisão com pagamento de verbas de natureza remuneratória', value: 1 },
+              { label: 'Decisão sem pagamento de verbas de natureza remuneratória', value: 2 },
+            ]"
+            [p-disabled]="isExcluded"
+          ></po-select>
+
+          <po-select
+            *ngIf="!isV1"
+            class="po-sm-5"
+            p-label="Indicativo de repercussão"
+            formControlName="indReperc"
+            [p-options]="optionsIndReperc"
+            p-required
+            [p-disabled]="isExcluded"
+          ></po-select>
+        </div>
+
+        <div class="po-row">
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.compIni').errors?.invalidDate1"
+            class="po-sm-2 po-md-2"
+            message="O mês/ano precisa ser maior ou igual a data de admissão"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.compIni').errors?.invalidDate2"
+            class="po-sm-2 po-md-2"
+            message="O mês/ano precisam ser iguais a data de admissão"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.compIni').errors?.invalidDate3"
+            class="po-sm-2 po-md-2"
+            message="O mês/ano precisa ser ser maior ou igual a data de início TSVE"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.compFim').errors?.invalidDateFim1"
+            class="po-offset-md-2 po-offset-sm-2 po-offset-lg-2 po-offset-xl-2"
+            message="O mês/ano precisa ser maior que a competência inicial"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.compFim').errors?.invalidDateFim2"
+            class="po-offset-md-2 po-offset-sm-2 po-offset-lg-2 po-offset-xl-2"
+            message="O mês/ano precisa ser igual ou anterior a data de desligamento (Aba: Informações de Vínculo)"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.compFim').errors?.invalidDateFim3"
+            class="po-offset-md-2 po-offset-sm-2 po-offset-lg-2 po-offset-xl-2"
+            message="O mês/ano precisa ser igual a data de desligamento (Aba: Informações de Vínculo)"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.compFim').errors?.invalidDateFim4"
+            class="po-offset-md-2 po-offset-sm-2 po-offset-lg-2 po-offset-xl-2"
+            message="O mês/ano precisa ser deve ser igual ou anterior ao mês/ano da data de término do TSVE"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.compFim').errors?.invalidDateFim5"
+            class="po-offset-md-2 po-offset-sm-2 po-offset-lg-2 po-offset-xl-2"
+            message="O mês/ano precisa ser anterior ao mês/ano de 'Data da sentença' ou 'Data da conciliação'"
+          ></app-error-message>
+        </div>
+
+        <div *ngIf="!isV1" class="po-row line-container">
+          <po-select
+            class="po-sm-3"
+            p-label="Houve decisão para pagamento da indenização substitutiva do seguro-desemprego?"
+            formControlName="indenSD"
+            [p-options]="optionsIndenSD"
+            p-optional
+            [p-disabled]="isExcluded"
+          ></po-select>
+
+          <po-select
+            class="po-sm-3"
+            p-label="Houve decisão para pagamento da indenização substitutiva de abono salarial?"
+            formControlName="indenAbono"
+            [p-options]="optionsIndenAbono"
+            p-optional
+            [p-disabled]="isExcluded"
+          ></po-select>
+        </div>
+
+        <div *ngIf="isV1" class="po-row line-container po-pb-2">
+          <div class="po-sm-3">
+            <label class="po-field-title">
+              Total das verbas remuneratórias
+            </label>
+            <input
+              formControlName="vrRemun"
+              currencyMask
+              maxlength="24"
+              required
+              [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+              class="po-input po-mt-1"
+              [class.custom-invalid]="
+                this.currentFormGroup.errors?.invalidValue1 ||
+                this.currentFormGroup.errors?.invalidValue2
+              "
+              title="Valor total das verbas remuneratórias a serem pagas ao trabalhador"
+            />
+          </div>
+
+          <div class="po-sm-3">
+            <label class="po-field-title">
+              Aviso prévio indenizado
+            </label>
+            <input
+              formControlName="vrAPI"
+              currencyMask
+              maxlength="24"
+              required="true"
+              [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+              class="po-input po-mt-1"
+              title="Valor do aviso prévio indenizado pago ao empregado"
+            />
+          </div>
+
+          <div class="po-sm-3">
+            <label class="po-field-title">
+              Projeção do aviso prévio
+            </label>
+            <input
+              formControlName="vr13API"
+              currencyMask
+              maxlength="24"
+              required="true"
+              [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+              class="po-input po-mt-1"
+              title="Valor da projeção do aviso prévio"
+            />
+          </div>
+
+          <div class="po-sm-3">
+            <label class="po-field-title">
+              Total das demais verbas indenizatórias
+            </label>
+            <input
+              formControlName="vrInden"
+              currencyMask
+              maxlength="24"
+              required="true"
+              [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+              class="po-input po-mt-1"
+              title="Valor total das demais verbas indenizatórias"
+            />
+          </div>
+        </div>
+
+        <div class="po-row">
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.vrRemun').errors?.invalidValue1"
+            class="po-md-3 po-sm-3"
+            message="O valor deve ser maior do que 0 (zero)"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="currentFormGroup.get('ideEstab.infoVlr.vrRemun').errors?.invalidValue2"
+            class="po-md-3 po-sm-3"
+            message="O valor deve ser igual 0 (zero)"
+          ></app-error-message>
+        </div>
+
+        <div *ngIf="isV1" class="po-row line-container">
+          <div class="po-sm-5 po-pt-1 po-pb-1">
+            <label class="po-field-title">
+              Base de cálculo para recolhimento da indenização compensatória (multa rescisória) do FGTS
+            </label>
+            <span class="po-field-optional">(Opcional)</span>
+            <input
+              formControlName="vrBaseIndenFGTS"
+              currencyMask
+              maxlength="24"
+              [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+              class="po-input po-mt-3"
+              optional="true"
+              title="Valor da base de cálculo para recolhimento da indenização compensatória (multa rescisória) do FGTS"
+              (ngModelChange)="changeVrBaseIndenFGTS()"
+            />
+          </div>
+
+          <po-select
+            name="pagDiretoResc"
+            p-label="Indenização compensatória (multa rescisória) do FGTS"
+            [p-options]="optionsPagDiretoResc"
+            class="po-sm-3 po-mt-3"
+            formControlName="pagDiretoResc"
+            [p-required]="
+              this.currentFormGroup.value.ideEstab.infoVlr.vrBaseIndenFGTS !=
+                null &&
+              this.currentFormGroup.value.ideEstab.infoVlr.vrBaseIndenFGTS !==
+                ''
+            "
+            [p-disabled]="
+              isExcluded ||
+              this.currentFormGroup.value.ideEstab.infoVlr.vrBaseIndenFGTS ===
+                null
+            "
+          ></po-select>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <po-accordion *ngIf="!isV1" class="po-sm-12 po-mt-1" [class.disabled]="!isRequiredYearsBaseIndemnity">
+    <po-accordion-item p-label="Identificação do(s) ano(s)-base em que houve indenização substitutiva de abono salarial">
+      <app-error-message
+        *ngIf="isInvalidYearsBaseIndemnity"
+        message="Ao menos um abono deve ser preenchido."
+      ></app-error-message>
+      <app-years-base-indemnity
+        [mainFormGroup]="mainFormGroup"
+        [currentFormGroup]="currentFormGroup"
+      ></app-years-base-indemnity>
+    </po-accordion-item>
+  </po-accordion>
+
+  <po-accordion class="po-sm-12 po-mt-1" [class.disabled]="isDisabledPeriodIdentification">
+    <po-accordion-item
+      #periodIdentificationItem
+      p-label="Identificação do Período">
+      <app-error-message
+        *ngIf="isIdePeriodoInvalid"
+        message="Ao menos um período deve ser preenchido."
+      ></app-error-message>
+      <app-period-identification
+        [mainFormGroup]="mainFormGroup"
+        [currentFormGroup]="currentFormGroup"
+      ></app-period-identification>
+    </po-accordion-item>
+  </po-accordion>
+
+  <po-accordion class="po-sm-12 po-mt-1" [class.disabled]="disableMudCategAtiv">
+    <po-accordion-item
+      #mudCategAtivItem
+      p-label="Informação do novo código de categoria e/ou da nova natureza da atividade, no caso de reconhecimento judicial nesse sentido"
+    >
+      <app-nature-of-activity
+        [mainFormGroup]="mainFormGroup"
+        [currentFormGroup]="currentFormGroup"
+      ></app-nature-of-activity>
+    </po-accordion-item>
+  </po-accordion>
+
+  <po-accordion class="po-sm-12 po-mt-1" [class.disabled]="isDisabledBondsOrContracts">
+    <po-accordion-item p-label="Vínculos" p-disabled="true">
+      <app-bonds-or-contracts
+        [mainFormGroup]="mainFormGroup"
+        [currentFormGroup]="currentFormGroup"
+      ></app-bonds-or-contracts>
+    </po-accordion-item>
+  </po-accordion>
+</div>

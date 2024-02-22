@@ -1,0 +1,99 @@
+<po-page-default
+  *ngIf="(breadCrumb$ | async) as breadCrumb"
+  [p-title]="title$ | async"
+  [p-breadcrumb]="breadCrumb"
+>
+  <div class="content po-sm-12 po-md-12" *ngIf="!isLoading">
+    <h3 *ngIf="isExcluded" class="po-mb-1 po-pl-1 warning">
+      Este registro foi excluído e por isso não pode mais ser editado.
+    </h3>
+
+    <div class="main custom-scroll">
+      <form *ngIf="formGroup" [formGroup]="formGroup">
+        <div formGroupName="ideProc">
+          <div class="po-row line-container">
+            <po-input
+              class="po-sm-3 po-mt-3"
+              p-tooltip="Deve conter 15 ou 20 caracteres."
+              p-placeholder="Digite aqui o número do processo"
+              p-label="Número do processo"
+              p-required="true"
+              formControlName="nrProcTrab"
+              (keyup.enter)="getWorkers()"
+              [p-disabled]="isEdit || isExcluded"
+              p-pattern="^[a-zA-Z0-9-.]+$"
+              p-maxlength="20"
+              p-minlength="15"
+            ></po-input>
+            <div class="button po-mr-4" (click)="getWorkers()">
+              <span class="po-icon po-icon-search po-field-icon"></span>
+            </div>
+
+            <po-input
+              p-required="true"
+              p-placeholder="AAAA-MM"
+              class="po-sm-3 po-md-3"
+              p-label="Mês/ano em que é devida a obrigação de pagar a parcela prevista no acordo/sentença"
+              p-mask-format-model="true"
+              p-mask="9999-99"
+              p-pattern="^\d{4}\-(0[1-9]|1[012])$"
+              formControlName="perApurPgto"
+              [p-disabled]="isEdit || isExcluded"
+            ></po-input>
+          </div>
+
+          <po-textarea
+            class="po-sm-12 po-mt-12"
+            p-label="Observação"
+            p-maxlenght="9999-99"
+            formControlName="obs"
+            p-optional="true"
+            [p-disabled]="isExcluded"
+          ></po-textarea>
+        </div>
+      </form>
+
+      <h2 class="subtitle po-mb-2">
+        Trabalhadores associados ao processo
+      </h2>
+      <po-table
+        class="po-sm-12 po-mb-2"
+        [p-height]="250"
+        [p-columns]="columns"
+        [p-items]="resultWorkers"
+        [p-actions]="actions"
+        p-hide-columns-manager="true"
+        [p-loading]="isLoading"
+      ></po-table>
+    </div>
+
+    <div class="po-row buttons po-p-0">
+      <div class="po-sm-12">
+        <po-button
+          p-label="Cancelar"
+          (p-click)="goToPreviousPage()"
+          p-tooltip="Ao clicar neste botão você será redirecionado para a página anterior, sem salvar seus dados."
+        ></po-button>
+
+        <po-button
+          p-label="Salvar"
+          [p-tooltip]="isExcluded ? 'Não é possível editar este registro pois o mesmo foi excluído.' : null"
+          p-type="primary"
+          class="po-ml-2"
+          (p-click)="savePayment()"
+          [p-disabled]="!isFormValid || isLoading"
+        ></po-button>
+      </div>
+    </div>
+  </div>
+
+  <po-loading-overlay *ngIf="isLoading" p-text="Carregando"></po-loading-overlay>
+</po-page-default>
+
+<app-worker-modal
+  #poModal
+  [nrProcTrab]="formGroup.get('ideProc.nrProcTrab').value"
+  [perApurPgto]="formGroup.get('ideProc.perApurPgto').value"
+  [excluidoERP]="excluidoERP"
+  (saveClicked)="onModalSave($event)"
+></app-worker-modal>

@@ -1,0 +1,14 @@
+<po-button
+  p-icon="po-icon-export"
+  p-small="true"
+  [p-disabled]="disableButtonExport"
+  [p-label]="this.literals['tsiExportReport']['export']"
+  (p-click)="getReportItems()">
+</po-button>
+<app-messenger></app-messenger>
+
+<po-loading-overlay
+*ngIf="isHideLoading"
+p-screen-lock="true"
+p-text="Exportando Relatório">
+</po-loading-overlay>

@@ -1,0 +1,15 @@
+:host ::ng-deep .disabled .po-accordion-item-header-title, :host ::ng-deep .disabled .po-accordion-item-header-icon{
+    color: #ccc !important;
+
+}
+
+.disabled{
+    pointer-events: none;
+}
+.buttons-internal{
+    padding-right: 7px;
+}
+
+:host ::ng-deep .po-combo-item {
+    min-height: 40px;
+  }

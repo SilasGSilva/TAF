@@ -1,0 +1,18 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;   
+  height: 100%;
+  cursor: pointer;
+}
+
+.primary {
+    background-color: #45b6c5;
+    color: #ffffff;   
+}
+
+.not-primary {
+    color: #0c9abe;    
+}

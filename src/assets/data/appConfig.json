@@ -1,0 +1,9 @@
+{
+  "name": "Protheus THF",
+  "version": "12.23.0",
+  "serverBackend": "/",
+  "restEntryPoint": "rest",
+  "versionAPI": "",
+  "appVersion": "0.1.6",
+  "productLine": "Protheus"
+}

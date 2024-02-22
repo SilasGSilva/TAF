@@ -1,0 +1,228 @@
+<div *ngIf="currentFormGroup" class="content-detail">
+  <form [hidden]="!isSelected" [formGroup]="subFormGroup">
+    <div class="po-row">
+      <po-input
+        class="po-sm-3"
+        p-label="Período"
+        formControlName="perRef"
+        p-placeholder="AAAA-MM"
+        p-mask-format-model
+        p-mask="9999-99"
+        p-pattern="^\d{4}-(0[1-9]|1[012])$"
+        [p-required]="currentFormGroup.value.ideEstab.infoVlr.repercProc == 1"
+        [p-optional]="this.currentFormGroup.value.ideEstab.infoVlr.repercProc == 2"
+        [p-disabled]="excluidoERP === 'S'"
+      ></po-input>
+    </div>
+
+    <div class="po-row">
+      <app-error-message
+        *ngIf="subFormGroup.get('perRef').errors?.invalidPeriod"
+        message="Data fora do período permitido"
+      ></app-error-message>
+
+      <app-error-message
+        *ngIf="subFormGroup.get('perRef').errors?.duplicatedPeriod"
+        message="Este período já foi inserido"
+      ></app-error-message>
+    </div>
+
+    <p class="subtitle">
+      {{ baseCalculoSubtitle }}
+    </p>
+
+    <div formGroupName="baseCalculo">
+      <div class="po-row line-container po-pt-1">
+        <app-financial-input
+          class="po-sm-6"
+          fieldTitle="Base de cálculo da contribuição previdenciária sobre a remuneração mensal"
+          inputTitle="Valor da base de cálculo da contribuição previdenciária sobre a remuneração mensal do trabalhador"
+          [control]="subFormGroup.get('baseCalculo.vrBcCpMensal')"
+          [isRequired]="subFormGroup.perRef !== null"
+          [decimalLength]="14"
+        ></app-financial-input>
+
+        <app-financial-input
+          class="po-sm-6"
+          fieldTitle="Base de cálculo da contribuição previdenciária sobre o 13º salário"
+          inputTitle="Valor da base de cálculo da contribuição previdenciária sobre a remuneração mensal do trabalhador"
+          [control]="subFormGroup.get('baseCalculo.vrBcCp13')"
+          [isRequired]="subFormGroup.perRef !== null && isV1"
+          [decimalLength]="14"
+        ></app-financial-input>
+      </div>
+
+      <div *ngIf="isV1" class="po-row line-container po-pt-1">
+        <app-financial-input
+          class="po-sm-6"
+          fieldTitle="Base de cálculo do FGTS sobre a remuneração (sem 13° salário)"
+          inputTitle="Valor da base de cálculo do FGTS sobre a remuneração do trabalhador (sem 13° salário)"
+          [control]="subFormGroup.get('baseCalculo.vrBcFgts')"
+          [isRequired]="subFormGroup.perRef !== null && isV1"
+          [decimalLength]="14"
+        ></app-financial-input>
+
+        <app-financial-input
+          class="po-sm-6"
+          fieldTitle="Base de cálculo do FGTS sobre o 13º salário"
+          inputTitle="Valor da base de cálculo do FGTS sobre a remuneração do trabalhador sobre o 13º salário"
+          [control]="subFormGroup.get('baseCalculo.vrBcFgts13')"
+          [isRequired]="subFormGroup.perRef !== null && isV1"
+          [decimalLength]="14"
+        ></app-financial-input>
+      </div>
+
+      <p class="subtitle">
+        Grau de exposição a agentes nocivos
+      </p>
+
+      <div formGroupName="infoAgNocivo">
+        <po-select
+          class="po-sm-6"
+          p-label="Grau de exposição a agentes nocivos"
+          formControlName="grauExp"
+          [p-options]="optionsGrauExp"
+          [p-optional]="!requiredCodCateg"
+          [p-required]="isRequiredGrauExp && isV1"
+          [p-disabled]="excluidoERP === 'S'"
+        ></po-select>
+      </div>
+    </div>
+
+    <div class="po-row">
+      <p class="subtitle">
+        Informações referentes a bases de cálculo de FGTS para geração de guia
+      </p>
+    </div>
+
+    <div class="po-row po-pt-1">
+      <div class="po-sm-12 po-p-0" formGroupName="infoFGTS">
+        <div *ngIf="isV1" class="po-row line-container">
+          <app-financial-input
+            class="po-sm-4"
+            inputClass="po-mt-1"
+            fieldTitle="Base de cálculo do FGTS sobre a remuneração do trabalhador (sem 13° salário)"
+            inputTitle="Valor da base de cálculo do FGTS sobre a remuneração do trabalhador (sem 13° salário)"
+            [control]="subFormGroup.get('infoFGTS.vrBcFgtsGuia')"
+            [isRequired]="isRequiredV1InfoFGTSFields"
+            [decimalLength]="14"
+          ></app-financial-input>
+
+          <app-financial-input
+            class="po-sm-4"
+            inputClass="po-mt-1"
+            fieldTitle="Base de cálculo do FGTS sobre o 13º salário"
+            inputTitle="Valor da base de cálculo do FGTS sobre a remuneração do trabalhador sobre o 13º salário"
+            [control]="subFormGroup.get('infoFGTS.vrBcFgts13Guia')"
+            [isRequired]="isRequiredV1InfoFGTSFields"
+            [decimalLength]="14"
+          ></app-financial-input>
+
+          <po-select
+            class="po-sm-4"
+            p-label="Pago diretamente ao trabalhador?"
+            formControlName="pagDireto"
+            [p-options]="optionsPagDireto"
+            [p-optional]="!isRequiredV1InfoFGTSFields"
+            [p-required]="isRequiredV1InfoFGTSFields"
+            [p-disabled]="excluidoERP === 'S'"
+          ></po-select>
+        </div>
+
+        <div *ngIf="!isV1" class="po-row line-container po-sm-12 po-p-0">
+          <app-financial-input
+            class="po-sm-4"
+            fieldTitle="Valor da base de cálculo de FGTS ainda não declarada em SEFIP ou no eSocial, inclusive de verba reconhecida no processo trabalhista"
+            [control]="subFormGroup.get('infoFGTS.vrBcFGTSProcTrab')"
+            [isRequired]="isRequiredVrBcFGTSProcTrab"
+            [decimalLength]="14"
+          ></app-financial-input>
+
+          <app-financial-input
+            class="po-sm-4"
+            fieldTitle="Valor da base de cálculo de FGTS declarada apenas em SEFIP (não informada no eSocial) e ainda não recolhida"
+            [control]="subFormGroup.get('infoFGTS.vrBcFGTSSefip')"
+            [isRequired]="false"
+            [decimalLength]="14"
+          ></app-financial-input>
+
+          <app-financial-input
+            class="po-sm-4"
+            fieldTitle="Valor da base de cálculo de FGTS declarada anteriormente no eSocial e ainda não recolhida"
+            [control]="subFormGroup.get('infoFGTS.vrBcFGTSDecAnt')"
+            [isRequired]="false"
+            [decimalLength]="14"
+          ></app-financial-input>
+        </div>
+      </div>
+    </div>
+
+    <p class="subtitle">
+      Bases de cálculo de contribuição previdenciária já declaradas anteriormente em GFIP
+    </p>
+
+    <div class="po-row line-container" formGroupName="baseMudCateg">
+      <po-combo
+        class="po-sm-6 po-mt-3"
+        p-label="Categoria"
+        formControlName="codCateg"
+        [p-options]="optionsCodCateg"
+        [p-optional]="this.currentFormGroup.value.indCateg != optionsAnswerEnum.Yes"
+        [p-required]="this.currentFormGroup.value.indCateg == optionsAnswerEnum.Yes"
+        [p-disabled]="excluidoERP === 'S'"
+        (p-input-change)="renderCodCateg()"
+        (click)="renderCodCateg()"
+        #codCateg
+      ></po-combo>
+
+      <app-financial-input
+        class="po-sm-6"
+        fieldTitle="Remuneração do trabalhador a ser considerada para fins previdenciários declarada em GFIP ou em S-1200 de trabalhador sem cadastro no S-2300"
+        inputTitle="Valor da remuneração do trabalhador a ser considerada para fins previdenciários declarada em GFIP ou em S-1200 de trabalhador sem cadastro no S-2300"
+        [control]="subFormGroup.get('baseMudCateg.vrBcCPrev')"
+        [isRequired]="currentFormGroup.value.indCateg === optionsAnswerEnum.Yes"
+        [decimalLength]="14"
+      ></app-financial-input>
+    </div>
+    <div class="po-row buttons-internal">
+      <po-button
+        p-label="Cancelar"
+        p-tooltip="Ao clicar neste botão você o formulário será limpo, sem salvar suas alterações."
+        (p-click)="cancel()"
+      ></po-button>
+
+      <po-button
+        class="po-pl-1 po-sm-2"
+        [p-label]="isEdit ? ' Atualizar período' : ' Incluir período'"
+        p-type="primary"
+        p-icon="po-icon po-icon-plus-circle"
+        [p-disabled]="subFormGroup.invalid || excluidoERP === 'S'"
+        (p-click)="isEdit ? updatePeriod() : savePeriod()"
+      ></po-button>
+    </div>
+  </form>
+  <div class="po-row space-btn">
+    <p class="subtitle">
+      Períodos existentes
+    </p>
+    <po-button
+      *ngIf="!isSelected && excluidoERP !== 'S'"
+      class="po-offset-md-8 po-offset-lg-8 po-offset-xl-8"
+      p-label=" Incluir período"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="create()"
+    ></po-button>
+  </div>
+
+  <div class="po-row" *ngIf="formArray">
+    <po-table
+      class="po-sm-12 po-mb-2"
+      [p-height]="formArrayValue.length > 3 ? 170 : null"
+      [p-columns]="columns"
+      [p-items]="formArray.value"
+      [p-actions]="actions"
+      p-hide-columns-manager
+    ></po-table>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+<div class="flex-end po-row po-mt-1 po-mb-1">
+  <po-button
+    *ngIf="canCreateNewItem"
+    class="po-sm-2"
+    p-label=" Incluir dependente"
+    p-type="primary"
+    p-icon="po-icon po-icon-plus-circle"
+    (p-click)="create()"
+    [p-disabled]="isExcluded"
+  ></po-button>
+</div>
+
+<form class="po-sm-12 po-mb-3" [hidden]="!isSelected" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-sm-12 po-p-0">
+    <po-input
+      class="po-sm-3"
+      p-label="CPF"
+      formControlName="cpfDep"
+      p-mask="999.999.999-99"
+      p-required
+      [p-disabled]="isExcluded"
+    ></po-input>
+
+    <po-input
+      class="po-sm-6"
+      p-label="Nome"
+      formControlName="nome"
+      p-maxlength="70"
+      p-optional
+      [p-disabled]="isExcluded"
+    ></po-input>
+
+    <po-datepicker
+      class="po-sm-3"
+      p-label="Data de nascimento"
+      formControlName="dtNascto"
+      [p-max-date]="todayDate"
+      p-min-date="1890-01-01"
+      p-optional
+      [p-disabled]="isExcluded"
+    ></po-datepicker>
+  </div>
+
+  <div class="po-row po-mb-1">
+    <app-error-message
+      *ngIf="subFormGroup.get('cpfDep')?.errors && this.subFormGroup.get('cpfDep').touched"
+      class="po-sm-3"
+      [message]="errorMessageCpfDep"
+    ></app-error-message>
+  </div>
+
+  <div class="po-row line-container po-sm-12 po-p-0 po-mb-3">
+    <po-select
+      class="po-sm-3"
+      p-label="Dedução IRRF"
+      formControlName="depIRRF"
+      [p-options]="optionsDepIRRF"
+      p-optional
+      [p-disabled]="isExcluded"
+    ></po-select>
+
+    <po-select
+      class="po-sm-6"
+      p-label="Tipo de dependente"
+      formControlName="tpDep"
+      [p-options]="optionsTpDep"
+      [p-optional]="!isRequiredTpDep"
+      [p-disabled]="isExcluded"
+    ></po-select>
+
+    <po-input
+      class="po-sm-3"
+      p-label="Descrição da dependência"
+      formControlName="descrDep"
+      p-maxlength="100"
+      [p-required]="isRequiredDescrDep"
+      [p-disabled]="!isRequiredDescrDep || isExcluded"
+    ></po-input>
+  </div>
+
+  <div class="flex-end po-row po-mb-1">
+    <po-button
+      class="po-sm-2"
+      p-label="Cancelar"
+      (p-click)="cancel()"
+    ></po-button>
+
+    <po-button
+      class="po-sm-2"
+      [p-label]="isEdit ? ' Editar dependente' : ' Incluir dependente'"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="isEdit ? update() : save()"
+      [p-disabled]="subFormGroup.invalid"
+    ></po-button>
+  </div>
+</form>
+
+<p class="subtitle po-mb-1">
+  Dependentes existentes
+</p>
+
+<po-table
+  class="po-sm-12 po-mb-2"
+  [p-height]="formArrayValue.length > 3 ? 170 : null"
+  [p-columns]="columns"
+  [p-items]="rows"
+  [p-actions]="actions"
+  p-hide-columns-manager
+></po-table>

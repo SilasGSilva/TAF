@@ -1,0 +1,139 @@
+<div *ngIf="!isTAFFull" class="align-cards">
+  <div
+    (mouseover)="changeBackgroundRh = true"
+    (mouseout)="changeBackgroundRh = false"
+  >
+    <po-widget
+      [p-primary]="changeBackgroundRh"
+      class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-20"
+      p-height="160"
+    >
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityInssRh }}
+      </p>
+
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['inssReport']['inssRhValue'] }}
+      </p>
+    </po-widget>
+  </div>
+
+  <div
+    (mouseover)="changeBackgroundRet = true"
+    (mouseout)="changeBackgroundRet = false"
+  >
+    <po-widget
+      [p-primary]="changeBackgroundRet"
+      class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-20"
+      p-height="160"
+    >
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityInssGov }}
+      </p>
+
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['inssReport']['inssRetTotal'] }}
+      </p>
+    </po-widget>
+  </div>
+</div>
+
+<div *ngIf="isTAFFull && isConfiguredService">
+  <div
+    *ngIf="isConfiguredService"
+    (mouseover)="changeBackgroundRh = true"
+    (mouseout)="changeBackgroundRh = false"
+  >
+    <po-widget
+      [p-primary]="changeBackgroundRh"
+      class="po-lg-4 po-xl-4 po-md-12 po-sm-12 space-20"
+      p-height="160"
+    >
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityInssRh }}
+      </p>
+
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['inssReport']['inssRhValue'] }}
+      </p>
+    </po-widget>
+  </div>
+
+  <div
+    (mouseover)="changeBackgroundTaf = true"
+    (mouseout)="changeBackgroundTaf = false"
+  >
+    <po-widget
+      [p-primary]="changeBackgroundTaf"
+      class="po-lg-4 po-xl-4 po-md-12 po-sm-12 space-20"
+      p-height="160"
+    >
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityInssTaf }}
+      </p>
+
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['inssReport']['inssTafTotal'] }}
+      </p>
+    </po-widget>
+  </div>
+
+  <div
+    (mouseover)="changeBackgroundRet = true"
+    (mouseout)="changeBackgroundRet = false"
+  >
+    <po-widget
+      [p-primary]="changeBackgroundRet"
+      class="po-lg-4 po-xl-4 po-md-12 po-sm-12 space-20"
+      p-height="160"
+    >
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityInssGov }}
+      </p>
+
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['inssReport']['inssRetTotal'] }}
+      </p>
+    </po-widget>
+  </div>
+</div>
+
+<div *ngIf="isTAFFull && !isConfiguredService" class="align-cards">
+  <div
+    (mouseover)="changeBackgroundTaf = true"
+    (mouseout)="changeBackgroundTaf = false"
+  >
+    <po-widget
+      [p-primary]="changeBackgroundTaf"
+      class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-20"
+      p-height="160"
+    >
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityInssTaf }}
+      </p>
+
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['inssReport']['inssTafTotal'] }}
+      </p>
+    </po-widget>
+  </div>
+
+  <div
+    (mouseover)="changeBackgroundRet = true"
+    (mouseout)="changeBackgroundRet = false"
+  >
+    <po-widget
+      [p-primary]="changeBackgroundRet"
+      class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-20"
+      p-height="160"
+    >
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityInssGov }}
+      </p>
+
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['inssReport']['inssRetTotal'] }}
+      </p>
+    </po-widget>
+  </div>
+</div>

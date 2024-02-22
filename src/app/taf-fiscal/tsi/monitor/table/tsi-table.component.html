@@ -1,0 +1,40 @@
+<po-table
+  [p-columns]="tsiTableColumns"
+  [p-items]="tsiTableItems"
+  [p-loading]="tableLoading"
+  p-single-select="false"
+  [p-hide-select-all]="false"
+  [p-selectable]="true"
+  (p-selected)="changeSelection()"
+  (p-unselected)="changeSelection()"
+  (p-all-selected)="changeSelection()"
+  (p-all-unselected)="changeSelection()"
+  p-sort="true"
+  p-striped="false"
+  p-hide-text-overflow="true"
+  [p-hide-detail]="true"
+  [p-show-more-disabled]="!hasNext"
+  p-hide-columns-manager="true"
+  (p-show-more)="showMoreRegisters()"
+  [p-literals]="customLiterals"
+  [p-height]="height"
+>
+
+<ng-template p-table-column-template [p-property]="columnMesseger" let-value>
+  <span (click)="openMsg(value,this.literals['tsiTable']['errormessage'])">
+    {{value}}
+  </span>
+</ng-template>
+
+
+<ng-template p-table-column-template [p-property]="columnKey" let-value>
+   <span (click)="openMsg(value,this.literals['tsiTable']['erpkey'])">
+    {{value}}
+  </span>
+</ng-template>
+
+
+</po-table>
+<app-messenger></app-messenger>
+
+

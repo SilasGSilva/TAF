@@ -1,0 +1,44 @@
+<po-page-default>
+  <app-header></app-header>
+  <div class="container">
+    <div class="header">
+      <div class="title po-font-title">
+        {{ literals['reports']['title'] }}
+      </div>
+      <div class="text-muted po-font-text-large">
+        {{ event }} <span [hidden]="!event">-</span> {{ description }}
+      </div>
+    </div>
+
+    <div class="filter">
+      <app-report-filter
+        (taf-filter)="getDescription($event)"
+        (taf-report-listing)="getReportListing($event)">
+      </app-report-filter>
+    </div>
+
+    <div class="reports">
+      <div *ngIf="reportListing && !emptyResultSet">
+          <app-export-report
+            [taf-period]="filter.period"
+            [taf-event]="filter.event">
+          </app-export-report>
+        <div class="report-listing">
+          <app-report-validation-table
+            [taf-period]="filter.period"
+            [taf-event]="filter.event"
+            [taf-path]="path">
+            </app-report-validation-table>
+        </div>
+      </div>
+
+      <div class="message" *ngIf="reportListing && emptyResultSet">
+        <p>{{ literals['reports']['messageNotFound'] }}</p>
+        <p>{{ literals['reports']['messageNotFoundContinued'] }}</p>
+      </div>
+      <div class="image" *ngIf="reportListing && emptyResultSet">
+        <img src="assets/_base.svg" class="image-item" >
+      </div>
+    </div>
+  </div>
+</po-page-default>

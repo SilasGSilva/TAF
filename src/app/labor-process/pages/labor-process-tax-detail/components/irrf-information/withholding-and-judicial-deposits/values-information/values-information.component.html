@@ -1,0 +1,130 @@
+<div class="flex-end po-row po-mt-1 po-mb-1">
+  <po-button
+    *ngIf="canCreateNewItem"
+    class="po-sm-2"
+    p-label=" Incluir valores"
+    p-type="primary"
+    p-icon="po-icon po-icon-plus-circle"
+    (p-click)="create()"
+    [p-disabled]="isExcluded"
+  ></po-button>
+</div>
+
+<form class="po-sm-12 po-mb-3" [hidden]="!isSelected" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-mb-2 po-p-0">
+    <po-select
+      class="po-sm-4"
+      p-label="Indicativo de período de apuração"
+      formControlName="indApuracao"
+      [p-options]="optionsIndApuracao"
+      p-required
+      [p-disabled]="isExcluded"
+    ></po-select>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor da retenção que deixou de ser efetuada em função de processo administrativo ou judicial"
+      [control]="subFormGroup.get('vlrNRetido')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor do depósito judicial em função de processo administrativo ou judicial"
+      [control]="subFormGroup.get('vlrDepJud')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+  </div>
+
+  <div class="line-container po-row po-mb-1 po-p-0">
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor da compensação relativa ao ano calendário em função de processo judicial"
+      [control]="subFormGroup.get('vlrCmpAnoCal')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isDisabledVlrCmpAnoCal"
+    ></app-financial-input>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor da compensação relativa a anos anteriores em função de processo judicial"
+      [control]="subFormGroup.get('vlrCmpAnoAnt')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isDisabledVlrCmpAnoAnt"
+    ></app-financial-input>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor do rendimento com exigibilidade suspensa"
+      [control]="subFormGroup.get('vlrRendSusp')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+  </div>
+
+  <div class="po-row po-mb-2">
+    <app-error-message
+      *ngIf="showErrorMessageVlrRendSusp"
+      class="po-sm-4 po-offset-sm-8 po-offset-md-8 po-offset-lg-8 po-offset-xl-8"
+      [message]="errorMessageVlrRendSusp"
+    ></app-error-message>
+  </div>
+
+  <div class="po-row po-p-0">
+    <app-field-modal-form-group
+      class="po-sm-6 po-mt-3"
+      label="Detalhamento das deduções com exigibilidade suspensa"
+      [value]="valueLabelDedSusp"
+      (buttonClicked)="openModal()"
+    ></app-field-modal-form-group>
+  </div>
+  <app-modal-form-group
+    title="Detalhamento das deduções com exigibilidade suspensa"
+    [isDisabledPrimaryAction]="isDisabledSaveDedSusp"
+    (primaryActionClicked)="saveModal()"
+    (secondaryActionClicked)="closeModal()"
+  >
+    <app-deductions-suspended-eligibility
+      [mainModalFormGroup]="mainModalFormGroup"
+      [currentFormGroup]="subFormGroup"
+      [excluidoERP]="excluidoERP"
+    ></app-deductions-suspended-eligibility>
+  </app-modal-form-group>
+
+  <div class="flex-end po-row po-mb-1">
+    <po-button
+      class="po-sm-2"
+      p-label="Cancelar"
+      (p-click)="cancel()"
+    ></po-button>
+
+    <po-button
+      class="po-sm-2"
+      [p-label]="isEdit ? ' Editar valores' : ' Incluir valores'"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="isEdit ? update() : save()"
+      [p-disabled]="subFormGroup.invalid"
+    ></po-button>
+  </div>
+</form>
+
+<p class="subtitle po-mb-1">
+  Valores existentes
+</p>
+
+<po-table
+  class="po-sm-12 po-mb-2"
+  [p-height]="formArrayValue.length > 3 ? 170 : null"
+  [p-columns]="columns"
+  [p-items]="rows"
+  [p-actions]="actions"
+  p-hide-columns-manager
+></po-table>

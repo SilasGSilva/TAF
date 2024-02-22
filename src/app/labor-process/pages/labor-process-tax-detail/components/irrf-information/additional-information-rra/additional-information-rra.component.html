@@ -1,0 +1,27 @@
+<p class="subtitle po-mb-2">
+  Informações complementares relativas a Rendimentos Recebidos Acumuladamente - RRA
+</p>
+
+<form class="po-sm-12" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-sm-12 po-p-0 po-mb-2">
+    <po-input
+      class="po-sm-7"
+      p-label="Descrição dos Rendimentos Recebidos Acumuladamente"
+      formControlName="descRRA"
+      p-maxlength="50"
+      [p-required]="isRequiredInfoRRA"
+      [p-disabled]="isExcluded || !isRequiredInfoRRA"
+    ></po-input>
+
+    <po-number
+      class="po-sm-5"
+      p-label="Número de meses relativo aos Rendimentos Recebidos Acumuladamente"
+      formControlName="qtdMesesRRA"
+      [p-maxlength]="4"
+      [p-min]="0"
+      p-show-required
+      [p-required]="isRequiredInfoRRA"
+      [p-disabled]="isExcluded || !isRequiredInfoRRA"
+    ></po-number>
+  </div>
+</form>

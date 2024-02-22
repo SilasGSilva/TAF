@@ -1,0 +1,159 @@
+<div class="space-50">
+  <po-widget class="po-md-12 po-xl-12 po-lg-12 po-sm-12" p-no-shadow="true">
+    <div class="po-md-12 po-xl-12 po-lg-12 po-sm-12">
+      <form [formGroup]="formFilter">
+        <po-multiselect
+          class="po-md-2 po-xl-2 po-lg-2 po-sm-2"
+          [p-options]="listBranch"
+          name="branch"
+          formControlName="branch"
+          (p-change)="onChangeMultiSelect('branch', $event)"
+          [p-label]="literals['monitorFilters']['branchs']"
+          p-required="true"
+        >
+        </po-multiselect>
+
+        <po-input
+          class="po-md-2 po-xl-2 po-lg-2 po-sm-2"
+          name="period"
+          formControlName="period"
+          p-icon="po-icon po-icon-calendar"
+          p-placeholder="AAAA/MM"
+          p-mask="9999/99"
+          p-optional="true"
+          (p-change-model)="onChangePeriod($event)"
+          [p-label]="literals['monitorFilters']['period']"
+        >
+        </po-input>
+        <po-multiselect
+          [ngClass]="unauthorizedEventMessage ?
+          'po-md-3 po-xl-3 po-lg-3 po-sm-3':
+          'po-md-4 po-xl-4 po-lg-4 po-sm-4'"  
+          name="event"
+          formControlName="event"
+          p-filter-mode="contains"
+          [p-label]="literals['monitorFilters']['events']"
+          [p-options]="listEvent.allEvents"
+          (p-change)="onChangeMultiSelect('event', $event)"
+          p-type="link"
+          p-optional="true"
+        >
+        </po-multiselect>
+        <div
+          *ngIf="hasUnauthorizedEvents"
+          class="po-md-1 po-xl-1 po-lg-1 po-sm-1">
+            <span
+              #nonAuthorizationAlert
+              class="po-icon po-icon-exclamation iconUnauthorizedEvents"
+            ></span>
+
+            <po-popover
+              p-trigger="hover"
+              p-position="top"
+              [p-target]="nonAuthorizationAlert"
+            ><p class="po-font-text-large-bold padding-popover redColor"> {{ unauthorizedEventMessage }} </p></po-popover>
+        </div>
+        <po-multiselect
+          *ngIf="isTAFFull"
+          class="po-md-2 po-xl-2 po-lg-2 po-sm-2"
+          name="filEventGroups"
+          formControlName="filEventGroups"
+          [p-label]="literals['monitorFilters']['filEventGroups']"
+          [p-options]="listEventGroups"
+          (p-change)="onChangeMultiSelect('filEventGroups', $event)"
+          [p-optional]="true"
+        >
+        </po-multiselect>
+        <po-multiselect
+          *ngIf="isTAFFull" 
+          class="po-md-2 po-xl-2 po-lg-2 po-sm-2"
+          name="listStatus"
+          formControlName="listStatus"
+          [p-label]="literals['monitorFilters']['listStatus']"
+          [p-options]="listOptionsStatus"
+          (p-change)="onChangeMultiSelect('listStatus', $event)"
+          [p-optional]="true"
+        >
+        </po-multiselect>
+
+        <div [ngClass]="isTAFFull ? '' : 'space-12'">
+          <po-button
+            class="space-20 po-md-2 po-xl-2 po-lg-2 po-sm-2 float-right po-pb-2"
+            [p-label]="labelButtonFilter"
+            (p-click)="onExecuteFilter()"
+            [p-loading]="isLoadingExecuteFilter"
+            [p-disabled]="disableButtonApplyFilters"
+          >
+          </po-button>
+
+          <po-button
+            class="space-20 po-md-2 po-xl-2 po-lg-2 po-sm-2 float-right po-pb-2"
+            [p-label]="buttonTitle"
+            (p-click)="showFilter()"
+          >
+          </po-button>
+        </div>
+
+        <div
+          class="space-20 po-md-12 po-xl-12 po-lg-12 po-sm-12"
+          *ngIf="showMoreFilter"
+        >
+          <po-widget [p-title]="literals['monitorFilters']['onlyNotPeriodics']">
+            <po-datepicker
+              class="po-md-3 po-xl-3 po-lg-3 po-sm-3"
+              name="periodFrom"
+              p-format="dd/mm/yyyy"
+              p-placeholder="DD/MM/AAAA"
+              formControlName="periodFrom"
+              (keyup)="validPeriod($event.target.value, 'periodFrom')"
+              (p-change)="onChangeNotPeriodics($event, 'periodFrom')"
+              p-clean="false"
+              p-optional="true"
+              p-locale="pt"
+              [p-label]="literals['monitorFilters']['periodFrom']"
+            >
+            </po-datepicker>
+
+            <po-datepicker
+              class="po-md-3 po-xl-3 po-lg-3 po-sm-3"
+              name="periodTo"
+              p-format="dd/mm/yyyy"
+              p-placeholder="DD/MM/AAAA"
+              formControlName="periodTo"
+              (keyup)="validPeriod($event.target.value, 'periodTo')"
+              (p-change)="onChangeNotPeriodics($event, 'periodTo')"
+              p-clean="false"
+              p-optional="true"
+              [p-min-date]="onCheckMinPeriod()"
+              p-locale="pt"
+              [p-label]="literals['monitorFilters']['periodTo']"
+              [p-error-pattern]="literals['monitorFilters']['invalidDate']"
+            >
+            </po-datepicker>
+            <po-multiselect
+              *ngIf="showMotiveFilter"
+              class="po-md-3 po-xl-3 po-lg-3 po-sm-3"
+              [p-options]="withdrawalMotive"
+              name="motive"
+              formControlName="motive"
+              (p-change)="onChangeMultiSelect('motive', $event)"
+              [p-label]="literals['monitorFilters']['motive']"
+            >
+            </po-multiselect>
+          </po-widget>
+        </div>
+      </form>
+    </div>
+
+    <div class="po-row">
+      <po-disclaimer-group
+        class="po-md-12 po-xl-12 po-lg-12 po-sm-12"
+        (p-change)="onChangeDisclaimerSelect()"
+        (p-remove)="onRemoveEvents($event)"
+        (p-remove-all)="onClean()"
+        [p-disclaimers]="selectedFilters"
+      >
+      </po-disclaimer-group>
+    </div>
+  </po-widget>
+</div>

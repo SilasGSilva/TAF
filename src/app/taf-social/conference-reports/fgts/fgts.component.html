@@ -1,0 +1,51 @@
+<div class="po-wrapper">
+  <app-menu></app-menu>
+  <po-page-default>
+    <app-header
+      showHeaderTitle="true"
+      [headerTitle]="literals['fgtsReport']['titleReport']"
+    ></app-header>
+    <app-fgts-report-filter
+      (taf-emit-sent)="loadBar($event)"
+      (taf-payloadCard)="loadCard($event)"
+      (taf-payloadTable)="loadTable($event)"
+      (taf-reset)="reset()"
+      [showMore]="showMore"
+    >
+    </app-fgts-report-filter>
+    <app-fgts-report-progress
+      class="po-lg-12 po-xl-12 po-md-12 po-sm-12"
+      *ngIf="progressBarValue"
+      [progressBarValue]="progressBarValue"
+      [progressBarInfo]="progressBarInfo"
+    >
+    </app-fgts-report-progress>
+    <app-fgts-report-card
+      *ngIf="verifyRegisters"
+      [quantityFgtsRh]="quantityFgtsRh"
+      [quantityFgtsGov]="quantityFgtsGov"
+      [quantityFgtsTaf]="quantityFgtsTaf"
+      [syntheticValues]="syntheticValues"
+      [syntheticBasis]="syntheticBasis"
+      [taffull]="taffull"
+    >
+    </app-fgts-report-card>
+    <app-fgts-report-table
+      *ngIf="verifyRegisters"
+      [itemsTable]="itemsTable"
+      [loadingTable]="loadingTable"
+      [loadingShowMore]="loadingTable"
+      [hasNext]="hasNext"
+      [taffull]="taffull"
+      (taf-showMore)="showMoreRegisters($event)"
+    >
+    </app-fgts-report-table>
+    <div class="message" *ngIf="!verifyRegisters && emptyResult">
+      <p>{{ literals['fgtsReport']['messageNotFound'] }}</p>
+      <p>{{ literals['fgtsReport']['messageNotFoundContinued'] }}</p>
+    </div>
+    <div class="image" *ngIf="!verifyRegisters && emptyResult">
+      <img src="assets/_base.svg" />
+    </div>
+  </po-page-default>
+</div>

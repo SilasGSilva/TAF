@@ -1,0 +1,83 @@
+<p class="subtitle po-mb-2">
+  Informações complementares relacionadas a rendimentos tributáveis e a deduções e/ou isenções de acordo com a legislação aplicada ao imposto de renda
+</p>
+
+<form class="po-sm-12" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-sm-12 po-p-0 po-mb-2">
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor do rendimento tributável mensal do Imposto de Renda"
+      [control]="subFormGroup.get('vrRendTrib')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor do rendimento tributável do Imposto de Renda referente ao 13º salário - Tributação exclusiva"
+      [control]="subFormGroup.get('vrRendTrib13')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isDisabledVrRendTrib13"
+    ></app-financial-input>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor do rendimento isento por ser portador de moléstia grave atestada por laudo médico"
+      [control]="subFormGroup.get('vrRendMoleGrave')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+  </div>
+
+  <div class="po-row line-container po-sm-12 po-p-0 po-mb-2">
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor de parcela isenta de aposentadoria para beneficiário de 65 anos ou mais"
+      [control]="subFormGroup.get('vrRendIsen65')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Juros de mora recebidos, devidos pelo atraso no pagamento de remuneração por exercício de emprego, cargo ou função"
+      [control]="subFormGroup.get('vrJurosMora')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor de outros rendimentos isentos ou não tributáveis"
+      [control]="subFormGroup.get('vrRendIsenNTrib')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+  </div>
+
+  <div class="po-row line-container po-sm-12 po-p-0 po-mb-2">
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor referente à previdência oficial"
+      [control]="subFormGroup.get('vrPrevOficial')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+
+    <po-input
+      class="po-sm-8"
+      p-label='Descrição do rendimento isento ou não tributável informado em "Valor de outros rendimentos isentos ou não tributáveis"'
+      formControlName="descIsenNTrib"
+      p-maxlength="60"
+      p-optional
+      [p-disabled]="isDisabledDescIsenNTrib"
+    ></po-input>
+  </div>
+</form>

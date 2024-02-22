@@ -1,0 +1,22 @@
+.container-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-muted {
+  color: #4a5c60;
+}
+
+.environment {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.events {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

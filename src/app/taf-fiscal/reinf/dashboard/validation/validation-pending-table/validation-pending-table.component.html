@@ -1,0 +1,32 @@
+<app-table
+  class="po-xl-12"
+  [taf-event]="event"
+  [taf-period]="period"
+  [taf-path]="path"
+  [taf-loading-overlay]="loadingOverlay"
+  [taf-show-details]="showDetails()"
+  [taf-custom-literals]="customLiterals"
+  [taf-table-items-all]="tableItemsAll"
+  [taf-table-items]="tableItems"
+  [taf-table-columns]="tableColumns"
+  [taf-size-add-more]="addMoreItems"
+  (taf-selected-entry)="onSelectionChange($event)">
+</app-table>
+
+<po-modal
+  [p-title]="messageError
+  ? literals['validationError']['validationErrorDetail']
+  : literals['validation']['outdatedEnvironment']"
+  [p-primary-action]="handleClosed"
+  p-hide-close=true>
+  <p *ngIf="!messageError">
+    {{ statusMessage }}
+  </p>
+  <po-textarea
+    *ngIf="messageError"
+    class="textarea"
+    [(ngModel)]="statusMessage"
+    [p-rows]="rowsTextArea"
+    [p-disabled]="true">
+  </po-textarea>
+</po-modal>

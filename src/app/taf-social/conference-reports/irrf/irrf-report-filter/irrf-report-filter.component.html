@@ -1,0 +1,185 @@
+<div class="space-50">
+    <po-widget class="po-lg-12 po-xl-12 po-md-12 po-sm-12">
+        <form class="po-row" [formGroup]="formFilter">
+            <div class="po-lg-8 po-xl-8 po-md-12 po-sm-12">
+                <po-input
+                    class="po-xl-3 po-lg-4 po-md-12 po-sm-12"
+                    name="period"
+                    formControlName="period"
+                    p-placeholder="AAAA/MM"
+                    p-mask="9999/?99"
+                    p-pattern="^(19|20)\d\d(0[1-9]|1[0-2])$"
+                    p-required="true"
+                    p-auto-focus="true"
+                    p-icon="po-icon po-icon-calendar"
+                    [p-label]="literals['irrfReport']['period']"
+                    [p-error-pattern]="literals['irrfReport']['invalidPeriod']"
+                    (p-change)="onChangePeriodSelect($event, 'period', 'modalPeriod')"
+                    [p-disabled]="disabledInputs">
+                </po-input>
+                <po-input
+                    class="po-xl-3 po-lg-4 po-md-12 po-sm-12"
+                    name="cpf"
+                    formControlName="cpf"
+                    p-placeholder="999.999.999-99"
+                    p-clean="true"
+                    [p-label]="literals['irrfReport']['cpf']"
+                    [p-optional]="true"
+                    p-mask="999.999.999-99"
+                    [p-error-pattern]="literals['irrfReport']['invalidCpf']"
+                    (p-change)="onChangeCpfSelect($event, 'cpf', 'modalCpf')"
+                    [p-disabled]="disabledInputs">
+                </po-input>
+                <po-switch
+                    class="po-xl-2 po-lg-4 po-md-12 po-sm-12"
+                    name="differencesOnly"
+                    formControlName="differencesOnly"
+                    [p-label]="literals['irrfReport']['differencesOnly']"
+                    [p-label-off]="literals['irrfReport']['no']"
+                    [p-label-on]="literals['irrfReport']['yes']"
+                    (p-change)="onChangeSwitches($event, 'differencesOnly', 'modalDifferencesOnly'); applyFilters(true, true)"
+                    [p-disabled]="disabledInputs">
+                </po-switch>
+                <po-switch
+                    class="po-xl-2 po-lg-4 po-md-12 po-sm-12"
+                    name="warningsOnly"
+                    formControlName="warningsOnly"
+                    [p-label]="literals['irrfReport']['warningsOnly']"
+                    [p-label-off]="literals['irrfReport']['no']"
+                    [p-label-on]="literals['irrfReport']['yes']"
+                    (p-change)="onChangeSwitches($event, 'warningsOnly', 'modalWarningsOnly'); applyFilters(true, true)"
+                    [p-disabled]="disabledInputs">
+                </po-switch>
+            </div>
+            <div class="po-lg-4 po-xl-4 po-md-12 po-sm-12 space-20">
+                <po-button
+                    class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-09"
+                    name="advancedSearch"
+                    [p-label]="literals['irrfReport']['advancedSearch']"
+                    (p-click)="advancedSearch()"
+                    [p-disabled]="disabledInputs">
+                </po-button>
+                <po-button
+                    class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-09"
+                    name="applyFilters"
+                    [p-label]="literals['irrfReport']['applyFilters']"
+                    (p-click)="applyFilters()"
+                    [p-disabled]="disableButton"
+                    [p-loading]="loadFilter">
+                </po-button>
+            </div>
+        </form>
+        <div class="po-row po-lg-12 po-xl-12 po-md-12 po-sm-12">
+            <po-disclaimer-group
+                class="po-row po-lg-12 po-xl-12 po-md-12 po-sm-12"
+                [p-disclaimers]="selectedFilters"
+                (p-change)="onChangeDisclaimerSelect($event)"
+                (p-remove)="onRemoveEvents($event)"
+                (p-remove-all)="onClean()"
+                [p-hide-remove-all]="disabledInputs">
+            </po-disclaimer-group>
+        </div>
+    </po-widget>
+    <po-modal
+        name="modalAdvancedSearch"
+        p-size="md"
+        p-hide-close="true"
+        [p-title]="literals['irrfReport']['advancedSearch']"
+        [p-primary-action]="confirm"
+        [p-secondary-action]="close">
+        <form [formGroup]="formFilterModal">
+            <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+                <po-input
+                    class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+                    name="modalPeriod"
+                    formControlName="modalPeriod"
+                    p-placeholder="AAAA/MM"
+                    p-mask="9999/?99"
+                    p-pattern="^(19[0-9]{2}|2[0-9]{3})(0[1-9]|1[0-2])?$"
+                    p-required="true"
+                    p-clean="true"
+                    p-icon="po-icon po-icon-calendar"
+                    [p-label]="literals['irrfReport']['period']"
+                    (p-change)="onChangePeriodSelect($event, 'modalPeriod', 'period')"
+                    [p-disabled]="disabledInputs">
+                </po-input>
+                <po-switch
+                    class="po-xl-3 po-lg-6 po-md-12 po-sm-12"
+                    name="modalDifferencesOnly"
+                    formControlName="modalDifferencesOnly"
+                    [p-label]="literals['irrfReport']['differencesOnly']"
+                    [p-label-off]="literals['irrfReport']['no']"
+                    [p-label-on]="literals['irrfReport']['yes']"
+                    (p-change)="onChangeSwitches($event, 'modalDifferencesOnly', 'differencesOnly')"
+                    [p-disabled]="disabledInputs">
+                </po-switch>
+                <po-switch
+                    class="po-xl-3 po-lg-6 po-md-12 po-sm-12"
+                    name="modalWarningsOnly"
+                    formControlName="modalWarningsOnly"
+                    [p-label]="literals['irrfReport']['warningsOnly']"
+                    [p-label-off]="literals['irrfReport']['no']"
+                    [p-label-on]="literals['irrfReport']['yes']"
+                    (p-change)="onChangeSwitches($event, 'modalWarningsOnly', 'warningsOnly')"
+                    [p-disabled]="disabledInputs">
+                </po-switch>
+
+            </div>
+            <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+                <po-input
+                    class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+                    name="modalCpf"
+                    formControlName="modalCpf"
+                    p-placeholder="999.999.999-99"
+                    p-clean="true"
+                    [p-label]="literals['irrfReport']['cpf']"
+                    [p-optional]="true"
+                    p-mask="999.999.999-99"
+                    [p-error-pattern]="literals['irrfReport']['invalidCpf']"
+                    (p-change)="onChangeCpfSelect($event, 'modalCpf', 'cpf')"
+                    [p-disabled]="disabledInputs"
+                    [p-optional]="true">
+                  </po-input>
+                  <po-multiselect
+                      class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+                      formControlName="modalCategory"
+                      name="modalCategory"
+                      [p-label]="literals['irrfReport']['esocialCategory']"
+                      [p-options]="categories"
+                      (p-change)="onChangeMultiSelect('esocialCategory', $event)"
+                      [p-disabled]="disabledInputs"
+                      [p-optional]="true">
+                  </po-multiselect>
+            </div>
+            <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+            </div>
+
+            <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+                <div class="po-xl-6 po-lg-6 po-md-6 po-sm-6">
+                    <po-input
+                        *ngIf="!isTafFull"
+                        name="modalPageSize"
+                        formControlName="modalPageSize"
+                        p-pattern="^[1-9]\d*$"
+                        p-placeholder="99999"
+                        p-mask="99999"
+                        p-required="true"
+                        p-clean="true"
+                        [p-label]="literals['irrfReport']['numberOfLines']"
+                        (p-change)="onChangeNumberOfLinesSelect($event)"
+                        [p-disabled]="disabledInputs">
+                    </po-input>
+                    <app-vmessage
+                        class="po-xl-12 po-lg-12 po-md-12 po-sm-12"
+                        [text]="literals['irrfReport']['invalidPageSize']"
+                        *ngIf="
+                            formFilterModal.get('modalPageSize').errors?.pattern ||
+                            formFilterModal.get('modalPageSize').errors?.required
+                        ">
+                    </app-vmessage>
+                </div>
+            </div>
+        </form>
+    </po-modal>
+</div>
+<app-legacy-status-environment-modal></app-legacy-status-environment-modal>

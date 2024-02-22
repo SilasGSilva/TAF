@@ -1,0 +1,19 @@
+<div class="container-column" [ngStyle]="isDisabled()">
+  <div class="align-center po-pt-5">
+    <div 
+      class="po-font-title  color-blue"
+      [ngStyle]="isDisabled()">
+        {{ event }}
+    </div>
+    <div class="po-font-text-small">{{ descriptionEvent }}</div>
+    <p><span class="po-font-text">{{ literals['totalizer']['total'] }}:
+    <span class="po-font-subtitle">{{ totalMonitoring }}</span></span></p>
+  </div>
+  <div class="align-end">
+    <po-button
+      [p-label]="this.literals['totalizer']['toView']"
+      p-small="true"
+      [p-disabled]="isButtonDisabled()">
+    </po-button>
+  </div>
+</div>

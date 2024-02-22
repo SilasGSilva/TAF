@@ -1,0 +1,22 @@
+<po-container p-no-padding="true" p-no-shadow="true">
+  <app-table
+    [taf-event]="event"
+    [taf-period]="period"
+    taf-path="event-monitor"
+    [taf-status]="currentStatus"
+    [taf-enable-checkbox]="showCheck()"
+    [taf-show-details]="false"
+    [taf-table-loading-overlay]="tableLoad"
+    [taf-table-items]="eventDetail"
+    [taf-table-items-all]="eventDetailAll"
+    [taf-loading-table]="loadingTable"
+    [taf-table-columns]="tableColumns"
+    (taf-error-message)="showError($event)"
+    [taf-size-add-more]="addMoreItems"
+    [taf-hasnext]="hasNext"
+    (taf-selected-entry)="onSelectionChange($event)"
+  >
+  </app-table>
+</po-container>
+
+<app-event-error-message> </app-event-error-message>

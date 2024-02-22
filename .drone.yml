@@ -1,0 +1,59 @@
+kind: pipeline
+type: docker
+name: TAF-THF
+
+workspace:
+  base: /totvs/drone
+  path: taf-thf
+
+steps:
+  - name: test
+    image: alpine:3.13
+    commands:
+      - apk update && apk add chromium nodejs npm zip bash
+      - export CHROME_BIN=/usr/bin/chromium-browser
+      - bash /totvs/drone/taf-thf/devops/ci/test.sh
+    when:
+      event:
+        - push
+        - tag
+
+  - name: run-sonar
+    image: docker.totvs.io/sonarqube/sonar-scanner-general
+    environment:
+      SRC_PATH: /totvs/drone/taf-thf
+      TOKEN:
+        from_secret: sonar-token
+    commands:
+      - bash /totvs/drone/taf-thf/devops/ci/run-sonar.sh
+    when:
+      branch:
+        - master
+        - develop
+      event:
+        - push
+        - tag
+
+  - name: build
+    image: node:14.15.5-alpine3.13
+    commands:
+      - apk update && apk add chromium zip bash
+      - export GIT_TAG=${DRONE_TAG}
+      - bash /totvs/drone/taf-thf/devops/ci/build.sh
+    when:
+      event:
+        - push
+        - tag
+
+  - name: gitea-release
+    image: plugins/gitea-release:1.1.0
+    settings:
+      base_url: https://code.engpro.totvs.com.br
+      api_key:
+        from_secret: gitea-token
+      files: '/totvs/drone/taf-thf/release/*'
+      title: ${DRONE_TAG}
+      draft: false
+      prerelease: true
+    when:
+      event: tag

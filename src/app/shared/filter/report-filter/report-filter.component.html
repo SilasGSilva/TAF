@@ -1,0 +1,68 @@
+<po-widget
+    class="po-xl-12"
+    p-no-shadow="true">
+  <form [formGroup]="formFilter">
+    <div class="container">
+      <div class="fields">
+        <po-input
+            class="po-xl-4 po-lg-4 po-md-4 po-sm-8"
+            formControlName="period"
+            [name]="period"
+            [p-label]="literals['reportFilter']['period']"
+            [p-placeholder]="literals['reportFilter']['period']"
+            p-mask="99/9999"
+            p-pattern="^(0[1-9]|1[0-2])(19[0-9]{2}|2[0-9]{3})$"
+            p-mask-format-model="false"
+            p-auto-focus="true"
+            p-required="true"
+            p-clean="true"
+            (keyup)="debounce.next($event.target.value)"
+            (p-change)="emitFilter()">
+        </po-input>
+        <po-select
+            class="po-xl-4 po-lg-4 po-md-4 po-sm-8"
+            formControlName="groupType"
+            name="groupType"
+            [p-label]="literalsReinf['reinfFilter']['group']"
+            [p-placeholder]="literalsReinf['reinfFilter']['all']"
+            [p-options]="groupOptions"
+            (p-change)="findEvents()">
+        </po-select>
+        <po-select
+            class="po-xl-4 po-lg-4 po-md-4 po-sm-8"
+            formControlName="event"
+            name="event"
+            [p-label]="literals['reportFilter']['events']"
+            [p-placeholder]="literals['reportFilter']['events']"
+            [p-options]="eventsOptions"
+            [p-disabled]="disableEvents"
+            (p-change)="emitFilter()">
+        </po-select>
+      </div>
+      <po-button
+          class="button po-xl-2 po-lg-2 po-md-2 po-sm-12"
+          [p-label]="literals['reportFilter']['consult']"
+          [p-disabled]="ifFormValid()"
+          [p-loading]="isLoading"
+          p-type="default"
+          (p-click)="getReportListing()">
+      </po-button>
+    </div>
+    <app-vmessage
+      class="po-lg-3 po-md-6 po-sm-12"
+      [text]="literals['reportFilter']['invalidPeriod']"
+      *ngIf="formFilter.get('period').errors?.pattern">
+    </app-vmessage>
+    <app-vmessage
+      class="po-lg-3 po-md-6 po-sm-12"
+      [text]="literals['reportFilter']['invalidPeriod']"
+      *ngIf="formFilter.get('period').errors?.required">
+    </app-vmessage>
+  </form>
+</po-widget>
+
+<po-loading-overlay
+    *ngIf="loadingOverlay"
+    p-screen-lock="true"
+    [p-text]= "literals['reportFilter']['consulting']">
+</po-loading-overlay>

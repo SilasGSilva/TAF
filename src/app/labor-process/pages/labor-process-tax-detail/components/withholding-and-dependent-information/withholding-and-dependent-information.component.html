@@ -1,0 +1,31 @@
+<form
+  *ngIf="currentFormGroup"
+  class="po-sm-12 po-mb-2"
+  [formGroup]="subFormGroup"
+>
+  <p class="subtitle po-mb-2">
+    Informações relacionadas à retenção na fonte, aos rendimentos tributáveis e não tributáveis, deduções e/ou isenções, etc., de acordo com a legislação aplicada ao imposto de renda
+  </p>
+
+  <div class="po-row line-container po-mb-2">
+    <po-datepicker
+      class="po-sm-3"
+      formControlName="dtLaudo"
+      p-label="Data da moléstia grave atribuída pelo laudo"
+      p-min-date="1900/01/01"
+      p-optional
+      [p-disabled]="isExcluded"
+    ></po-datepicker>
+  </div>
+
+  <po-accordion class="po-sm-12">
+    <po-accordion-item p-label="Informações de dependentes">
+      <app-dependent-information
+        class="po-sm-12"
+        [excluidoERP]="excluidoERP"
+        [mainFormGroup]="currentFormGroup"
+        [currentFormGroup]="subFormGroup"
+      ></app-dependent-information>
+    </po-accordion-item>
+  </po-accordion>
+</form>

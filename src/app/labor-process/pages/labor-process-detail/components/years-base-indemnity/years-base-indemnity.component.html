@@ -1,0 +1,54 @@
+<div *ngIf="currentFormGroup" class="content-detail">
+  <form [hidden]="!isSelected" [formGroup]="subFormGroup">
+    <po-input
+      class="po-sm-2"
+      p-label="Ano base"
+      formControlName="anoBase"
+      p-placeholder="AAAA"
+      p-mask="9999"
+      p-pattern="^(18[0-9]{2}|19[0-9]{2}|20[0-9]{2}|21[0-9]{2}|22[0-9]{2})$"
+    ></po-input>
+
+    <div class="po-row buttons-internal">
+      <po-button
+        p-label="Cancelar"
+        p-type="secondary"
+        (p-click)="cancel()"
+      ></po-button>
+
+      <po-button
+        class="po-sm-2"
+        type="submit"
+        [p-label]="isEdit ? ' Atualizar abono' : ' Incluir abono'"
+        p-type="primary"
+        p-icon="po-icon po-icon-plus-circle"
+        (p-click)="isEdit ? update() : save()"
+        [p-disabled]="subFormGroup.invalid || isExcludedERP"
+      ></po-button>
+    </div>
+  </form>
+
+  <div class="po-row space-btn po-mt-1">
+    <p class="subtitle">
+      Abonos existentes
+    </p>
+
+    <po-button
+      *ngIf="canCreateNewItem"
+      class="po-offset-md-7 po-offset-lg-7 po-offset-xl-7"
+      p-label=" Incluir abono"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="create()"
+    ></po-button>
+  </div>
+
+  <po-table
+    class="po-sm-12"
+    [p-height]="formArrayValue.length > 3 ? 170 : null"
+    [p-columns]="columns"
+    [p-items]="rows"
+    [p-actions]="actions"
+    [p-hide-columns-manager]="true"
+  ></po-table>
+</div>

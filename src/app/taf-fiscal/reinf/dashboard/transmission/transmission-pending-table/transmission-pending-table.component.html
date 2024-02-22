@@ -1,0 +1,39 @@
+<div class="container-row thf-mb-6">
+  <po-container p-no-shadow="true">
+    <div class="po-row flex-align-content">
+      <po-input
+        class="po-xl-4 po-lg-4 po-md-6 po-sm-12"
+        name="filter"
+        p-icon="po-icon-search"
+        [p-placeholder]="searchLabel"
+        [(ngModel)]="filter"
+        (p-change)="changeFilter(filter)"
+        (keyup.enter)="changeFilter(filter)"
+      >
+      </po-input>
+      <po-disclaimer-group
+        [p-disclaimers]="filters"
+        (p-change)="changeFilters(filters)"
+      >
+      </po-disclaimer-group>
+    </div>
+  </po-container>
+</div>
+<div class="container-row po-mt-2">
+  <app-table
+    class="po-xl-12 table-height"
+    [taf-event]="event"
+    [taf-period]="period"
+    [taf-path]="path"
+    [taf-loading-overlay]="tableLoad"
+    [taf-show-details]="showDetails"
+    [taf-custom-literals]="customLiterals"
+    [taf-table-items]="eventDetail"
+    [taf-table-items-all]="eventDetailAll"
+    [taf-table-columns]="tableColumns"
+    [taf-size-add-more]="addMoreItems"
+    [taf-hasnext]="hasNext"
+    (taf-selected-entry)="onSelectionChange($event)"
+  >
+</app-table>
+</div>

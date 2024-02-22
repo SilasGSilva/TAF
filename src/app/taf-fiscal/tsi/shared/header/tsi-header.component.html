@@ -1,0 +1,25 @@
+<app-header class="po-hidden-lg po-hidden-xl "></app-header>
+
+<div class="headerGrid">
+  <div class="title po-font-title">
+    {{ this.headerTitle }}
+  </div>
+
+  <div>
+    <app-tsi-status class="status">
+    </app-tsi-status>
+  </div>
+
+  <div class="icon po-hidden-sm po-hidden-md ">
+    <span #target class="po-clickable po-icon po-icon-user font-icon-exclamation"
+      (click)="popup.toggle()">
+    </span>
+  </div>
+</div>
+
+<po-popup #popup
+  [p-actions]="profileActions"
+  [p-target]="target">
+</po-popup>
+
+<app-version> </app-version>

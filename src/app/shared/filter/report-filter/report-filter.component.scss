@@ -1,0 +1,18 @@
+po-widget {
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.fields {
+    width: 50%;
+}
+
+.button {
+    float: right;
+    margin-top: 20px;
+}

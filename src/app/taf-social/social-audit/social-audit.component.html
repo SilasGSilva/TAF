@@ -1,0 +1,67 @@
+<div class="po-wrapper">
+    <app-menu></app-menu>
+    <po-page-default>
+        <app-header
+            [showHeaderTitle]="true"
+            [headerTitle]="literals['auditEsocial']['title']"
+            [showHeaderBreadCrumb]="false"
+        >
+        </app-header>
+
+        <app-audit-filter
+          (updateProgressBar)="loadProgressBar($event)"
+          (payloadAuditTable)="loadMainTable($event)"
+          (payloadAuditChart)="loadChartSeries($event)"
+          (reset)="reset()"
+          [showMore]="showMore"
+          [disableButtonApplyFilters]="disableButtonApplyFilters"
+        >
+        </app-audit-filter>
+
+        <app-audit-progress
+          class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+          *ngIf="progressBarValue"
+          [progressBarValue]="progressBarValue"
+          [progressBarInfo]="progressBarInfo"
+        >
+        </app-audit-progress>
+
+        <app-audit-chart
+          *ngIf="verifyRegisters"
+          class="po-lg-6 po-mt-2"
+          [title]="this.literals['auditEsocial']['transmission'].toUpperCase()"
+          [chartInfo]="chartTransmissionInfo"
+          chartType="pie"
+        >
+        </app-audit-chart>
+
+        <app-audit-chart
+          *ngIf="verifyRegisters"
+          class="po-lg-6 po-mt-2"
+          [title]="this.literals['auditEsocial']['compliance'].toUpperCase()"
+          [chartInfo]="chartComplianceInfo"
+          chartType="donut"
+        >
+        </app-audit-chart>
+
+        <app-audit-table
+          *ngIf="verifyRegisters"
+          [itemsTable]="itemsTable"
+          [loadingTable]="loadingTable"
+          [hasNext]="hasNext"
+          (showMore)="showMoreRegisters($event)"
+        >
+        </app-audit-table>
+
+        <div *ngIf="emptyResult">
+          <div class="message">
+            <p>{{ literals['auditEsocial']['messageNotFound'] }}</p>
+            <p>{{ literals['auditEsocial']['messageNotFoundContinued'] }}</p>
+          </div>
+
+          <div class="image">
+            <img src="assets/_base.svg" />
+          </div>
+        </div>
+    </po-page-default>
+</div>

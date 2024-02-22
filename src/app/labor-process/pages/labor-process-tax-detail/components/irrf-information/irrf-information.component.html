@@ -1,0 +1,134 @@
+<form class="po-mt-1" [hidden]="!isSelected" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-mb-2">
+    <po-select
+      class="po-sm-8"
+      p-label="Código de Receita"
+      formControlName="tpCR"
+      p-placeholder="Selecione o código de receita"
+      [p-options]="optionsTpCR"
+      required="true"
+      [p-disabled]="isExcluded"
+    ></po-select>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor"
+      [control]="subFormGroup.get('vrCR')"
+      [isRequired]="true"
+      [decimalLength]="14"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+  </div>
+
+  <app-income-tax-information
+    *ngIf="!isV1"
+    class="po-sm-12 po-p-0 po-mb-2"
+    [currentFormGroup]="subFormGroup"
+    [excluidoERP]="excluidoERP"
+  ></app-income-tax-information>
+
+  <app-additional-information-rra
+    *ngIf="!isV1"
+    class="po-sm-12 po-p-0 po-mb-2"
+    [currentFormGroup]="subFormGroup"
+    [excluidoERP]="excluidoERP"
+  ></app-additional-information-rra>
+
+  <app-expenses-legal-proceedings
+    *ngIf="!isV1"
+    class="po-sm-12 po-p-0 po-mb-2"
+    [currentFormGroup]="subFormGroup"
+    [excluidoERP]="excluidoERP"
+  ></app-expenses-legal-proceedings>
+
+  <po-accordion *ngIf="!isV1" class="po-sm-12 po-mb-2">
+    <po-accordion-item p-label="Dedução do rendimento tributável relativa a dependentes">
+      <app-dependent-deduction
+        class="po-sm-12"
+        [modalFormGroup]="currentFormGroup"
+        [currentFormGroup]="subFormGroup"
+        [excluidoERP]="excluidoERP"
+      ></app-dependent-deduction>
+    </po-accordion-item>
+  </po-accordion>
+
+  <po-accordion *ngIf="!isV1" class="po-sm-12 po-mb-2">
+    <po-accordion-item p-label="Informação dos beneficiários da pensão alimentícia">
+      <app-alimony-information
+        class="po-sm-12"
+        [modalFormGroup]="currentFormGroup"
+        [currentFormGroup]="subFormGroup"
+        [excluidoERP]="excluidoERP"
+      ></app-alimony-information>
+    </po-accordion-item>
+  </po-accordion>
+
+  <po-accordion *ngIf="!isV1" class="po-sm-12 po-mb-2" [class.disabled]="isDisabledLawyersIdentification">
+    <po-accordion-item 
+      #lawyersIdentificationItem
+      p-label="Identificação dos advogados"
+    >
+      <app-lawyers-identification
+        class="po-sm-12"
+        [currentFormGroup]="subFormGroup"
+        [excluidoERP]="excluidoERP"
+      ></app-lawyers-identification>
+    </po-accordion-item>
+  </po-accordion>
+
+  <po-accordion *ngIf="!isV1" class="po-sm-12 po-mb-3" [class.disabled]="isDisabledWithholdingAndJudicialDeposits">
+    <po-accordion-item
+      #withholdingAndJudicialDepositsItem
+      p-label="Informações de processos relacionados a não retenção de tributos ou a depósitos judiciais"
+    >
+      <app-withholding-and-judicial-deposits
+        class="po-sm-12"
+        [mainModalFormGroup]="currentFormGroup"
+        [currentFormGroup]="subFormGroup"
+        [excluidoERP]="excluidoERP"
+      ></app-withholding-and-judicial-deposits>
+    </po-accordion-item>
+  </po-accordion>
+
+  <div class="po-row buttons-internal">
+    <po-button
+      class="po-sm-2"
+      p-label="Cancelar"
+      (p-click)="cancel()"
+    ></po-button>
+
+    <po-button
+      class="po-sm-2"
+      [p-label]="isEdit ? ' Editar IRRF' : ' Salvar IRRF'"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="isEdit ? update() : save()"
+      [p-disabled]="subFormGroup.invalid"
+    ></po-button>
+  </div>
+</form>
+
+<div class="space-btn po-row po-p-1">
+  <p class="subtitle">
+    IRRF existentes
+  </p>
+
+  <po-button
+    *ngIf="!isSelected"
+    class="po-sm-2"
+    p-label=" Incluir IRRF"
+    p-type="primary"
+    p-icon="po-icon po-icon-plus-circle"
+    (p-click)="create()"
+    [p-disabled]="isExcluded"
+  ></po-button>
+</div>
+
+<po-table
+  class="po-sm-12 po-mb-2"
+  [p-height]="formArrayValue.length > 3 ? 170 : null"
+  [p-columns]="columns"
+  [p-items]="rows"
+  [p-actions]="actions"
+  p-hide-columns-manager
+></po-table>

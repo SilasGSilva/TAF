@@ -1,0 +1,58 @@
+<po-page-default>
+  <app-header></app-header>
+  <div class="container">
+    <div class="po-row">
+      <div class="po-xl-1 po-lg-1 po-md-1 po-sm-1">
+        <app-button-back></app-button-back>
+      </div>
+      <div class="po-xl-11 po-lg-11 po-md-11 po-sm-11">
+        <app-stepper [taf-stepperItems]="stepperItems"> </app-stepper>
+      </div>
+    </div>
+
+    <div class="container-row po-mt-2">
+      <div class="text-muted po-font-title">
+        {{ eventTitle }}
+      </div>
+      <div class="text-muted po-font-subtitle">
+        {{ literals['validation']['period'] }} :
+        {{ params.period | slice: 0:2 }}/{{ params.period | slice: 2:6 }}
+      </div>
+    </div>
+  </div>
+  <div class="contents">
+    <div class="environment">
+      <app-status-environment></app-status-environment>
+    </div>
+    <div class="events">
+      <div class="text-muted po-font-text-large-bold">
+        {{ params.event }} - {{ description }}
+      </div>
+      <div class="po-mb-3">
+        <po-button
+          [p-label]="literals['validation']['reset']"
+          p-small="true"
+          p-type="default"
+          p-disabled="true"
+        >
+        </po-button>
+        <app-send-validation
+          (taf-validation-success)="validation()"
+          (taf-validation-errors)="validationError($event)"
+        >
+        </app-send-validation>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <app-validation-pending-table
+      [taf-period]="params.period"
+      [taf-event]="params.event"
+      [taf-path]="path"
+      (taf-selected-entry)="selectedEntry($event)"
+      (taf-button-emit)="toggleButton($event)"
+      (taf-button-emit-label)="toggleButtonLabel($event)"
+    >
+    </app-validation-pending-table>
+  </div>
+</po-page-default>

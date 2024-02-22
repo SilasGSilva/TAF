@@ -1,0 +1,40 @@
+{
+    "extends": "../tslint.json",
+    "rules": {
+        "directive-selector": [
+            true,
+            "attribute",
+            "app",
+            "camelCase"
+        ],
+        "component-selector": [
+            true,
+            "element",
+            "app",
+            "kebab-case"
+        ],
+        "no-input-rename" : [
+            false,
+            "taf"
+        ],
+        "no-output-rename" : [
+            false,
+            "taf"
+        ],
+        "max-line-length" : [
+          false
+        ],
+        "import-spacing" : [
+            true
+        ],
+        "no-any" : [
+            true
+        ],
+        "no-consecutive-blank-lines": [
+            true
+        ],
+        "no-unused-variable": [
+            true
+        ]
+    }
+}

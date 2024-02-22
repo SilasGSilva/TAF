@@ -1,0 +1,11 @@
+<po-page-default class="po-text-center">
+  <div class="font-display">{{ literals['pageNotFound']['message'] }}</div>
+  <div class="po-font-title">{{ literals['pageNotFound']['messagePageNotFound'] }}</div>
+  <div class="po-font-title">{{ literals['pageNotFound']['messagePageNotFoundContinued'] }}
+    <po-button
+      [p-label]="literals['pageNotFound']['clickHere']"
+      (p-click)="redirection()">
+    </po-button>
+    {{ literals['pageNotFound']['messagePageNotFoundReturn'] }}
+  </div>
+</po-page-default>

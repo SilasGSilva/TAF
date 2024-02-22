@@ -1,0 +1,43 @@
+<div class="po-wrapper">
+  <app-menu></app-menu>
+  <po-page-default>
+    <app-header
+      [showHeaderTitle]="true"
+      [headerTitle]="literals['socialCat']['title']"
+      [showHeaderBreadCrumb]="false"
+    >
+    </app-header>
+    <app-cat-filter
+      (updateProgressBar)="loadProgressBar($event)"
+      (payloadCatTable)="loadMainTable($event)"
+      (reset)="reset()"
+      [showMore]="showMore"
+      [disableButtonApplyFilters]="disableButtonApplyFilters"
+    >
+    </app-cat-filter>
+    <app-cat-progress
+      class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+      *ngIf="progressBarValue"
+      [progressBarValue]="progressBarValue"
+      [progressBarInfo]="progressBarInfo"
+    >
+    </app-cat-progress>
+    <app-cat-table
+      *ngIf="verifyRegisters"
+      [itemsTable]="itemsTable"
+      [hasNext]="hasNext"
+      [loadingTable]="loadingTable"
+      (showMore)="showMoreRegisters($event)">
+    >
+    </app-cat-table>
+    <div *ngIf="emptyResult">
+      <div class="message">
+        <p>{{ literals['socialCat']['messageNotFound'] }}</p>
+        <p>{{ literals['socialCat']['messageNotFoundContinued'] }}</p>
+      </div>
+      <div class="image">
+        <img src="assets/_base.svg" />
+      </div>
+    </div>
+  </po-page-default>
+</div>

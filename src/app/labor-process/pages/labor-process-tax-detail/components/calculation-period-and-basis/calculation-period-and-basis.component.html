@@ -1,0 +1,141 @@
+<div>
+  <form class="po-sm-12" [hidden]="!isSelected" [formGroup]="subFormGroup">
+    <div class="po-row period-input">
+      <po-input
+        class="po-sm-3"
+        formControlName="perRef"
+        p-label="Referência"
+        p-placeholder="AAAA-MM"
+        p-mask-format-model="true"
+        p-mask="9999-99"
+        p-pattern="^\d{4}\-(0[1-9]|1[012])$"
+        p-required
+      ></po-input>
+
+      <app-error-message
+        *ngIf="subFormGroup.get('perRef').errors?.outOfRange || subFormGroup.get('perRef').errors?.invalidPerRef"
+        class="po-sm-3"
+        [message]="errorMessagePerRef"
+      ></app-error-message>
+    </div>
+
+    <div class="po-row po-mt-1 form-line-container">
+      <div class="po-sm-6">
+        <label class="po-field-title">
+          Valor da base de cálculo da contribuição previdenciária sobre a remuneração mensal do trabalhador
+        </label>
+
+        <input
+          currencyMask
+          maxlength="24"
+          [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+          class="po-input po-mt-1"
+          formControlName="vrBcCpMensal"
+        />
+      </div>
+
+      <div class="po-sm-6">
+        <label class="po-field-title">
+          Valor da base de cálculo da contribuição previdenciária sobre a remuneração do trabalhador referente ao 13º salário
+        </label>
+
+        <input
+          currencyMask
+          maxlength="24"
+          [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+          class="po-input po-mt-1"
+          formControlName="vrBcCp13"
+        />
+      </div>
+    </div>
+
+    <div *ngIf="isV1" class="po-row po-mt-2 form-line-container">
+      <div class="po-sm-6 po-md-6">
+        <label class="po-field-title">
+          Valor do rendimento tributável do Imposto de Renda
+        </label>
+
+        <input
+          currencyMask
+          maxlength="24"
+          [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+          class="po-input po-mt-1"
+          formControlName="vrRendIRRF"
+        />
+      </div>
+
+      <div class="po-sm-6 po-md-6">
+        <label class="po-field-title">
+          Valor do rendimento tributável do Imposto de Renda referente ao 13º salário - Tributação exclusiva
+        </label>
+
+        <input
+          currencyMask
+          maxlength="24"
+          [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+          class="po-input po-mt-1"
+          formControlName="vrRendIRRF13"
+        />
+      </div>
+    </div>
+
+    <app-social-contributions
+      class="po-mt-3 po-sm-12"
+      [excluidoERP]="excluidoERP"
+      [currentFormGroup]="subFormGroup"
+    ></app-social-contributions>
+
+    <div class="po-row buttons-internal">
+      <po-button
+        class="po-sm-2 po-md-2"
+        p-label="Cancelar"
+        p-tooltip="Ao clicar neste botão o formulário será limpo, sem salvar suas alterações."
+        (p-click)="cancel()"
+      ></po-button>
+
+      <po-button
+        p-tooltip="Clique aqui para confirmar a inserção do periodo."
+        class="po-sm-2 po-md-2"
+        [p-label]="isEdit ? ' Editar período' : ' Salvar período'"
+        p-icon="po-icon po-icon-plus-circle"
+        (p-click)="isEdit ? updateCalcTribPeriod() : saveCalcTribPeriod()"
+        [p-disabled]="subFormGroup.invalid"
+        p-type="primary"
+        [p-disabled]="isExcluded || subFormGroup.invalid"
+      ></po-button>
+    </div>
+  </form>
+
+  <app-social-contributions
+    class="po-mt-3 po-sm-12"
+    [hidden]="!isSelected || !isExcluded"
+    [excluidoERP]="excluidoERP"
+    [currentFormGroup]="subFormGroup"
+  ></app-social-contributions>
+
+  <div class="po-row space-btn">
+    <p class="subtitle">
+      Períodos cadastrados
+    </p>
+
+    <po-button
+      *ngIf="!isSelected"
+      class="po-sm-2 po-m-1"
+      p-tooltip="Clique aqui para adicionar um período."
+      p-label=" Incluir período"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="create()"
+      p-type="primary"
+      [p-disabled]="isExcluded"
+    ></po-button>
+
+    <po-table
+      class="po-sm-12 po-mb-2"
+      [p-height]="formArrayValue.length > 3 ? 170 : null"
+      [p-columns]="columns"
+      [p-items]="rows"
+      [p-actions]="actions"
+      p-hide-columns-manager="true"
+    ></po-table>
+  </div>
+</div>

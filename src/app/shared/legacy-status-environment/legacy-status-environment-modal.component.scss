@@ -1,0 +1,28 @@
+.align-tag {
+  padding-top: 7px;
+}
+
+.link {
+  padding-top: 10px;
+
+  span {
+    color: #29b6c5;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  :hover {
+    text-decoration: underline;
+  }
+}
+
+.overModal {
+  overflow: hidden;
+}
+
+.poTagValue {
+  overflow: hidden;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+}

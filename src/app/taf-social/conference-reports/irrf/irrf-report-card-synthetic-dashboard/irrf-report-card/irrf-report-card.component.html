@@ -1,0 +1,18 @@
+<div
+  (mouseover)="changeBackground = true"
+  (mouseout)="changeBackground = false"
+>
+  <po-widget
+    [class]="widgetClass"
+    [p-primary]="changeBackground"
+    p-height="160"
+  >
+    <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+      {{ cardQuantity }}
+    </p>
+
+    <p class="po-font-text-large-bold po-text-center space-20">
+      {{ cardDescription }}
+    </p>
+  </po-widget>
+</div>

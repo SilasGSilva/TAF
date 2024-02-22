@@ -1,0 +1,41 @@
+<po-modal p-title="Inclua um novo contrato de trabalho" p-size="auto">
+  <div class="content">
+    <po-tabs>
+      <po-tab p-label="Informações gerais" p-active="true">
+        <app-employment-contract
+          [mainFormGroup]="mainFormGroup"
+          [currentFormGroup]="currentFormGroup"
+          [isEditMode]="isEditMode"
+        ></app-employment-contract>
+      </po-tab>
+      <po-tab
+        p-label="Informações complementares"
+        [p-disabled]="currentFormGroup.value.indContr !== 'N'"
+      >
+        <app-additional-information-employment-contract
+          [mainFormGroup]="mainFormGroup"
+          [currentFormGroup]="currentFormGroup"
+          [isEditMode]="isEditMode"
+        ></app-additional-information-employment-contract>
+      </po-tab>
+      <po-tab
+        p-label="Informações de vínculo"
+        [p-disabled]="isDisabledEmploymentRelationship"
+      >
+        <app-employment-relationship
+          [mainFormGroup]="mainFormGroup"
+          [currentFormGroup]="currentFormGroup"
+        ></app-employment-relationship>
+      </po-tab>
+    </po-tabs>
+  </div>
+  <po-modal-footer>
+    <po-button p-label="Fechar" (p-click)="cancelClicked.emit()"> </po-button>
+    <po-button
+      p-label="Salvar"
+      p-type="primary"
+      (p-click)="saveClicked.emit()"
+      [p-disabled]="currentFormGroup.invalid"
+    ></po-button>
+  </po-modal-footer>
+</po-modal>

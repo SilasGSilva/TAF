@@ -1,0 +1,18 @@
+.blueColor {
+  color: #0c9abe;
+}
+
+.faqButton {
+  font-size: 50px;
+  position: relative;
+  right: 40px;
+  left: auto;
+  top: auto;
+  bottom: 90px;
+  text-align: right;
+  color: #0c9abe;
+
+  :not(:disabled):hover {
+    color: #097b98;
+  }
+}

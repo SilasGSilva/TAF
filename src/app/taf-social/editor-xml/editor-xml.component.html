@@ -1,0 +1,51 @@
+<div *ngIf="isMonitorSocial" class="po-wrapper po-m-lg-5">
+  <app-header
+    *ngIf="!tafEditOnContainer"
+    showHeaderTitle="true"
+    headerTitle="{{ literals['editorXML']['editXml'] }}"
+  >
+  </app-header>
+
+  <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 display">
+    <div class="po-xl-9 po-lg-9 po-md-9 po-sm-9">
+      <p class="content-size" *ngIf="showStatusMessage">
+        {{ errorDetail }}
+      </p>
+      <a
+        *ngIf="showStatusMessage"
+        class="underline-blue"
+        (click)="setErrorModal()"
+        >{{ seeMore }}</a
+      >
+    </div>
+    <div *ngIf="!isReadOnly" class="po-xl-3 po-lg-3 po-md-3 po-sm-3">
+      <po-button
+        class="po-ml-5 po-mt-4"
+        [p-label]="literals['editorXML']['save']"
+        p-type="primary"
+        [p-disabled]="isButtonSaveDisabled"
+        (p-click)="saveXml()"
+      >
+      </po-button>
+    </div>
+  </div>
+
+  <div class="po-row po-pt-md-2">
+    <po-code-editor
+      p-height="400"
+      [(ngModel)]="code"
+      p-language="xml"
+      [p-readonly]="isReadOnly"
+      (keyup)="onEditXml()"
+    >
+    </po-code-editor>
+  </div>
+</div>
+<po-modal
+  p-size="md"
+  p-title="{{ modalTitle }}"
+  [p-primary-action]="close"
+  p-hide-close="true"
+>
+  <p class="po-font-subtitle">{{ modalDetailMessage }}</p>
+</po-modal>

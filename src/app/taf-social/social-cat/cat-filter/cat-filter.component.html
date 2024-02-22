@@ -1,0 +1,104 @@
+<div class="po-pt-5">
+    <po-widget class="po-sm-12 po-md-12 po-lg-12 po-xl-12" p-no-shadow="true">
+        <form [formGroup]="formFilter">
+            <div class="po-sm-12 po-md-12 po-lg-12 po-xl-12">
+                <div class="po-row">
+                    <po-multiselect
+                        class="po-md-2 po-xl-2 po-lg-2 po-sm-2"
+                        [p-options]="listBranch"
+                        name="branch"
+                        formControlName="branch"
+                        (p-change)="onChangeBranchs($event)"
+                        [p-label]="literals['socialCat']['branchs']"
+                        [p-required]="true"
+                    >
+                    </po-multiselect>
+                    <po-input
+                        class="po-lg-2 po-xl-2 po-md-2 po-sm-2"
+                        name="cpf"
+                        formControlName="cpf"
+                        [p-label]="literals['socialCat']['cpf']"
+                        p-mask="999.999.999-99"
+                        p-mask-format-model="false"
+                        [p-error-pattern]="literals['socialCat']['invalidCpf']"
+                        (p-change)="onChangeCpfSelect($event, 'cpf')"
+                        (p-blur)="this.validateRequiredFields()"
+                        [p-optional]="true"
+                    >
+                    </po-input>
+                    <po-input
+                        class="po-xl-2 po-lg-2 po-md-2 po-sm-2"
+                        name="name"
+                        formControlName="name"
+                        p-clean="true"
+                        (p-change-model)="onChangeName($event)"
+                        [p-label]="literals['socialCat']['name']"
+                        (p-change)="onChangeName($event)"
+                        [p-optional]="true"
+                    >
+                    </po-input>
+                    <po-input
+                        class="po-xl-2 po-lg-2 po-md-2 po-sm-2"
+                        name="cat"
+                        formControlName="cat"
+                        p-clean="true"
+                        [p-label]="literals['socialCat']['cat']"
+                        (p-change-model)="onChangeCAT($event)"
+                        (p-change)="onChangeCAT($event)"
+                        [p-optional]="true"
+                    >
+                    </po-input>
+                    <po-datepicker
+                        class="po-md-2 po-xl-2 po-lg-2 po-sm-2"
+                        name="periodFrom"
+                        p-format="dd/mm/yyyy"
+                        p-placeholder="DD/MM/AAAA"
+                        formControlName="periodFrom"
+                        (p-change)="onChangePeriod($event, 'periodFrom')"
+                        (p-blur)="validateRequiredFields()"
+                        [p-clean]="false"
+                        p-locale="pt"
+                        [p-label]="literals['socialCat']['periodFrom']"
+                        [p-optional]="true"
+                        p-mask-format-model="true"
+                    >
+                    </po-datepicker>
+                    <po-datepicker
+                        class="po-md-2 po-xl-2 po-lg-2 po-sm-2"
+                        name="periodTo"
+                        p-format="dd/mm/yyyy"
+                        p-placeholder="DD/MM/AAAA"
+                        formControlName="periodTo"
+                        (p-change)="onChangePeriod($event, 'periodTo')"
+                        (p-blur)="validateRequiredFields()"
+                        [p-clean]="false"
+                        p-locale="pt"
+                        [p-label]="literals['socialCat']['periodTo']"
+                        [p-optional]="true"
+                        p-mask-format-model="true"
+                    >
+                    </po-datepicker>
+                </div>
+                <div class="po-row flex-end">
+                    <po-button
+                        class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-pt-2 po-pb-2"
+                        name="applyFilters"
+                        [p-label]="labelButtonFilter"
+                        (p-click)="applyFilter()"
+                        [p-loading]="loadFilter"
+                        [p-disabled]="disableButtonApplyFilters"
+                    >
+                    </po-button>
+                </div>
+            </div>
+        </form>
+        <div class="po-row">
+            <po-disclaimer-group
+                class="po-md-12 po-xl-12 po-lg-12 po-sm-12"
+                (p-change)="onChangeDisclaimerSelect()"
+                [p-disclaimers]="selectedFilters"
+            >
+            </po-disclaimer-group>
+        </div>
+    </po-widget>
+</div>

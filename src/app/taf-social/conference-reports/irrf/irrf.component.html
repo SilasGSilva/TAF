@@ -1,0 +1,52 @@
+<div class="po-wrapper">
+  <app-menu></app-menu>
+  <po-page-default>
+    <app-header
+      showHeaderTitle="true"
+      [headerTitle]="literals['irrfReport']['titleReport']">
+    </app-header>
+    <app-irrf-report-filter
+      (emit-sent)="loadBar($event)"
+      (payload-card)="loadCard($event)"
+      (payload-table)="loadTable($event)"
+      (cpf-number)="setCpfNumber($event)"
+      (reset)="reset()"
+      (request-id)="setRequestId($event)"
+      (sending-started)="sendingStarted($event)"
+      (loading-report)="loadingReport($event)">
+    </app-irrf-report-filter>
+    <po-progress
+      *ngIf="progressBarValue"
+      class="po-lg-12 po-xl-12 po-md-12 po-sm-12"
+      [p-info]="progressBarInfo"
+      [p-value]="progressBarValue">
+    </po-progress>
+    <app-irrf-report-card-synthetic-dashboard
+      *ngIf="verifyRegisters"
+      [quantity-irrf-rh]="quantityIrrfRh"
+      [quantity-irrf-gov]="quantityIrrfGov"
+      [quantity-irrf-taf]="quantityIrrfTaf">
+    </app-irrf-report-card-synthetic-dashboard>
+    <app-irrf-report-table
+      *ngIf="verifyRegisters"
+      [items-table]="itemsTable"
+      [loading-table]="loadingTable"
+      [loading-show-more]="loadingShowMore"
+      [has-next]="hasNext"
+      (showMore)="showMoreRegisters($event)"
+      [is-taf-full]="isTAFFull"
+      [request-id]="requestId"
+      [cpf-number]="cpfNumber">
+    </app-irrf-report-table>
+    <div class="message" *ngIf="!verifyRegisters && emptyResult">
+      <p>{{ literals['irrfReport']['messageNotFound'] }}</p>
+      <p>{{ literals['irrfReport']['messageNotFoundContinued'] }}</p>
+    </div>
+    <div class="image" *ngIf="!verifyRegisters && emptyResult">
+      <img src="assets/_base.svg" />
+    </div>
+    <div class="loadingReport">
+      <po-loading-overlay [hidden]="loadingHidden"></po-loading-overlay>
+    </div>
+  </po-page-default>
+</div>

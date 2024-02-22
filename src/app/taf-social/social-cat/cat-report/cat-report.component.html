@@ -1,0 +1,27 @@
+<po-modal
+  #modalPrintEnvironment
+  [p-title]="this.literals['catReport']['workAccidentReporting']"
+  p-size="auto"
+>
+  <iframe
+    [src]="urlPdf | safeUrlPdf"
+    width="800"
+    height="600">
+  </iframe>
+
+  <po-modal-footer>
+    <div class="po-sm-12 po-md-12 po-lg-12 po-xl-12 flex-end">
+      <po-dropdown
+        [p-label]="literals['catReport']['printMode']"
+        [p-actions]="optionsSavingCAT"
+      >
+      </po-dropdown>
+      <po-button
+        p-type="primary"
+        [p-label]="literals['socialCat']['close']"
+        (p-click)="modalPrintEnvironment.close()"
+      >
+      </po-button>
+    </div>
+  </po-modal-footer>
+</po-modal>

@@ -1,0 +1,25 @@
+<p class="subtitle po-mb-2">
+  Detalhamento das despesas com processo judicial
+</p>
+
+<form class="po-sm-12" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-sm-12 po-p-0 po-mb-2">
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor das despesas com custas judiciais"
+      [control]="subFormGroup.get('vlrDespCustas')"
+      [isRequired]="isRequiredVlrDespCustas"
+      [decimalLength]="14"
+      [isDisabled]="isExcluded || isDisabledInfoRRA"
+    ></app-financial-input>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor total das despesas com advogado(s)"
+      [control]="subFormGroup.get('vlrDespAdvogados')"
+      [isRequired]="isRequiredVlrDespAdvogados"
+      [decimalLength]="14"
+      [isDisabled]="isExcluded || isDisabledInfoRRA"
+    ></app-financial-input>
+  </div>
+</form>

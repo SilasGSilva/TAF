@@ -1,0 +1,48 @@
+<po-table
+    [p-items]="tableDetailsItems"
+    [p-columns]="tableDetailsColumns"
+    p-selectable="false"
+    p-striped="true"
+    [p-loading]="tableLoad"
+    p-hide-text-overflow="true"
+    p-sort="true">
+
+    <ng-template
+      p-table-row-template
+      let-rowItem
+      [p-table-row-template-show]="setShowDetails">
+
+      <app-validation-pending-table-detail-second-level
+        *ngIf="path === 'validation'"
+        [taf-id]="rowItem.invoiceKey"
+        [taf-item]="rowItem.item"
+        [taf-event]="event"
+        [taf-path]="path"
+        [taf-period]="period"
+        [taf-branch-id]="rowItem.branchId"
+        [taf-providerCode]="rowItem.providerCode">
+      </app-validation-pending-table-detail-second-level>
+
+      <app-transmission-pending-table-detail-second-level
+        *ngIf="path === 'transmission'"
+        [taf-id]="rowItem.invoiceKey"
+        [taf-item]="rowItem.item"
+        [taf-event]="event"
+        [taf-path]="path"
+        [taf-period]="period"
+        [taf-branch-id]="rowItem.branchId"
+        [taf-foreignResident]="rowItem.foreignResident">
+      </app-transmission-pending-table-detail-second-level>
+
+      <app-report-validation-table-detail-second-level
+        *ngIf="path === 'eventsReport'"
+        [taf-id]="rowItem.invoiceKey"
+        [taf-item]="rowItem.item"
+        [taf-event]="event"
+        [taf-path]="path"
+        [taf-period]="period"
+        [taf-branch-id]="rowItem.branchId"
+        [taf-providerCode]="rowItem.providerCode">
+      </app-report-validation-table-detail-second-level>
+    </ng-template>
+</po-table>

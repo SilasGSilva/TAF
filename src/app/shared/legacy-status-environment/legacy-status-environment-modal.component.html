@@ -1,0 +1,135 @@
+<po-modal
+  p-click-out="true"
+  p-size="sm"
+  p-title="{{
+    tribute === '1'
+      ? this.literals['inssReport']['titleReport']
+      : tribute === '2'
+        ? this.literals['fgtsReport']['titleReport']
+        : this.literals['irrfReport']['titleReport']
+  }}"
+  [p-primary-action]="primaryAction"
+>
+  <po-widget
+    class="po-lg-12 po-sm-12 po-md-12 po-xl-12 align-tag"
+    [p-title]="literals['systemInfos']['legacyStatusDescription']"
+  >
+    <div class="po-row overModal">
+      <po-info
+        class="po-lg-3 po-sm-3 po-md-3 po-xl-3"
+        [p-label]="literals['systemInfos']['description']"
+        [p-value]="literals['systemInfos']['configuredService']"
+      ></po-info>
+
+      <po-tag
+        class="po-lg-9 po-sm-9 po-md-9 po-xl-9"
+        p-label="Status"
+        [p-inverse]="!legacyStatus.isConfigured"
+        [p-value]="
+          legacyStatus.isConfigured
+            ? literals['systemInfos']['yes']
+            : literals['systemInfos']['no']
+        "
+        [p-type]="legacyStatus.isConfigured ? 'success' : 'danger'"
+      >
+      </po-tag>
+
+      <po-info
+        class="po-lg-3 po-sm-3 po-md-3 po-xl-3"
+        [p-value]="literals['systemInfos']['avaliableService']"
+      ></po-info>
+
+      <po-tag
+        class="po-lg-9 po-sm-9 po-md-9 po-xl-9 align-tag"
+        [p-inverse]="!legacyStatus.isAvailable"
+        [p-value]="
+          legacyStatus.isAvailable
+            ? literals['systemInfos']['yes']
+            : literals['systemInfos']['no']
+        "
+        [p-type]="legacyStatus.isAvailable ? 'success' : 'danger'"
+      >
+      </po-tag>
+
+      <po-info
+        class="po-lg-3 po-sm-3 po-md-3 po-xl-3"
+        [p-value]="literals['systemInfos']['upToDateService']"
+      ></po-info>
+
+      <po-tag
+        *ngIf="tribute === '1'"
+        class="po-lg-9 po-sm-9 po-md-9 po-xl-9 align-tag"
+        [p-inverse]="!legacyStatus.inssIsUpToDate"
+        [p-value]="
+          legacyStatus.inssIsUpToDate
+            ? literals['systemInfos']['yes']
+            : literals['systemInfos']['no']
+        "
+        [p-type]="legacyStatus.inssIsUpToDate ? 'success' : 'danger'"
+      >
+      </po-tag>
+
+      <po-tag
+        *ngIf="tribute === '2'"
+        class="po-lg-9 po-sm-9 po-md-9 po-xl-9 align-tag"
+        [p-inverse]="!legacyStatus.fgtsIsUpToDate"
+        [p-value]="
+          legacyStatus.fgtsIsUpToDate
+            ? literals['systemInfos']['yes']
+            : literals['systemInfos']['no']
+        "
+        [p-type]="legacyStatus.fgtsIsUpToDate ? 'success' : 'danger'"
+      >
+      </po-tag>
+
+      <po-tag
+        *ngIf="tribute === '3'"
+        class="po-lg-9 po-sm-9 po-md-9 po-xl-9 align-tag"
+        [p-inverse]="!legacyStatus.irrfIsUpToDate"
+        [p-value]="
+          legacyStatus.irrfIsUpToDate
+            ? literals['systemInfos']['yes']
+            : literals['systemInfos']['no']
+        "
+        [p-type]="legacyStatus.irrfIsUpToDate ? 'success' : 'danger'"
+      >
+      </po-tag>
+
+      <div class="po-lg-3 po-sm-3 po-md-3 po-xl-3">
+        <po-info [p-value]="literals['systemInfos']['serviceApiRH']"></po-info>
+      </div>
+
+      <div
+        #popoverPoTag
+        class="po-lg-8 po-sm-8 po-md-8 po-xl-8 align-tag poTagValue"
+      >
+        <po-tag
+          *ngIf="legacyStatus.isConfigured"
+          [p-value]="
+            legacyStatus.apiReturnError
+              ? legacyStatus.apiReturnError
+              : literals['systemInfos']['statusApi']
+          "
+          [p-type]="legacyStatus.apiReturnError ? 'danger' : 'success'"
+        >
+        </po-tag>
+
+        <po-popover
+          p-trigger="hover"
+          [p-target]="poTag"
+          [p-position]="'right'"
+          p-title="Erro:"
+        >
+          {{ legacyStatus.apiReturnError }}
+        </po-popover>
+      </div>
+    </div>
+  </po-widget>
+
+  <p class="link">
+    {{ this.literals['systemInfos']['informationTDN'] }}
+    <span (click)="openLink()">
+      {{ this.literals['systemInfos']['TDN'] }}
+    </span>
+  </p>
+</po-modal>

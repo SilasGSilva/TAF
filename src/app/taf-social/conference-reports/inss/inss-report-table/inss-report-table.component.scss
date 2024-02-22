@@ -1,0 +1,45 @@
+.align-button-38 {
+  padding-top: 38px;
+}
+
+.space-20 {
+  padding-top: 20px;
+
+  .font-main-card {
+    font-size: 32px;
+    font-weight: bold;
+  }
+}
+
+.space-30 {
+  margin-top: 30px;
+
+  .font-main-card {
+    font-size: 32px;
+    font-weight: bold;
+  }
+}
+
+.blueColor {
+  color: #0c9abe;
+}
+
+.align-cards {
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+.fabButton {
+  font-size: 50px;
+  position: fixed;
+  right: 40px;
+  left: auto;
+  top: auto;
+  bottom: 50px;
+  text-align: right;
+  color: #0c9abe;
+
+  :not(:disabled):hover {
+    color: #097b98;
+  }
+}

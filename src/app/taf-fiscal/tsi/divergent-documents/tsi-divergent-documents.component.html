@@ -1,0 +1,54 @@
+<div class="po-wrapper">
+<app-menu></app-menu>
+<po-page-default>
+  <div class="container">
+    <div class="header">
+      <app-tsi-header [tsi-headerTitle]="headerTitle"></app-tsi-header>
+    </div>
+    <div class="filter">
+      <app-tsi-filter
+        [tsi-divergent]="true"
+        (apply-filter-table)="verifyApplyFilterDivergentDocuments(true,$event)"
+      >
+      </app-tsi-filter>
+    </div>
+
+    <div class="container-space-between po-mr-2 po-ml-2">
+      <div >
+        <po-button
+          class="buttonReinstateAll "
+          [p-disabled]="disableButtonReinstateAll"
+          [hidden]="!showReinstateAll"
+          p-type="danger"
+          p-small="true"
+          [p-label]="this.literals['tsiDivergentDocuments']['reinstateAll']"
+          (p-click)="reinstateAll()">
+        </po-button>
+
+        <po-button class="buttonReinstate"
+          [hidden]="!showReinstateSelected"
+          [p-loading]="loadingTsiTable"
+          p-small="true"
+          [p-label]="this.literals['tsiDivergentDocuments']['reinstateSelecteds']"
+          (p-click)="reinstateSelecteds()">
+        </po-button>
+      </div>
+    </div>
+
+    <div [hidden]="!showDivergentDocumentsTable" class="table po-mt-1 po-xl-12 po-lg-12 po-md-12 po-sm-12">
+      <app-tsi-divergent-documents-table
+        [divergent-document-table-loading]="loadingDivergentDocumentsTable"
+        [divergent-document-table-items]="tsiDivergentDocumentsTableItems"
+        [divergent-document-table-hasNext]="hasNextDivergentDocuments"
+        (tsi-items-selecteds)="setItemsSelecteds($event)"
+        (divergent-document-table-showMore)="showMoreDivergentDocuments()">
+      </app-tsi-divergent-documents-table>
+      <div *ngIf="this.hasRemainingRecords" class="textRemaning" >
+        {{ this.textRemaning }}
+      </div>
+    </div>
+  </div>
+</po-page-default>
+</div>
+<app-dialog-yes-no></app-dialog-yes-no>
+<app-messenger></app-messenger>

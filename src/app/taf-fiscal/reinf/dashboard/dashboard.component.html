@@ -1,0 +1,131 @@
+<po-page-default>
+  <app-header></app-header>
+  <div class="container">
+    <div class="header">
+      <div class="title po-font-title">
+        {{ literals['dashboard']['title'] }}
+      </div>
+      <div class="po-mb-2" >
+        <app-status-environment
+          (taf-is-production-restrict)="setEnvironment($event)"
+          (taf-layout-reinf)="setLayoutReinf($event)">
+        </app-status-environment>
+      </div>
+    </div>
+    <div>
+      <po-loading-overlay
+        *ngIf="isHideLoading"
+        p-screen-lock="true"
+        [p-text]="literals['dashboard']['consulting']"
+      >
+      </po-loading-overlay>
+    </div>
+    <div class="container-row">
+      <app-general *ngIf="layoutReinf"
+        (taf-load)="isHideLoading = $event"
+        (taf-period)="periodEmit = $event"
+        (taf-button-log-period)="setStatusButtonLogPeriod($event)"
+        (taf-status-button-closing-period-2099)="setStatusButtonClosingPeriod2099($event)"
+        (taf-status-button-closing-period-4099)="setStatusButtonClosingPeriod4099($event)"
+        (taf-r1000-valid)="setIsR1000($event)"
+        (taf-status)="setStatusPeriod($event)"
+        (taf-totalizer)="getEventsReinfTotalizer($event)"
+        (taf-events-reinf-not-periodics)="getEventsReinfNotPeriodics($event)"
+        (taf-events-reinf)="getEventsReinf($event)"
+        [taf-layout-reinf]="layoutReinf"
+      >
+      </app-general>
+    </div>
+
+    <app-closing-event
+      [hidden]="hideClosingEvent()"
+      [taf-period]="periodEmit"
+      [taf-status-button-closing-period-4099]="disableButtonClosingPeriod4099"
+      [taf-r1000-valid]="isR1000Valid"
+      [taf-production-restrict]="isProductionRestrict"
+      (taf-remove-company-loading)="loadingRemoveCompany($event)"
+      [taf-button-log-period]="getStatusButtonLogPeriod()"
+      (taf-closing-event-emit-2099)="isClosingEvent2099 = $event"
+      (taf-closing-event-emit-4099)="isClosingEvent4099 = $event"
+    >
+    </app-closing-event>
+
+    <div class="po-row align-center" *ngIf="errorMessage">
+      <div class="color-text po-pt-5">
+        <div
+          class="po-font-text-large po-text-center po-offset-xl-3 po-xl-6 po-offset-lg-2 po-lg-7"
+        >
+          {{ literals['dashboard']['messageNotFound'] }}
+        </div>
+        <div
+          class="po-font-text-large po-offset-xl-3 po-xl-8 po-offset-lg-2 po-lg-12 po-offset-md-1"
+        >
+          {{ literals['dashboard']['messageNotFoundContinued'] }}
+        </div>
+      </div>
+      <div class="po-row">
+        <img
+          src="assets/_base.svg"
+          class="po-offset-xl-4 po-offset-lg-5 po-offset-md-3 po-md-4 po-mt-5"
+        />
+      </div>
+    </div>
+    <div class="container-column">
+      <app-card
+        *ngFor="let event of eventsTotalizers"
+      >
+        <app-totalizer
+          [taf-event]="event.event"
+          [taf-descriptionEvent]="event.descriptionEvent"
+          [taf-totalMonitoring]="event.totalMonitoring"
+          [taf-disabled-card-2099]="isClosingEvent2099"
+          [taf-disabled-card-4099]="isClosingEvent4099"
+        >
+        </app-totalizer>
+      </app-card>
+      <app-card
+        *ngFor="let event of eventsNotPeriodics"
+      >
+        <app-not-periodics
+          [taf-event]="event.event"
+          [taf-descriptionEvent]="event.descriptionEvent"
+          [taf-total]="event.total"
+          [taf-totalInvoice]="event.totalInvoice"
+          [taf-monitoring]="event.monitoring"
+          [taf-statusMonitoring]="event.statusMonitoring"
+          [taf-totalValidation]="event.totalValidation"
+          [taf-totalMonitoring]="event.totalMonitoring"
+          [taf-totalNotValidation]="event.totalNotValidation"
+          [taf-typeEvent]="event.typeEvent"
+          [taf-metrics]="event.metrics"
+          [taf-period]="periodEmit"
+          [taf-disabled-card-2099]="isClosingEvent2099 && isClosingEvent4099"
+          [taf-disabled-card-4099]="isClosingEvent2099 && isClosingEvent4099"
+        >
+        </app-not-periodics>
+      </app-card>
+      <app-card
+        [taf-disabled]="isClosingEvent"
+        *ngFor="let event of eventsPeriodics"
+      >
+        <app-periodic-reports
+          [taf-event]="event.event"
+          [taf-descriptionEvent]="event.descriptionEvent"
+          [taf-total]="event.total"
+          [taf-totalInvoice]="event.totalInvoice"
+          [taf-monitoring]="event.monitoring"
+          [taf-statusMonitoring]="event.statusMonitoring"
+          [taf-totalValidation]="event.totalValidation"
+          [taf-totalMonitoring]="event.totalMonitoring"
+          [taf-totalNotValidation]="event.totalNotValidation"
+          [taf-typeEvent]="event.typeEvent"
+          [taf-metrics]="event.metrics"
+          [taf-period]="periodEmit"
+          [taf-disabled-card-2099]="isClosingEvent2099"
+          [taf-disabled-card-4099]="isClosingEvent4099"
+        >
+        </app-periodic-reports>
+      </app-card>
+    </div>
+  </div>
+</po-page-default>

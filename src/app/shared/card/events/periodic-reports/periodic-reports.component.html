@@ -1,0 +1,137 @@
+<div class="container" [ngStyle]="isDisabled()">
+  <div class="label-container">
+    <div class="row">
+      <a class="po-font-text text-right">
+        {{ literals['periodicReports']['metrics'] }} {{ metrics }}:
+        <a class="po-font-subtitle">
+          {{ total }}
+        </a></a
+      >
+    </div>
+
+    <div class="po-row container-space-between">
+      <div
+        class="po-font-subtitle align-event color-blue"
+        [ngStyle]="isDisabled()"
+      >
+        {{ event }}
+      </div>
+      <div [ngClass]="this.totalInvoice != undefined ? '' : 'transparent'">
+        <div class="po-font-text-small po-mb-1">
+          {{ totalizerLiterals }} : {{ totalInvoice }}
+        </div>
+      </div>
+    </div>
+
+    <div class="po-font-text-small">
+      <div class="event-height">
+        {{ descriptionEvent }}
+      </div>
+      <div class="po-row" *ngIf="!isHideWaitingReturn">
+        <span
+          class="po-icon po-icon-clock font-icon-clock"
+          [ngStyle]="isDisabled()"
+        ></span>
+        <span
+          class="text-icon-blue po-font-text-bold po-xl-10 po-lg-10 po-md-10 po-sm-10"
+          [ngStyle]="isDisabled()"
+        >
+          {{ literals['periodicReports']['waitingForReturn'] }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <div class="po-row base po-font-text-small container-space-around">
+      <div class="po-offset-xl-1 po-xl-7 po-offset-lg-1 po-lg-7 po-offset-md-1 po-md-7 po-offset-sm-1 po-sm-7">
+        {{ literals['periodicReports']['status'] }} {{ metrics }}
+      </div>
+      <div class="po-xl-4 po-lg-4 po-md-4 po-sm-4 po-text-center">
+        {{ literals['periodicReports']['amount'] }}
+      </div>
+    </div>
+    <div class="po-row">
+      <div
+        class="po-offset-xl-1 po-xl-6 po-offset-lg-1 po-lg-6 po-offset-md-1 po-md-6 po-offset-sm-1 po-sm-6 color-black"
+        [ngStyle]="isDisabled()"
+      >
+        {{ literals['periodicReports']['validated'] }}
+      </div>
+      <div
+        class="po-xl-5 po-lg-5 po-md-5 po-sm-5 po-font-text-large-bold color-blue po-text-center"
+        [ngStyle]="isDisabled()"
+      >
+        <span [ngClass]="classValidated()" (click)="goToTransmission()">
+          {{ pendingTransmission() }}
+        </span>
+      </div>
+    </div>
+
+    <div class="po-row" *ngIf="!isHideReturnWithErrors">
+      <span
+        class="po-icon po-icon-exclamation font-icon-exclamation po-xl-1 po-lg-1 po-md-1 po-sm-1"
+        [ngStyle]="isDisabled()"
+      ></span>
+      <div
+        class="po-xl-6 po-lg-6 po-md-6 po-sm-6 color-black"
+        [ngStyle]="isDisabled()"
+      >
+        {{ literals['periodicReports']['transmitted'] }}
+      </div>
+      <div
+        class="po-xl-5 po-lg-5 po-md-5 po-sm-5 po-font-text-large-bold color-blue po-text-center"
+        [ngStyle]="isDisabled()"
+      >
+        <span [ngClass]="classTransmited()" (click)="goToMonitoring()">
+          {{ totalTransmited() }}
+        </span>
+      </div>
+    </div>
+    <div class="po-row" *ngIf="isHideReturnWithErrors">
+      <div
+        class="po-offset-xl-1 po-xl-6 po-offset-lg-1 po-lg-6 po-offset-md-1 po-md-6 po-offset-sm-1 po-sm-6 color-black"
+        [ngStyle]="isDisabled()"
+      >
+        {{ literals['periodicReports']['transmitted'] }}
+      </div>
+      <div
+        class="po-xl-5 po-lg-5 po-md-5 po-sm-5 po-font-text-large-bold color-blue po-text-center"
+        [ngStyle]="isDisabled()"
+      >
+        <span [ngClass]="classTransmited()" (click)="goToMonitoring()">
+          {{ totalTransmited() }}
+        </span>
+      </div>
+    </div>
+
+    <div class="po-row">
+      <div
+        class="po-offset-xl-1 po-xl-6 po-offset-lg-1 po-lg-6 po-offset-md-1 po-md-6 po-offset-sm-1 po-sm-6 color-black"
+        [ngStyle]="isDisabled()"
+      >
+        {{ literals['periodicReports']['deleted'] }}
+      </div>
+      <div
+        class="po-xl-5 po-lg-5 po-md-5 po-sm-5 po-font-text-large-bold color-blue po-text-center"
+        [ngStyle]="isDisabled()"
+      >
+        <span [ngClass]="classDeleted()" (click)="goToTransmissionDel()">
+          {{ totalDeleted() }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="button-container">
+    <div class="align-end">
+      <po-button
+        (p-click)="onClick()"
+        [p-label]="statusButton"
+        p-small="true"
+        [p-disabled]="isButtonDisabled()"
+      >
+      </po-button>
+    </div>
+  </div>
+</div>

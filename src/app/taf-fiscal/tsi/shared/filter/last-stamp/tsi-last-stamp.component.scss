@@ -1,0 +1,33 @@
+.span-last-stamp{
+    color:#FFFFFF;
+    background-color:#129ABE;
+    border-radius:7px;
+    word-wrap: break-word;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.span-label-field{
+  color:#FFFFFF;
+  background-color:#129ABE;
+  border-radius:7px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-size: 14px;
+}
+
+.row-space-evenly {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.label-help{
+  align-items: left;
+}

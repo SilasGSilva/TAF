@@ -1,0 +1,92 @@
+<po-modal
+  p-click-out="true"
+  p-size="auto"
+  [p-title]="literals['irrfReport']['conferValuesIRRF']"
+  [p-primary-action]="primaryAction">
+  <p class="po-row po-font-text-large po-mt-4 blueColor">
+    {{ literals['irrfReport']['workerInformation'] }}
+  </p>
+
+  <hr />
+
+  <div class="po-row">
+    <po-info
+      class="po-xl-5 po-lg-5 po-md-12 po-sm-12"
+      [p-label]="literals['irrfReport']['name']"
+      [p-value]="employeeAnalyticalData.name">
+    </po-info>
+
+    <po-info
+      class="po-xl-2 po-lg-2 po-md-12 po-sm-12"
+      [p-label]="literals['irrfReport']['cpf']"
+      [p-value]="employeeAnalyticalData.cpfNumber">
+    </po-info>
+
+    <div class="po-xl-5 po-lg-5 po-md-12 po-sm-12">
+      <div class="po-row">
+        <span class="po-info-label"> 
+          {{ literals['irrfReport']['statementsConsidered'] }}
+        </span>
+      </div>
+
+      <div class="po-row">
+        <po-tag
+          *ngFor="let demonstrative of employeeAnalyticalData.demonstrativeId"
+          class="po-mr-1"
+          [p-value]= "demonstrative"
+          p-color="color-02">
+        </po-tag>
+      </div>
+    </div>
+  </div>
+
+  <p class="po-row po-font-text-large po-pt-3 blueColor">
+    {{ literals['irrfReport']['irrfValues'] }}
+  </p>
+
+  <hr />
+
+  <div class="po-xl-3 po-lg-3 po-md-12 po-sm-12 po-pt-2">
+    <po-button
+      p-icon="po-icon po-icon-download"
+      [p-label]="literals['irrfReport']['export']"
+      (p-click)="exportAnalyticalreport()"
+    ></po-button>
+  </div>
+
+  <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-mt-4">
+    <po-table
+      [p-columns]="columns"
+      [p-items]="itemsModal"
+      [p-striped]="true"
+      [p-sort]="true"
+      [p-hide-text-overflow]="true"
+      p-height="400"
+      p-container="shadow">
+    </po-table>
+
+    <div class="faqButton">
+      <span
+        #faqButton
+        class="po-clickable po-icon po-icon-help"
+        (click)="openModalFAQ()"
+        (mouseover)="popup.toggle()"
+        (mouseout)="popup.toggle()">
+      </span>
+  
+      <po-popup
+        #popup
+        p-position="left"
+        [p-target]="faqButton"
+        [p-actions]="faqModal.buttonPopUp">
+      </po-popup>
+    </div>
+  </div>
+</po-modal>
+
+<app-faq-modal
+  [title]="faqModal.title"
+  [information-summary]="faqModal.summary"
+  [faq-questions-sections]="faqModal.questions"
+  [more-informations]="faqModal.moreInformations">
+</app-faq-modal>

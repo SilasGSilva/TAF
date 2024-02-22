@@ -1,0 +1,79 @@
+<div class="po-wrapper">
+  <po-menu
+    [p-menus]="[
+      { label: 'Processo Trabalhista (S-2500)', link: '/labor-process' },
+      { label: 'Tributos (S-2501)', link: '/labor-process/tax' }
+    ]"
+    p-toogle="true"
+  ></po-menu>
+  <po-toolbar
+    *ngIf="isProtheus"
+    p-actions-icon="po-icon-user"
+    [p-actions]="profileActions"
+  ></po-toolbar>
+  <po-page-default
+    p-title="Informações de tributos"
+    [p-breadcrumb]="breadcrumb"
+  >
+    <div class="po-row po-mb-2 po-pr-4 form-header">
+      <h2 class="subtitle">
+        Através dessa tela você poderá incluir editar e excluir as informações dos tributos vinculados aos processos trabalhistas
+      </h2>
+      <po-button
+        class="po-md-2 po-sm-2 po-mr-4"
+        p-type="primary"
+        p-label="Incluir tributos"
+        p-icon="po-icon-plus"
+        [routerLink]="hasVersion ? routerLinkDetail : null"
+        [p-disabled]="isLoading || !hasVersion"
+      ></po-button>
+    </div>
+    <form [formGroup]="formGroup" class="po-mb-2">
+      <div class="po-row po-p-0 form-row">
+        <po-input
+          p-placeholder="Digite aqui o número do processo"
+          p-tooltip="Deve conter 15 ou 20 caracteres."
+          class="po-sm-4 po-md-4 po-pl-0"
+          p-label="Número do processo"
+          formControlName="nrProcTrab"
+          p-pattern="^[a-zA-Z0-9-.]+$"
+          p-maxlength="20"
+          p-minlength="15"
+          (keyup.enter)="getProcessTaxList(true)"
+        ></po-input>
+        <div class="button po-mr-4" (click)="getProcessTaxList(true)">
+          <span class="po-icon po-icon-search po-field-icon"></span>
+        </div>
+        <po-input
+          p-placeholder="AAAA-MM"
+          class="po-sm-3 po-md-3"
+          p-label="Mês/ano em que é devida a obrigação de pagar a parcela prevista no acordo/sentença"
+          p-mask-format-model="true"
+          p-mask="9999-99"
+          p-pattern="^\d{4}\-(0[1-9]|1[012])$"
+          formControlName="perApurPagto"
+          (keyup.enter)="getProcessTaxList(true)"
+        ></po-input>
+        <div class="button" (click)="getProcessTaxList(true)">
+          <span class="po-icon po-icon-search po-field-icon"></span>
+        </div>
+      </div>
+    </form>
+    <h2 class="po-mb-2 subtitle">Tributos existentes</h2>
+
+    <ng-container *ngIf="actions">
+      <ng-container *ngIf="columns">
+        <po-table
+          [p-loading]="isLoading"
+          [p-height]="500"
+          [p-columns]="columns"
+          [p-items]="rows"
+          [p-actions]="actions"
+          p-hide-columns-manager="true"
+          (p-show-more)="onShowMore()"
+          [p-show-more-disabled]="!hasNext ? true : false"
+        ></po-table>
+      </ng-container>
+    </ng-container>
+  </po-page-default>
+</div>

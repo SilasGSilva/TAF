@@ -1,0 +1,104 @@
+<div class="flex-end po-row po-mt-1 po-mb-1">
+  <po-button
+    *ngIf="canCreateNewItem"
+    class="po-sm-2"
+    p-label=" Incluir processo"
+    p-type="primary"
+    p-icon="po-icon po-icon-plus-circle"
+    (p-click)="create()"
+    [p-disabled]="isExcluded"
+  ></po-button>
+</div>
+
+<form class="po-sm-12 po-mb-3" [hidden]="!isSelected" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-sm-12 po-p-0">
+    <po-select
+      class="po-sm-4"
+      p-label="Tipo de processo"
+      formControlName="tpProcRet"
+      [p-options]="optionsTpProcRet"
+      p-required
+      [p-disabled]="isExcluded"
+    ></po-select>
+
+    <po-input
+      class="po-sm-4"
+      p-label="Número do processo administrativo/judicial"
+      formControlName="nrProcRet"
+      [p-maxlength]="21"
+      p-required
+      [p-disabled]="isExcluded"
+    ></po-input>
+
+    <po-number
+      class="po-sm-4"
+      p-label="Código do indicativo da suspensão"
+      formControlName="codSusp"
+      [p-maxlength]="14"
+      [p-min]="0"
+      p-show-required
+      p-optional
+      [p-disabled]="isExcluded"
+    ></po-number>
+  </div>
+
+  <div class="po-mb-2">
+    <app-error-message
+      *ngIf="subFormGroup.get('nrProcRet')?.errors?.invalidLengthNrProcRet"
+      class="po-sm-4 po-offset-sm-4 po-offset-md-4 po-offset-lg-4 po-offset-xl-4"
+      message="O número do processo deve possuir 17, 20 ou 21 caracteres"
+    ></app-error-message>
+  </div>
+
+  <div class="po-row po-p-0">
+    <app-field-modal-form-group
+      class="po-sm-6 po-mt-3"
+      label="Informações de valores relacionados a não retenção de tributos ou a depósitos judiciais"
+      [value]="valueLabelInfoValores"
+      (buttonClicked)="openModal()"
+    ></app-field-modal-form-group>
+  </div>
+  <app-modal-form-group
+    title="Informações de valores relacionados a não retenção de tributos ou a depósitos judiciais"
+    [isDisabledPrimaryAction]="isDisabledSaveInfoValores"
+    (primaryActionClicked)="saveModal()"
+    (secondaryActionClicked)="closeModal()"
+  >
+    <app-values-information
+      [mainModalFormGroup]="mainModalFormGroup"
+      [mainFormGroup]="currentFormGroup"
+      [currentFormGroup]="subFormGroup"
+      [excluidoERP]="excluidoERP"
+    ></app-values-information>
+  </app-modal-form-group>
+
+  <div class="flex-end po-row po-mb-1">
+    <po-button
+      class="po-sm-2"
+      p-label="Cancelar"
+      (p-click)="cancel()"
+    ></po-button>
+
+    <po-button
+      class="po-sm-2"
+      [p-label]="isEdit ? ' Editar processo' : ' Incluir processo'"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="isEdit ? update() : save()"
+      [p-disabled]="subFormGroup.invalid"
+    ></po-button>
+  </div>
+</form>
+
+<p class="subtitle po-mb-1">
+  Processos existentes
+</p>
+
+<po-table
+  class="po-sm-12 po-mb-2"
+  [p-height]="formArrayValue.length > 3 ? 170 : null"
+  [p-columns]="columns"
+  [p-items]="rows"
+  [p-actions]="actions"
+  p-hide-columns-manager
+></po-table>

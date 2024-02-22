@@ -1,0 +1,53 @@
+<div class="po-row">
+  <div class="align-end po-m-1">
+    <po-button *ngIf="isR9000" class="po-m-1"
+      [p-label]="literals['deleteEvent']['toDelete']"
+      p-small="true"
+      p-type="primary"
+      (p-click)="undelete()"
+      [p-disabled]="disabled"
+    >
+    </po-button>
+
+    <po-button *ngIf="!isR2055RCP" class="po-m-1"
+      [p-label]="literals['sendEvent']['toTransmit']"
+      p-small="true"
+      p-type="primary"
+      (p-click)="send()"
+      [p-disabled]="disabled"
+    >
+    </po-button>
+
+    <po-button *ngIf="isR2055RCP" class="po-m-1"
+    [p-label]="labelbtn"
+    p-small="true"
+    p-type="primary"
+    (p-click)="sendAll()"
+    [p-disabled]="disabled"
+    >
+    </po-button>
+
+  </div>
+</div>
+
+<po-modal [p-title]="statusMessageHeader">
+  <p>{{ statusMessage }}</p>
+</po-modal>
+
+<po-loading-overlay
+  *ngIf="isLoading"
+  p-screen-lock="true"
+  [p-text]="literals['sendEvent']['transmitting']"
+>
+</po-loading-overlay>
+
+<po-loading-overlay
+  *ngIf="isUndelete"
+  p-screen-lock="true"
+  [p-text]="literals['sendEvent']['undelete']"
+>
+</po-loading-overlay>
+
+<app-messenger></app-messenger>
+
+<app-dialog-yes-no></app-dialog-yes-no>

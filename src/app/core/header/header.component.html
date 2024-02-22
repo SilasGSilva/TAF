@@ -1,0 +1,37 @@
+<div>
+  <app-monitor-status-environment
+    [ngClass]="
+      this.isContextEsocial && this.isSocialMonitor
+        ? 'po-xl-8 po-lg-8 po-md-8 po-sm-8 po-p-0'
+        : ''
+    "
+    *ngIf="this.isContextEsocial && this.isSocialMonitor">
+  </app-monitor-status-environment>
+
+  <po-toolbar
+    [ngClass]="this.isContextEsocial && this.isSocialMonitor
+        ? 'po-xl-4 po-lg-4 po-md-4 po-sm-4 po-p-0'
+        : ''"
+    *ngIf="!this.isContextMarcas"
+    p-actions-icon="po-icon-user"
+    [p-actions]="profileActions"
+    [p-notification-actions]="notificationActions"
+    [p-notification-number]="notificationNumber">
+  </po-toolbar>
+</div>
+
+<div class="po-row" *ngIf="showHeaderTitle">
+  <h1>{{ headerTitle }}</h1>
+</div>
+
+<div class="po-row" *ngIf="showHeaderBreadCrumb">
+  <div class="po-xl-1 po-lg-1 po-md-1 po-sm-1">
+    <app-button-back></app-button-back>
+  </div>
+
+  <div class="po-xl-11 po-lg-11 po-md-11 po-sm-11">
+    <po-breadcrumb [p-items]="breadItems"> </po-breadcrumb>
+  </div>
+</div>
+
+<app-version></app-version>

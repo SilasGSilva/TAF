@@ -1,0 +1,43 @@
+<div *ngIf="!isTAFFull" class="align-cards">
+  <app-irrf-report-card
+    [quantity]="quantityIrrfRh"
+    [description]="this.literals['irrfReport']['rhSyntheticIRRF']">
+  </app-irrf-report-card>
+
+  <app-irrf-report-card
+    [quantity]="quantityIrrfGov"
+    [description]="this.literals['irrfReport']['govSyntheticIRRF']">
+  </app-irrf-report-card>
+</div>
+
+<div *ngIf="isTAFFull && isConfiguredService">
+  <app-irrf-report-card
+    [quantity]="quantityIrrfRh"
+    [description]="this.literals['irrfReport']['rhSyntheticIRRF']"
+    [column-size-grid-system]="4">
+  </app-irrf-report-card>
+
+  <app-irrf-report-card
+    [quantity]="quantityIrrfTaf"
+    [description]="this.literals['irrfReport']['tafSyntheticIRRF']"
+    [column-size-grid-system]="4">
+  </app-irrf-report-card>
+
+  <app-irrf-report-card
+    [quantity]="quantityIrrfGov"
+    [description]="this.literals['irrfReport']['govSyntheticIRRF']"
+    [column-size-grid-system]="4">
+  </app-irrf-report-card>
+</div>
+
+<div *ngIf="isTAFFull && !isConfiguredService" class="align-cards">
+    <app-irrf-report-card
+      [quantity]="quantityIrrfTaf"
+      [description]="this.literals['irrfReport']['tafSyntheticIRRF']">
+    </app-irrf-report-card>
+
+    <app-irrf-report-card
+      [quantity]="quantityIrrfGov"
+      [description]="this.literals['irrfReport']['govSyntheticIRRF']">
+    </app-irrf-report-card>
+</div>

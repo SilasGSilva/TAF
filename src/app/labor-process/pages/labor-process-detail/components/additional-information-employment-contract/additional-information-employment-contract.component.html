@@ -1,0 +1,285 @@
+<div *ngIf="currentFormGroup" class="content-detail">
+  <p class="subtitle">
+    Informações complementares do contrato de trabalho
+  </p>
+
+  <form [formGroup]="currentFormGroup">
+    <div formGroupName="infoCompl">
+      <div class="po-row line-container">
+        <po-input
+          class="po-sm-4"
+          p-label="Classificação Brasileira de Ocupações - CBO"
+          formControlName="codCBO"
+          p-maxlength="6"
+          [p-required]="isRequiredCodCBO"
+          [p-disabled]="isExcluded"
+        ></po-input>
+
+        <po-select
+          class="po-sm-4"
+          p-label="Natureza da atividade"
+          formControlName="natAtividade"
+          [p-options]="optionsNatAtividade"
+          [p-disabled]="isExcluded || !isRequiredNatAtividade || isDisabledNatAtividade"
+        ></po-select>
+      </div>
+
+      <div class="po-row">
+        <app-error-message
+          *ngIf="currentFormGroup.get('infoCompl.natAtividade').errors?.invalidValue1"
+          class="po-offset-md-4 po-offset-sm-4 po-offset-lg-4 po-offset-xl-4"
+          message="Verifique o valor selecionado, pois está em desacordo com o campo Código da Categoria"
+        ></app-error-message>
+      </div>
+
+      <p class="subtitle">
+        Informações de término de TSVE
+      </p>
+
+      <div formGroupName="infoTerm">
+        <div class="po-row line-container">
+          <po-datepicker
+            class="po-sm-2"
+            p-label="Data de término"
+            formControlName="dtTerm"
+            [p-max-date]="maxDate"
+            [p-disabled]="isExcluded || isDisabledDtTerm"
+          ></po-datepicker>
+
+          <po-select
+            class="po-sm-6"
+            p-label="Motivo do término do diretor não empregado, com FGTS"
+            [p-options]="optionsMtvDesligTSV"
+            formControlName="mtvDesligTSV"
+            [p-required]="isRequiredMtvDesligTSV"
+            [p-disabled]="isExcluded || isDisabledMtvDesligTSV"
+          ></po-select>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <po-accordion class="po-sm-12 po-mt-2">
+    <po-accordion-item p-label="Informações da remuneração e periodicidade de pagamento">
+      <form [hidden]="!isSelected" [formGroup]="subFormGroup">
+        <div class="po-row line-container">
+          <po-datepicker
+            p-label="Data"
+            class="po-sm-2"
+            formControlName="dtRemun"
+            [p-disabled]="isExcluded || (isEditMode && isEdit)"
+            [p-min-date]="
+              currentFormGroup.value.dtAdmOrig !== null
+                ? currentFormGroup.value.dtAdmOrig
+                : currentFormGroup.value.dtInicio
+            "
+            [p-max-date]="
+              currentFormGroup.value.infoCompl.infoVinc.infoDeslig.dtDeslig !==
+              null
+                ? currentFormGroup.value.infoCompl.infoVinc.infoDeslig.dtDeslig
+                : currentFormGroup.value.infoCompl.infoTerm.dtTerm
+            "
+          ></po-datepicker>
+
+          <po-select
+            class="po-sm-3"
+            p-label="Unidade"
+            formControlName="undSalFixo"
+            [p-options]="optionsUndSalFixo"
+            [p-optional]="
+              subFormGroup.value.dtRemun !== null ||
+              subFormGroup.value.undSalFixo !== null ||
+              currentFormGroup.value.vrSalFx !== null ||
+              (currentFormGroup.value.tpContr !==
+                tpContratoEnum.TrabSemVinculo &&
+                (currentFormGroup.value.infoCompl.infoVinc.tpRegTrab === 1 ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivDiretorComFgts ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivConsTutelar ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivDiretorSemFgts))
+                ? false
+                : true
+            "
+            [p-required]="
+              subFormGroup.value.dtRemun !== null ||
+              subFormGroup.value.undSalFixo !== null ||
+              currentFormGroup.value.vrSalFx !== null ||
+              (currentFormGroup.value.tpContr !==
+                tpContratoEnum.TrabSemVinculo &&
+                (currentFormGroup.value.infoCompl.infoVinc.tpRegTrab === 1 ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivDiretorComFgts ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivConsTutelar ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivDiretorSemFgts))
+            "
+            [p-disabled]="isExcluded"
+            (p-change)="setValueToSal()"
+          ></po-select>
+
+          <div class="po-sm-3 po-mb-1">
+            <label class="po-field-title">
+              Salário base
+            </label>
+            <span
+              class="po-field-optional"
+              *ngIf="
+                subFormGroup.value.dtRemun !== null ||
+                subFormGroup.value.undSalFixo !== null ||
+                currentFormGroup.value.vrSalFx !== null ||
+                (currentFormGroup.value.tpContr !==
+                  tpContratoEnum.TrabSemVinculo &&
+                  (currentFormGroup.value.infoCompl.infoVinc.tpRegTrab === 1 ||
+                    currentFormGroup.value.codCateg ===
+                      codCategEnum.ContribuinteIndivDiretorComFgts ||
+                    currentFormGroup.value.codCateg ===
+                      codCategEnum.ContribuinteIndivConsTutelar ||
+                    currentFormGroup.value.codCateg ===
+                      codCategEnum.ContribuinteIndivDiretorSemFgts))
+                  ? false
+                  : true
+              "
+            >
+              (Opcional)
+            </span>
+
+            <input
+              class="po-input po-mt-1"
+              formControlName="vrSalFx"
+              currencyMask
+              maxlength="24"
+              [required]="
+                subFormGroup.value.dtRemun !== null ||
+                subFormGroup.value.undSalFixo !== null ||
+                currentFormGroup.value.vrSalFx !== null ||
+                (currentFormGroup.value.tpContr !==
+                  tpContratoEnum.TrabSemVinculo &&
+                  (currentFormGroup.value.infoCompl.infoVinc.tpRegTrab === 1 ||
+                    currentFormGroup.value.codCateg ===
+                      codCategEnum.ContribuinteIndivDiretorComFgts ||
+                    currentFormGroup.value.codCateg ===
+                      codCategEnum.ContribuinteIndivConsTutelar ||
+                    currentFormGroup.value.codCateg ===
+                      codCategEnum.ContribuinteIndivDiretorSemFgts))
+              "
+              [optional]="
+                subFormGroup.value.dtRemun !== null ||
+                subFormGroup.value.undSalFixo !== null ||
+                currentFormGroup.value.vrSalFx !== null ||
+                (currentFormGroup.value.tpContr !==
+                  tpContratoEnum.TrabSemVinculo &&
+                  (currentFormGroup.value.infoCompl.infoVinc.tpRegTrab === 1 ||
+                    currentFormGroup.value.codCateg ===
+                      codCategEnum.ContribuinteIndivDiretorComFgts ||
+                    currentFormGroup.value.codCateg ===
+                      codCategEnum.ContribuinteIndivConsTutelar ||
+                    currentFormGroup.value.codCateg ===
+                      codCategEnum.ContribuinteIndivDiretorSemFgts))
+                  ? false
+                  : true
+              "
+              [p-disabled]="isExcluded"
+              [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+            />
+          </div>
+        </div>
+
+        <div class="po-row">
+          <app-error-message
+            *ngIf="subFormGroup.get('dtRemun').errors?.duplicatedDate"
+            message="Esta data já existe nas remunerações existentes"
+          ></app-error-message>
+
+          <app-error-message
+            *ngIf="subFormGroup.get('vrSalFx').errors?.valueZero"
+            class="po-offset-md-5 po-offset-sm-5 po-offset-lg-5 po-offset-xl-5"
+            message="Quando a unidade for Não aplicável, este valor deverá ser 0 (zero)"
+          ></app-error-message>
+        </div>
+
+        <div class="text-area">
+          <po-textarea
+            name="textarea"
+            p-label="Descrição"
+            formControlName="dscSalVar"
+            [p-optional]="
+              subFormGroup.value.undSalFixo === unidadeEnum.tarefa ||
+              subFormGroup.value.undSalFixo === unidadeEnum.naoAplicavel ||
+              (currentFormGroup.value.tpContr !==
+                tpContratoEnum.TrabSemVinculo &&
+                (currentFormGroup.value.infoCompl.infoVinc.tpRegTrab === 1 ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivDiretorComFgts ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivConsTutelar ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivDiretorSemFgts))
+                ? false
+                : true
+            "
+            [p-required]="
+              subFormGroup.value.undSalFixo === unidadeEnum.Tarefa ||
+              subFormGroup.value.undSalFixo === unidadeEnum.NaoAplicavel ||
+              (currentFormGroup.value.tpContr !==
+                tpContratoEnum.TrabSemVinculo &&
+                (currentFormGroup.value.infoCompl.infoVinc.tpRegTrab === 1 ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivDiretorComFgts ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivConsTutelar ||
+                  currentFormGroup.value.codCateg ===
+                    codCategEnum.ContribuinteIndivDiretorSemFgts))
+                ? true
+                : false
+            "
+            [p-disabled]="isExcluded"
+          ></po-textarea>
+        </div>
+
+        <div class="po-row buttons-internal">
+          <po-button
+            p-label="Cancelar"
+            p-tooltip="Ao clicar neste botão você o formulário será limpo, sem salvar suas alterações."
+            (p-click)="cancel()"
+          ></po-button>
+
+          <po-button
+            class="po-sm-2"
+            [p-label]="isEdit ? ' Atualizar compl. contrato' : ' Incluir compl. contrato'"
+            p-type="primary"
+            p-icon="po-icon po-icon-plus-circle"
+            [p-disabled]="subFormGroup.invalid || isExcluded"
+            (p-click)="isEdit ? updateAdditionalInformation() : saveAdditionalInformation()"
+          ></po-button>
+        </div>
+      </form>
+
+      <div class="po-row space-btn">
+        <p class="subtitle">
+          Remunerações existentes
+        </p>
+
+        <po-button
+          class="po-offset-md-7 po-offset-lg-7 po-offset-xl-7"
+          p-label=" Incluir compl. contrato"
+          p-icon="po-icon po-icon-plus-circle"
+          (p-click)="create()"
+          p-type="primary"
+          *ngIf="!isSelected && !isExcluded"
+        ></po-button>
+      </div>
+
+      <po-table
+        class="po-sm-12 po-mb-2"
+        [p-height]="formArrayValue.length > 3 ? 170 : null"
+        [p-columns]="columns"
+        [p-items]="rows"
+        [p-actions]="actions"
+        p-hide-columns-manager
+      ></po-table>
+    </po-accordion-item>
+  </po-accordion>
+</div>

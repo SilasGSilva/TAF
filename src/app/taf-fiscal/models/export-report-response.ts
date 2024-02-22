@@ -1,0 +1,35 @@
+export interface ExportReportResponse {
+  branch: string;
+  aliquot: string;
+  totalTaxBase: string;
+  issueDate: string;
+  tax: string;
+  subcontractServiceValue: string;
+  additionalHoldValueNotConfirmed: string;
+  taxDocumentCode: string;
+  observation: string;
+  valueServicesProvidedOnSpecialCondition15Years: string;
+  valueServicesProvidedOnSpecialCondition25Years: string;
+  invoiceSeries: string;
+  taxNumber: string;
+  totalGrossValue: string;
+  company: string;
+  constructionSiteDescription: string;
+  employeeCode: string;
+  typeOfInscriptionEmployee: string;
+  unpaiRetentionAmount: string;
+  grossValue: string;
+  additionalHoldValue: string;
+  CPRB: string;
+  totalTaxes: string;
+  documentType: string;
+  invoice: string;
+  taxBase: string;
+  serviceCode: string;
+  serviceProvidingIndication: string;
+  service: string;
+  valueServicesProvidedOnSpecialCondition20Years: string;
+  additionalUnpaidRetentionAmount: string;
+  taxNumberBranch: string;
+  mainWithHoldingValue: string;
+}

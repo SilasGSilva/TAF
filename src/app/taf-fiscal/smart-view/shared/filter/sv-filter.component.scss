@@ -1,0 +1,11 @@
+.row-space-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .row-button-between {
+    margin-top: 2%;
+    justify-content: space-evenly;
+    align-items: center;
+  }

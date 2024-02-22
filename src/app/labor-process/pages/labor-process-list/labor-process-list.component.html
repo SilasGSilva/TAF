@@ -1,0 +1,100 @@
+<div class="po-wrapper">
+  <po-menu
+    [p-menus]="[
+      { label: 'Processo Trabalhista (S-2500)', link: '/labor-process' },
+      {
+        label: 'Tributos (S-2501)',
+        link: '/labor-process/tax'
+      }
+    ]"
+    p-toogle="true"
+  ></po-menu>
+
+  <po-toolbar
+    *ngIf="isProtheus"
+    p-actions-icon="po-icon-user"
+    [p-actions]="profileActions"
+  ></po-toolbar>
+
+  <po-page-default p-title="Processo trabalhista" [p-breadcrumb]="breadcrumb">
+    <div class="po-row">
+      <p class="subtitle">
+        Através desta tela você poderá incluir, pesquisar, editar e excluir processos trabalhistas.
+      </p>
+
+      <po-button
+        p-label="Incluir processo"
+        [routerLink]="hasVersion ? routerLinkDetail : null"
+        p-type="primary"
+        class="po-sm-12
+        po-md-3
+        po-lg-2
+        po-xl-2
+        po-offset-lg-2
+        po-offset-md-2
+        po-offset-xl-2
+        po-pr-md-0
+        po-p-sm-0"
+        p-icon="po-icon-plus"
+        [p-disabled]="isLoading || !hasVersion"
+      ></po-button>
+    </div>
+
+    <div class="po-row align-flex-center header form-row">
+      <div class="po-sm-12 po-md-5">
+        <form class="po-md-10 po-mt-1">
+          <po-input
+            p-placeholder="Pesquise pelo número do processo"
+            p-maxlength="20"
+            [formControl]="queryFieldNrProcess"
+            (keyup.enter)="loadDataToTable(true)"
+            p-pattern="^[a-zA-Z0-9-.]+$"
+            p-label="Número do processo"
+          ></po-input>
+        </form>
+
+        <div class="button po-mr-4 icons" (click)="loadDataToTable(true)">
+          <span class="po-icon po-icon-search po-field-icon"></span>
+        </div>
+      </div>
+
+      <div class="po-sm-12 po-md-5">
+        <form class="po-md-10 po-mt-1">
+          <po-input
+            p-placeholder="Pesquise pelo CPF do trabalhador"
+            p-mask="999.999.999-99"
+            [formControl]="queryFieldCpf"
+            (keyup.enter)="loadDataToTable(true)"
+            p-label="CPF do trabalhador"
+          >
+          </po-input>
+        </form>
+        <div class="button icons" (click)="loadDataToTable(true)">
+          <span class="po-icon po-icon-search po-field-icon"></span>
+        </div>
+      </div>
+    </div>
+
+    <p class="subtitle po-mt-2 center">
+      Processos existentes
+    </p>
+
+    <div class="po-row">
+      <ng-container *ngIf="actions">
+        <ng-container *ngIf="columns">
+          <po-table
+            class="po-sm-12 po-p-0 hide-show-more"
+            [p-height]="500"
+            [p-columns]="columns"
+            (p-show-more)="onShowMore()"
+            [p-actions]="actions"
+            p-hide-columns-manager="true"
+            [p-items]="result"
+            [p-show-more-disabled]="!hasNext ? true : false"
+            [p-loading]="isLoading"
+          ></po-table>
+        </ng-container>
+      </ng-container>
+    </div>
+  </po-page-default>
+</div>

@@ -1,0 +1,9 @@
+:host ::ng-deep {
+  po-accordion.disabled {
+    .po-accordion-item-header-title, .po-accordion-item-header-icon {
+      color: #CCC !important;
+    }
+
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,40 @@
+<po-loading-overlay
+    *ngIf="modalLoad"
+    p-screen-lock="true">
+</po-loading-overlay>
+
+<po-modal
+  p-click-out="false"
+  p-size="sm"
+  [p-primary-action]="primaryAction"
+  p-hide-close="true"
+  p-title="{{ literals['eventErrorMessage']['titleModal'] }}">
+
+  <ul *ngFor="let errorItem of errorList?.errorTransmission, let i = index">
+    <li>
+      <div class="po-font-text-large-bold">
+        {{ literals['eventErrorMessage']['code'] }}
+      </div>
+      <div class="po-font-text">
+        {{ errorItem.code }}
+      </div>
+    </li>
+    <li>
+      <div class="po-font-text-large-bold">
+        {{ literals['eventErrorMessage']['description'] }}
+      </div>
+      <div class="po-font-text">
+        {{ errorItem.description }}
+      </div>
+    </li>
+    <li>
+      <div class="po-font-text-large-bold">
+        {{ literals['eventErrorMessage']['xmlTag'] }}
+      </div>
+      <div class="po-font-text">
+        {{ errorItem.tagxml }}
+      </div>
+      </li>
+    <hr>
+  </ul>
+</po-modal>

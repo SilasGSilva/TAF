@@ -1,0 +1,132 @@
+<div *ngIf="currentFormGroup" class="content-detail">
+  <form [hidden]="!isSelected" [formGroup]="subFormGroup">
+    <div class="po-row">
+      <po-combo
+        class="po-sm-6"
+        p-label="Código"
+        formControlName="codCateg"
+        [p-options]="optionsCodCateg"
+        [p-required]="
+          currentFormGroup.value.indCateg === optionsAnswerEnum.Yes ||
+          currentFormGroup.value.indNatAtiv === optionsAnswerEnum.Yes ||
+          (subFormGroup.value.natAtividade !== null ||
+            subFormGroup.value.dtMudCategAtiv ||
+            subFormGroup.value.codCateg)
+        "
+        [p-optional]="
+          currentFormGroup.value.indCateg === optionsAnswerEnum.Yes ||
+          currentFormGroup.value.indNatAtiv === optionsAnswerEnum.Yes
+            ? false
+            : true
+        "
+        (p-input-change)="renderCodCateg()"
+        (click)="renderCodCateg()"
+        #codCateg
+      ></po-combo>
+
+      <po-select
+        class="po-sm-3"
+        p-label="Natureza da atividade"
+        formControlName="natAtividade"
+        [p-options]="optionsNatAtividade"
+        [p-optional]="!isNatAtividadeRequired"
+        [p-required]="isNatAtividadeRequired"
+        [p-disabled]="isNatAtividadeDisabled"
+        [class.custom-invalid]="this.currentFormGroup.errors?.invalidValue1"
+      ></po-select>
+
+      <po-datepicker
+        class="po-sm-3"
+        p-label="Data da mudança"
+        formControlName="dtMudCategAtiv"
+        [p-required]="
+          currentFormGroup.value.indCateg === optionsAnswerEnum.Yes ||
+          currentFormGroup.value.indNatAtiv === optionsAnswerEnum.Yes ||
+          (currentFormGroup.value.natAtividade !== null ||
+            currentFormGroup.value.dtMudCategAtiv ||
+            currentFormGroup.value.codCateg)
+        "
+        [p-optional]="
+          currentFormGroup.value.indCateg === optionsAnswerEnum.Yes ||
+          currentFormGroup.value.indNatAtiv === optionsAnswerEnum.Yes
+            ? false
+            : true
+        "
+      >
+      </po-datepicker>
+    </div>
+
+    <div class="po-row">
+      <app-error-message
+        *ngIf="subFormGroup.get('natAtividade').errors?.invalidValue1"
+        class="po-offset-md-6 po-offset-sm-6 po-offset-lg-6 po-offset-xl-6"
+        message="Verifique o valor selecionado, pois está em desacordo com o campo Código"
+      ></app-error-message>
+
+      <app-error-message
+        *ngIf="subFormGroup.get('dtMudCategAtiv').errors?.duplicatedDate"
+        class="po-offset-md-9 po-offset-sm-9 po-offset-lg-9 po-offset-xl-9"
+        message="Esta data já existe nas categorias existentes"
+      ></app-error-message>
+
+      <app-error-message
+        *ngIf="subFormGroup.get('dtMudCategAtiv').errors?.lessThanOrEqualToDtAdmOrig"
+        class="po-offset-md-9 po-offset-sm-9 po-offset-lg-9 po-offset-xl-9"
+        message="Esta data deve ser maior que a data de admissão (ou início)"
+      ></app-error-message>
+
+      <app-error-message
+        *ngIf="subFormGroup.get('dtMudCategAtiv').errors?.lessThanDtAdmOrig"
+        class="po-offset-md-9 po-offset-sm-9 po-offset-lg-9 po-offset-xl-9"
+        message="Esta data deve ser maior ou igual a data de admissão (ou início)"
+      ></app-error-message>
+
+      <app-error-message
+        *ngIf="subFormGroup.get('dtMudCategAtiv').errors?.greaterThanDtDeslig"
+        class="po-offset-md-9 po-offset-sm-9 po-offset-lg-9 po-offset-xl-9"
+        message="Esta data deve ser menor ou igual a data do desligamento"
+      ></app-error-message>
+    </div>
+
+    <div class="po-row buttons-internal">
+      <po-button
+        p-label="Cancelar"
+        p-tooltip="Ao clicar neste botão você o formulário será limpo, sem salvar suas alterações."
+        (p-click)="cancel()"
+      ></po-button>
+
+      <po-button
+        class="po-sm-2"
+        [p-label]="isEdit ? ' Atualizar natureza' : ' Incluir natureza'"
+        p-type="primary"
+        p-icon="po-icon po-icon-plus-circle"
+        (p-click)="isEdit ? updateNatureOfActivity() : saveNatureOfActivity()"
+        [p-disabled]="excluidoERP === 'S' || subFormGroup.invalid"
+      ></po-button>
+    </div>
+  </form>
+
+  <div class="po-row space-btn">
+    <p class="subtitle">
+      Categorias existentes
+    </p>
+
+    <po-button
+      *ngIf="!isSelected && excluidoERP !== 'S'"
+      class="po-offset-md-8 po-offset-lg-8 po-offset-xl-8"
+      p-label=" Incluir natureza"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="create()"
+    ></po-button>
+  </div>
+
+  <po-table
+    class="po-sm-12 po-mb-2"
+    [p-height]="formArrayValue.length > 3 ? 170 : null"
+    [p-columns]="columns"
+    [p-items]="rows"
+    [p-actions]="actions"
+    p-hide-columns-manager="true"
+  ></po-table>
+</div>

@@ -1,0 +1,31 @@
+.display {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.margin-right {
+  width: 100%;
+}
+
+.margin-left {
+  margin: 2%;
+}
+
+.max-width {
+  max-width: 20%;
+  margin-left: 0%;
+}
+
+.content-size {
+  max-width: 40ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 8ch;
+}
+
+.underline-blue {
+  color: blue;
+  text-decoration: underline blue;
+  cursor: pointer;
+}

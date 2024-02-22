@@ -1,0 +1,46 @@
+:host ::ng-deep .po-page-header-title {
+    font-size: 34px;
+    font-family: NunitoSans-ExtraLight;
+    line-height: 48px;
+    font-weight: 200;     
+  }
+
+  align-flex-center {
+    align-items: center;
+  }
+
+  .header {
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    font-family: NunitoSans;    
+    padding: 0px 8px 0px 8px;
+    color: #4A5C60;    
+    margin-bottom: 16px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.center {
+  text-align: center;
+}
+
+.button {  
+  margin-top:20px;
+  padding-left:0px;
+  padding-right:0px;
+}
+
+.padding {
+  padding: 0;
+}
+
+.form-row {
+  align-items: flex-end;
+}
+
+.icons {
+  margin-top:44px;
+}

@@ -1,0 +1,68 @@
+<po-container class="po-p-0 po-sm-12">
+  <div class="flex-end po-row po-mb-2">
+    <po-button
+      p-tooltip="Clique aqui para inserir uma contribuição social neste período."
+      p-label=" Incluir contribuição social"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="create()"
+      p-type="primary"
+      *ngIf="!isSelected"
+      [p-disabled]="excluidoERP === 'S'"
+    >
+    </po-button>
+  </div>
+  <form class="po-sm-12 po-p-0" [hidden]="!isSelected" [formGroup]="subFormGroup">
+    <div class="po-row line-container po-mb-1 po-p-0 po-sm-12">
+      <po-select
+        required="true"
+        p-label="Código de receita"
+        p-placeholder="Selecione o código de receita"
+        class="po-p-0 po-sm-8"
+        [p-options]="optionsTpCR"
+        formControlName="tpCR"
+      >
+      </po-select>
+      <div class="po-sm-4 po-pr-0 po-pb-1">
+        <label class="po-p-0 po-field-title">
+          Valor
+        </label>
+        <input
+          currencyMask
+          maxlength="24"
+          [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+          class="po-p-0 po-input po-mt-1"
+          formControlName="vrCR"
+        />
+      </div>
+    </div>
+    <div class="flex-end po-row po-mb-1">
+      <po-button
+        class="po-sm-2"
+        p-label="Cancelar"
+        p-tooltip="Ao clicar neste botão você o formulário será limpo, sem salvar suas alterações."
+        (p-click)="cancel()"
+      ></po-button>
+      <po-button
+        p-tooltip="Clique aqui para confirmar a inserção da contribuição social neste período."
+        class="po-sm-2"
+        [p-label]="isEdit ? ' Editar contribuição' : ' Salvar contribuição'"
+        p-icon="po-icon po-icon-plus-circle"
+        (p-click)="isEdit ? updateSocialContrib() : saveSocialContrib()"
+        [p-disabled]="subFormGroup.invalid"
+        p-type="primary"
+      ></po-button>
+    </div>
+  </form>
+  <p class="subtitle">
+    Contribuições sociais cadastradas para este período
+  </p>
+  <po-table
+    class="po-sm-12 po-mb-2"
+    [p-height]="formArrayValue.length > 3 ? 170 : null"
+    [p-columns]="columns"
+    [p-items]="rows"
+    [p-actions]="actions"
+    p-hide-columns-manager="true"
+  >
+  </po-table>
+</po-container>

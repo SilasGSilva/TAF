@@ -1,0 +1,102 @@
+<div *ngIf="!taffull">
+
+  <div (mouseover)="changeBackgroundRh=true" (mouseout)="changeBackgroundRh=false">
+    <po-widget
+      [p-primary]="changeBackgroundRh"
+      (p-click)="openSyntheticModal()"
+      class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-20"
+      p-height="150">
+  
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityFgtsRh }}
+      </p>
+  
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['fgtsReport']['fgtsRhValue'] }}
+      </p>  
+    </po-widget>
+  </div>
+  
+  <div (mouseover)="changeBackgroundRet=true" (mouseout)="changeBackgroundRet=false">
+    <po-widget
+      [p-primary]="changeBackgroundRet"
+      (p-click)="openSyntheticModal()"
+      class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-20"
+      p-height="150">
+  
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityFgtsGov }}
+      </p>
+  
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['fgtsReport']['fgtsGovernmentValue'] }}
+      </p>  
+    </po-widget>
+  </div>
+</div>
+
+<div *ngIf="taffull">
+
+  <div (mouseover)="changeBackgroundRh=true" (mouseout)="changeBackgroundRh=false">
+    <po-widget
+      [p-primary]="changeBackgroundRh"
+      (p-click)="openSyntheticModal()"
+      class="po-lg-4 po-xl-4 po-md-12 po-sm-12 space-20"
+      p-height="150">
+  
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityFgtsRh }}
+      </p>
+  
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['fgtsReport']['fgtsRhValue'] }}
+      </p>  
+    </po-widget>
+  </div>
+
+  <div (mouseover)="changeBackgroundTaf=true" (mouseout)="changeBackgroundTaf=false">
+    <po-widget
+      [p-primary]="changeBackgroundTaf"
+      (p-click)="openSyntheticModal()"
+      class="po-lg-4 po-xl-4 po-md-12 po-sm-12 space-20"
+      p-height="150">
+  
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityFgtsTaf }}
+      </p>
+  
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['fgtsReport']['fgtsTafValue'] }}
+      </p>  
+    </po-widget>
+  </div>
+  
+  <div (mouseover)="changeBackgroundRet=true" (mouseout)="changeBackgroundRet=false">
+    <po-widget
+      [p-primary]="changeBackgroundRet"
+      (p-click)="openSyntheticModal()"
+      class="po-lg-4 po-xl-4 po-md-12 po-sm-12 space-20"
+      p-height="150">
+  
+      <p class="po-font-text-large-bold po-text-center space-30 font-main-card">
+        {{ quantityFgtsGov }}
+      </p>
+  
+      <p class="po-font-text-large-bold po-text-center space-20">
+        {{ literals['fgtsReport']['fgtsGovernmentValue'] }}
+      </p>  
+    </po-widget>
+  </div>
+</div>
+  
+<po-modal
+  p-click-out="true"
+  p-size="auto"
+  [p-primary-action]="primaryAction"
+  p-title="{{ literals['inssReport']['syntheticModalTitle'] }}">
+  <app-fgts-report-card-synthetic-dashboard
+    [syntheticValues]="syntheticValues"
+    [taffull]="taffull"
+    [syntheticBasis]="syntheticBasis">
+  </app-fgts-report-card-synthetic-dashboard>
+</po-modal>

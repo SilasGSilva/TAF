@@ -1,0 +1,23 @@
+<div class="align-items">
+  <po-button *ngIf="!totEvents.includes(event)"
+    class="po-pt-1"
+    [p-loading]="isLoadingButton"
+    [p-label]="literals['exportReport']['export']"
+    [p-disabled]="isDisableButton()"
+    (p-click)="getReportItems()">
+  </po-button>
+
+  <po-dropdown class="po-mr-3" *ngIf="totEvents.includes(event)"
+    [p-label]="literals['exportReport']['titleDropDownButton']"
+    [p-actions]="actions"
+    [p-disabled]="isDisableButton()">
+  </po-dropdown>
+
+</div>
+<app-messenger></app-messenger>
+
+<po-loading-overlay
+  *ngIf="loadingOverlay"
+  p-screen-lock="true"
+  [p-text]= "literals['exportReport']['exporting']">
+</po-loading-overlay>

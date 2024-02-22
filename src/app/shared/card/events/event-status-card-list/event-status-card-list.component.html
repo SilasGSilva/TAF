@@ -1,0 +1,10 @@
+<div *ngFor="let card of cards, let i = index">
+  <app-event-status-card
+    class="po-md-3"
+    [taf-type]="card.type"
+    [taf-label]="card.label"
+    (taf-clicked)="emitCardSelected($event)"
+    [taf-value]="card.quant"
+    [taf-primary]="card.selected">
+  </app-event-status-card>
+</div>

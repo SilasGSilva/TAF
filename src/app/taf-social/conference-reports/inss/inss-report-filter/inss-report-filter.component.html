@@ -1,0 +1,262 @@
+<div class="space-50">
+  <po-widget class="po-lg-12 po-xl-12 po-md-12 po-sm-12">
+    <form class="po-row" [formGroup]="formFilter">
+      <div class="po-lg-8 po-xl-8 po-md-12 po-sm-12">
+        <po-input
+          class="po-lg-4 po-xl-3 po-md-12 po-sm-12"
+          name="period"
+          formControlName="period"
+          p-placeholder="AAAA/MM"
+          p-mask="9999/?99"
+          p-pattern="^(19[0-9]{2}|2[0-9]{3})(0[1-9]|1[0-2])?$"
+          p-required="true"
+          p-auto-focus="true"
+          p-icon="po-icon po-icon-calendar"
+          [p-label]="literals['inssReport']['period']"
+          (p-change)="onChangePeriodSelect($event, 'period', 'modalPeriod')"
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+        <po-multiselect
+          class="po-lg-4 po-xl-4 po-md-12 po-sm-12"
+          name="establishment"
+          formControlName="establishment"
+          [p-label]="literals['inssReport']['establishment']"
+          [p-options]="listEstablishment"
+          (p-change)="onChangeMultiSelect(
+              'establishment',
+              $event,
+              'establishment',
+              'modalEstablishment'
+            )
+          "
+          [p-disabled]="disabledInputs"
+        >
+        </po-multiselect>
+        <po-switch
+          class="po-lg-4 po-xl-4 po-md-12 po-sm-12"
+          name="differencesOnly"
+          formControlName="differencesOnly"
+          [p-label]="literals['inssReport']['differencesOnly']"
+          [p-label-off]="literals['inssReport']['no']"
+          [p-label-on]="literals['inssReport']['yes']"
+          (p-change)="
+            onChangeDivergencesSelect(
+              $event,
+              'differencesOnly',
+              'modalDifferencesOnly'
+            );
+            applyFilters(false, true)
+          "
+          [p-disabled]="disabledInputs"
+        >
+        </po-switch>
+      </div>
+      <div class="po-lg-4 po-xl-4 po-md-12 po-sm-12 space-20">
+        <po-button
+          class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-09"
+          name="advancedSearch"
+          [p-label]="literals['inssReport']['advancedSearch']"
+          (p-click)="advancedSearch()"
+          [p-disabled]="disabledInputs"
+        >
+        </po-button>
+        <po-button
+          class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-09"
+          name="applyFilters"
+          [p-label]="literals['inssReport']['applyFilters']"
+          (p-click)="applyFilters()"
+          [p-disabled]="disableButton"
+          [p-loading]="loadFilter"
+        >
+        </po-button>
+      </div>
+    </form>
+    <div class="po-row po-xl-12 po-lg-12 po-md-12 po-sm-12 space-05">
+      <div class="po-xl-6 po-lg-6 po-md-12 po-sm-12">
+        <app-vmessage
+          class="po-lg-12 po-xl-12 po-md-12 po-sm-12"
+          [text]="literals['inssReport']['invalidPeriod']"
+          *ngIf="formFilter.get('period').errors?.pattern"
+        >
+        </app-vmessage>
+      </div>
+    </div>
+    <div class="po-row po-lg-12 po-xl-12 po-md-12 po-sm-12">
+      <po-disclaimer-group
+        class="po-row po-lg-12 po-xl-12 po-md-12 po-sm-12"
+        [p-disclaimers]="selectedFilters"
+        (p-change)="onChangeDisclaimerSelect($event)"
+        (p-remove)="onRemoveEvents($event)"	
+        (p-remove-all)="onClean()"
+        [p-hide-remove-all]="disabledInputs"
+      >
+      </po-disclaimer-group>
+
+      <div
+        *ngIf="showFilterAlert"
+        class="po-xl-12 po-lg-12 po-md-12 po-sm-12 space-10"
+        style="text-align: center; color: #C64840;"
+      >
+        {{ literals['inssReport']['divergentFilter'] }}
+      </div>
+    </div>
+  </po-widget>
+  <po-modal
+    name="modalAdvancedSearch"
+    p-size="md"
+    p-hide-close="true"
+    [p-title]="literals['inssReport']['advancedSearch']"
+    [p-primary-action]="confirm"
+    [p-secondary-action]="close"
+  >
+    <form [formGroup]="formFilterModal">
+      <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row">
+        <po-multiselect
+          class="po-lg-6 po-xl-6 po-md-12 po-sm-12"
+          name="modalEstablishment"
+          formControlName="modalEstablishment"
+          [p-label]="literals['inssReport']['establishment']"
+          [p-options]="listEstablishment"
+          (p-change)="onChangeMultiSelect(
+              'modalEstablishment',
+              $event,
+              'modalEstablishment',
+              'establishment'
+            )
+          "
+          [p-disabled]="disabledInputs"
+        >
+        </po-multiselect>
+        <po-multiselect
+          class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+          name="modalLotation"
+          formControlName="modalLotation"
+          [p-label]="literals['inssReport']['lotation']"
+          [p-options]="listLotations"
+          (p-change)="onChangeMultiSelect('lotation', $event)"
+          [p-disabled]="disabledInputs"
+        >
+        </po-multiselect>
+      </div>
+      <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+        <po-input
+          class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+          name="modalPeriod"
+          formControlName="modalPeriod"
+          p-placeholder="AAAA/MM"
+          p-mask="9999/?99"
+          p-pattern="^(19[0-9]{2}|2[0-9]{3})(0[1-9]|1[0-2])?$"
+          p-required="true"
+          p-clean="true"
+          p-icon="po-icon po-icon-calendar"
+          [p-label]="literals['inssReport']['period']"
+          (p-change)="onChangePeriodSelect($event, 'modalPeriod', 'period')"
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+        <po-switch
+          class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+          name="modalDifferencesOnly"
+          formControlName="modalDifferencesOnly"
+          [p-label]="literals['inssReport']['differencesOnly']"
+          [p-label-off]="literals['inssReport']['no']"
+          [p-label-on]="literals['inssReport']['yes']"
+          (p-change)="
+            onChangeDivergencesSelect(
+              $event,
+              'modalDifferencesOnly',
+              'differencesOnly'
+            );
+            applyFilters(true, true)
+          "
+          [p-disabled]="disabledInputs"
+        >
+        </po-switch>
+        <app-vmessage
+          class="po-xl-4 po-lg-4 po-md-12 po-sm-12 po-row space-05"
+          [text]="literals['inssReport']['invalidPeriod']"
+          *ngIf="formFilterModal.get('modalPeriod').errors?.pattern"
+        >
+        </app-vmessage>
+      </div>
+      <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+        <po-input
+          class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+          name="modalRegistration"
+          formControlName="modalRegistration"
+          p-clean="true"
+          [p-label]="literals['inssReport']['esocialRegistration']"
+          (p-change)="onChangeRegistrationSelect($event)"
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+
+        <po-multiselect
+          class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+          formControlName="modalCategory"
+          name="modalCategory"
+          [p-label]="literals['inssReport']['esocialCategory']"
+          [p-options]="categories"
+          (p-change)="onChangeMultiSelect('categories', $event)"
+          [p-disabled]="disabledInputs"
+        >
+        </po-multiselect>
+      </div>
+      <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+        <div class="po-xl-6 po-lg-6 po-md-6 po-sm-6">
+          <po-input
+            name="modalCpf"
+            formControlName="modalCpf"
+            p-placeholder="999.999.999-99"
+            p-clean="true"
+            [p-label]="literals['inssReport']['cpf']"
+            p-mask="999.999.999-99"
+            (p-change)="onChangeCpfSelect($event)"
+            [p-disabled]="disabledInputs"
+          >
+          </po-input>
+          <app-vmessage
+            [text]="literals['inssReport']['invalidCpf']"
+            *ngIf="formFilterModal.get('modalCpf').getError('cpfNotValid')"
+          >
+          </app-vmessage>
+        </div>
+        <div class="po-xl-6 po-lg-6 po-md-6 po-sm-6">
+          <po-input
+            *ngIf="!isTafFull"
+            name="modalPageSize"
+            formControlName="modalPageSize"
+            p-pattern="^[1-9]\d*$"
+            p-placeholder="99999"
+            p-mask="99999"
+            p-required="true"
+            p-clean="true"
+            [p-label]="literals['inssReport']['numberOfLines']"
+            (p-change)="onChangeNumberOfLinesSelect($event)"
+            [p-disabled]="disabledInputs"
+          >
+          </po-input>
+          <app-vmessage
+            class="po-xl-12 po-lg-12 po-md-12 po-sm-12"
+            [text]="literals['inssReport']['invalidPageSize']"
+            *ngIf="
+              formFilterModal.get('modalPageSize').errors?.pattern ||
+              formFilterModal.get('modalPageSize').errors?.required
+            "
+          >
+          </app-vmessage>
+        </div>
+      </div>
+    </form>
+
+    <div
+      *ngIf="showFilterAlert"
+      class="po-xl-12 po-lg-12 po-md-12 po-sm-12 space-10"
+      style="text-align: justify; color: #C64840;"
+    >
+      {{ literals['inssReport']['divergentFilter'] }}
+    </div>
+  </po-modal>
+</div>
+<app-legacy-status-environment-modal></app-legacy-status-environment-modal>

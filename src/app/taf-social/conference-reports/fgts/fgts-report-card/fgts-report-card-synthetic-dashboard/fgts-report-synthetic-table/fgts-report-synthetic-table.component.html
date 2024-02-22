@@ -1,0 +1,53 @@
+<p class="po-row po-font-text-large space-20 blueColor">
+  {{ literals['fgtsReport']['fgtsDeposits'] }}
+</p>
+<hr />
+<table>
+  <tr>
+    <th></th>
+    <th class="po-info-label">{{ literals['fgtsReport']['rhValue'] }}</th>
+    <th *ngIf="taffull" class="po-info-label">
+      {{ literals['fgtsReport']['tafValue'] }}
+    </th>
+    <th class="po-info-label">
+      {{ literals['fgtsReport']['governmentValue'] }}
+    </th>
+  </tr>
+  <tr>
+    <td class="po-info-label">
+      {{ literals['fgtsReport']['fgtsMensalDeposit'] }}
+    </td>
+    <td class="po-font-text-large">{{ fgtsValue }}</td>
+    <td *ngIf="taffull" class="po-font-text-large">{{ fgtsTafValue }}</td>
+    <td class="po-font-text-large">{{ fgtsRetValue }}</td>
+  </tr>
+  <tr>
+    <td class="po-info-label">{{ literals['fgtsReport']['fgts13Deposit'] }}</td>
+    <td class="po-font-text-large">{{ fgts13Value }}</td>
+    <td *ngIf="taffull" class="po-font-text-large">{{ fgts13TafValue }}</td>
+    <td class="po-font-text-large">{{ fgts13RetValue }}</td>
+  </tr>
+  <tr>
+    <td class="po-info-label">
+      {{ literals['fgtsReport']['fgtsTerminationDeposit'] }}
+    </td>
+    <td class="po-font-text-large">{{ fgtsRescissionValue }}</td>
+    <td *ngIf="taffull" class="po-font-text-large">
+      {{ fgtsRescissionTafValue }}
+    </td>
+    <td class="po-font-text-large">{{ fgtsRescissionRetValue }}</td>
+  </tr>
+</table>
+
+<hr />
+<p class="po-row po-font-text-large space-20 blueColor">
+  {{ literals['fgtsReport']['fgtsBasisValues'] }}
+</p>
+<hr />
+<po-table
+  p-hide-text-overflow="true"
+  p-sort="true"
+  [p-items]="syntheticBasis"
+  [p-columns]="columnsSynthetic"
+>
+</po-table>

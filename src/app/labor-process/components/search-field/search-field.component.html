@@ -1,0 +1,44 @@
+<div>
+  <div class="po-field-container">
+    <div class="po-field-container-title">
+      <span class="po-field-title">{{ label }}</span>
+    </div>
+    <div class="po-field-container-content" style="flex: 1">
+      <div class="search-icon" (click)="submitButton.click()" *ngIf="!disabled">
+        <span class="po-icon po-icon-search po-field-icon"></span>
+      </div>
+      <div class="search-icon" *ngIf="disabled">
+        <span class="po-icon po-icon-search po-field-icon-disabled"></span>
+      </div>
+      <form (ngSubmit)="onSubmit()" role="search">
+        <input
+          name="searchValue"
+          type="text"
+          class="po-input po-input-icon-right"
+          [placeholder]="placeholder ?? 'Busca'"
+          [ngModel]="value"
+          (ngModelChange)="value = $event"
+          [disabled]="disabled"
+          autocomplete="off"
+          [attr.aria-label]="placeholder ?? 'Busca'"
+          [readonly]="readonly"
+          (keyup.enter)="onSubmit()"
+        />
+        <button [hidden]="true" type="submit" #submitButton></button>
+      </form>
+    </div>
+    <div class="advanced-search-container" *ngIf="showAdvancedSearch">
+      <span
+        tabindex="0"
+        class="advanced-search"
+        (click)="searchAdvanced.emit()"
+        *ngIf="!disabled"
+      >
+        Busca avançada
+      </span>
+      <span tabindex="0" class="advanced-search-disabled" *ngIf="disabled">
+        Busca avançada
+      </span>
+    </div>
+  </div>
+</div>

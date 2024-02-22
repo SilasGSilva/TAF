@@ -1,0 +1,25 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "paths": {
+      "util/*": ["./src/util/*"],
+      "app/*": ["./src/app/*"],
+      "auth/*": ["app/auth/*"],
+      "core/*": ["app/core/*"],
+      "shared/*": ["app/shared/*"],
+      "taf-fiscal/*": ["app/taf-fiscal/*"],
+      "literals": ["app/core/i18n/literal.service.ts"]
+    },
+    "sourceMap": true,
+    "baseUrl": "src",
+    "outDir": "./dist/out-tsc",
+    "declaration": false,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2020",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"]
+  }
+}

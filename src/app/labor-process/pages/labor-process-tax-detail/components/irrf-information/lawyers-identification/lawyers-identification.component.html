@@ -1,0 +1,72 @@
+<div class="flex-end po-row po-mt-1 po-mb-1">
+  <po-button
+    *ngIf="canCreateNewItem"
+    class="po-sm-2"
+    p-label=" Incluir advogado"
+    p-type="primary"
+    p-icon="po-icon po-icon-plus-circle"
+    (p-click)="create()"
+    [p-disabled]="isExcluded"
+  ></po-button>
+</div>
+
+<form class="po-sm-12 po-mb-3" [hidden]="!isSelected" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-sm-12 po-p-0">
+    <po-select
+      class="po-sm-4"
+      p-label="Tipo de inscrição"
+      formControlName="tpInsc"
+      [p-options]="optionsTpInsc"
+      p-required
+      [p-disabled]="isExcluded"
+    ></po-select>
+
+    <po-input
+      p-label="Número de inscrição do advogado"
+      class="po-sm-4"
+      formControlName="nrInsc"
+      [p-mask]="maskNrInsc"
+      p-required
+      [p-disabled]="isDisabledNrInsc"
+    ></po-input>
+
+    <app-financial-input
+      class="po-sm-4"
+      fieldTitle="Valor da despesa com o advogado"
+      [control]="subFormGroup.get('vlrAdv')"
+      [isRequired]="false"
+      [decimalLength]="14"
+      [isDisabled]="isExcluded"
+    ></app-financial-input>
+  </div>
+
+  <div class="flex-end po-row po-mb-1">
+    <po-button
+      class="po-sm-2"
+      p-label="Cancelar"
+      (p-click)="cancel()"
+    ></po-button>
+
+    <po-button
+      class="po-sm-2"
+      [p-label]="isEdit ? ' Editar advogado' : ' Incluir advogado'"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="isEdit ? update() : save()"
+      [p-disabled]="subFormGroup.invalid"
+    ></po-button>
+  </div>
+</form>
+
+<p class="subtitle po-mb-1">
+  Advogados existentes
+</p>
+
+<po-table
+  class="po-sm-12 po-mb-2"
+  [p-height]="formArrayValue.length > 3 ? 170 : null"
+  [p-columns]="columns"
+  [p-items]="rows"
+  [p-actions]="actions"
+  p-hide-columns-manager
+></po-table>

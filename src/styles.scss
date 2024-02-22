@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+.textarea
+  > po-field-container
+  > .po-field-container
+  > .po-field-container-content
+  > textarea {
+  background-color: white;
+  color: black;
+}
+
+@media only screen and (max-width: 1366px) {
+  .table-height > po-table > po-container > .po-container {
+    height: 200px !important;
+  }
+}

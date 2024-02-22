@@ -1,0 +1,19 @@
+.container {
+    color: #c64840;
+    display: flex;
+    align-items: center;
+    line-height: 14px;
+    padding-left: 1px;
+  }
+  
+  .po-icon {
+    padding-right: 10px;
+  }
+  
+  .message, .po-icon  {
+    font-size: 12px;
+  }
+  
+  .top {
+    overflow: hidden;
+  }

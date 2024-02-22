@@ -1,0 +1,164 @@
+<div class="po-pt-5">
+  <po-widget class="po-sm-12 po-md-12 po-lg-12 po-xl-12" p-no-shadow="true">
+    <div class="po-sm-12 po-md-12 po-lg-12 po-xl-12">
+      <form [formGroup]="formFilter">
+        <po-multiselect
+          class="po-sm-12 po-md-6 po-lg-2 po-xl-2"
+          [p-options]="listBranch"
+          [p-literals]="customLiterals"
+          name="branch"
+          formControlName="branch"
+          p-filter-mode="contains"
+          (p-change)="onChangeMultiSelect('branch', $event)"
+          [p-label]="literals['auditEsocial']['branchs']"
+          [p-required]="true"
+        >
+        </po-multiselect>
+
+        <po-input
+          class="po-sm-12 po-md-6 po-lg-2 po-xl-2"
+          name="period"
+          formControlName="period"
+          p-icon="po-icon po-icon-calendar"
+          p-placeholder="AAAA/MM"
+          p-mask="9999/99"
+          [p-required]="true"
+          (p-change)="onChangePeriod($event)"
+          [p-label]="literals['auditEsocial']['period']"
+          (p-enter)="disableButtonApplyFilters = true"
+          (p-blur)="validateRequiredFields()"
+        >
+        </po-input>
+
+        <po-multiselect
+          [ngClass]="
+            unauthorizedEventMessage
+              ? 'po-sm-11 po-md-5 po-lg-4 po-xl-4'
+              : 'po-sm-12 po-md-6 po-lg-4 po-xl-4'
+          "
+          name="event"
+          formControlName="event"
+          p-filter-mode="contains"
+          [p-literals]="customLiterals"
+          [p-label]="literals['auditEsocial']['events']"
+          [p-options]="listEvent"
+          (p-change)="onChangeMultiSelect('event', $event)"
+          p-type="link"
+          [p-optional]="true"
+        >
+        </po-multiselect>
+
+        <div
+          *ngIf="hasUnauthorizedEvents"
+          class="po-sm-1 po-md-1 po-lg-1 po-xl-1"
+        >
+          <span
+            #nonAuthorizationAlert
+            class="po-icon po-icon-exclamation iconUnauthorizedEvents"
+          ></span>
+
+          <po-popover
+            p-trigger="hover"
+            p-position="top"
+            [p-target]="nonAuthorizationAlert"
+          >
+            <p class="po-font-text-large-bold po-m-1 redColor">
+              {{ unauthorizedEventMessage }}
+            </p>
+          </po-popover>
+        </div>
+
+        <po-multiselect
+          class="po-sm-12 po-md-6 po-lg-2 po-xl-2"
+          name="transmission"
+          formControlName="transmission"
+          [p-label]="literals['auditEsocial']['transmissionStatus']"
+          [p-options]="listStatus"
+          (p-change)="onChangeMultiSelect('transmission', $event)"
+          [p-optional]="true"
+        >
+        </po-multiselect>
+
+        <po-multiselect
+          [ngClass]="
+            unauthorizedEventMessage
+              ? 'po-sm-12 po-md-12 po-lg-2 po-xl-2'
+              : 'po-sm-12 po-md-12 po-lg-2 po-xl-2'
+          "
+          name="deadline"
+          formControlName="deadline"
+          p-filter-mode="contains"
+          [p-label]="literals['auditEsocial']['deadlineStatus']"
+          [p-options]="listDeadline"
+          (p-change)="onChangeMultiSelect('deadline', $event)"
+          [p-optional]="true"
+        >
+        </po-multiselect>
+
+        <div class="po-sm-12 po-md-12 po-lg-12 po-xl-12" *ngIf="showMoreFilter">
+          <po-widget [p-title]="literals['auditEsocial']['onlyNotPeriodics']">
+            <po-datepicker
+              class="po-sm-12 po-md-4 po-lg-3 po-xl-3"
+              name="periodFrom"
+              p-format="dd/mm/yyyy"
+              p-placeholder="DD/MM/AAAA"
+              formControlName="periodFrom"
+              (p-change)="onChangeNotPeriodics($event, 'periodFrom')"
+              [p-clean]="false"
+              [p-required]="true"
+              p-locale="pt"
+              [p-label]="literals['auditEsocial']['periodFrom']"
+              (p-blur)="validateRequiredFields()"
+            >
+            </po-datepicker>
+
+            <po-datepicker
+              class="po-sm-12 po-md-4 po-lg-3 po-xl-3"
+              name="periodTo"
+              p-format="dd/mm/yyyy"
+              p-placeholder="DD/MM/AAAA"
+              formControlName="periodTo"
+              (p-change)="onChangeNotPeriodics($event, 'periodTo')"
+              [p-clean]="false"
+              [p-required]="true"
+              [p-min-date]="onCheckMinPeriod()"
+              p-locale="pt"
+              [p-label]="literals['auditEsocial']['periodTo']"
+              [p-error-pattern]="literals['auditEsocial']['invalidDate']"
+              (p-blur)="validateRequiredFields()"
+            >
+            </po-datepicker>
+          </po-widget>
+        </div>
+        <div class="po-sm-12 po-md-12 po-lg-12 po-xl-12">
+          <po-button
+            class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-pt-4 float-right po-pb-2"
+            [p-label]="labelButtonFilter"
+            (p-click)="applyFilter()"
+            [p-disabled]="disableButtonApplyFilters"
+            [p-loading]="loadFilter"
+          >
+          </po-button>
+
+          <po-button
+            class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-offset-lg-2 po-offset-xl-2 po-pt-4 float-right po-pb-2"
+            [p-label]="buttonTitle"
+            (p-click)="showFilter()"
+          >
+          </po-button>
+        </div>
+      </form>
+    </div>
+
+    <div class="po-row">
+      <po-disclaimer-group
+        class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+        (p-change)="onChangeDisclaimerSelect()"
+        (p-remove)="onRemoveEvents($event)"
+        (p-remove-all)="onClean()"
+        [p-disclaimers]="selectedFilters"
+      >
+      </po-disclaimer-group>
+    </div>
+  </po-widget>
+</div>

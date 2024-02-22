@@ -1,0 +1,19 @@
+<po-chart
+  [p-title]="title"
+  [p-series]="chartInfo"
+  [p-type]="chartType"
+  (p-series-click)="prepareModal($event)">
+</po-chart>
+<po-modal
+  [p-click-out]="true"
+  p-size="auto"
+  [p-title]="modalTitle"
+  [p-primary-action]="primaryAction">
+  <app-audit-table
+    [itemsTable]="chartSliceTableItems"
+    [loadingTable]="loadingTable"
+    [hasNext]="hasNext"
+    [filterStatus]="filterStatus"
+    (showMore)="showMoreRegisters($event)">
+  </app-audit-table>
+</po-modal>

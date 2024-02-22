@@ -1,0 +1,34 @@
+<p
+  *ngIf="statusEnvironment as statusInfo; else loadingStatusInfo"
+  class="po-font-text-smaller"
+>
+  {{
+    (statusInfo?.statusEnvironmentSocial
+      ? this.literals['systemInfos'][(statusInfo?.statusEnvironmentSocial)]
+      : '') +
+      (statusInfo?.versionLayoutSocial
+        ? ' | ' +
+          this.literals['systemInfos']['layout'] +
+          ': ' +
+          this.literals['systemInfos'][(statusInfo?.versionLayoutSocial)]
+        : '') +
+      (statusInfo?.tssEntity
+        ? ' | ' +
+          this.literals['systemInfos']['entity'] +
+          ': ' +
+          statusInfo?.tssEntity
+        : '') +
+      (statusInfo?.versionTSS
+        ? ' | ' +
+          this.literals['systemInfos']['tss'] +
+          ': ' +
+          statusInfo?.versionTSS
+        : '')
+  }}
+</p>
+
+<ng-template #loadingStatusInfo>
+  <p class="po-font-text-smaller">
+    {{ this.literals['systemInfos']['loadingStatusInfo'] }}
+  </p>
+</ng-template>

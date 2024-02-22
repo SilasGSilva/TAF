@@ -1,0 +1,70 @@
+<div class="po-lg-3 po-xl-3 po-pt-5">
+  <po-dropdown
+    [p-label]="literals['irrfReport']['export']"
+    [p-actions]="exportButtonAction">
+  </po-dropdown>
+</div>
+<div class="po-offset-lg-6 po-offset-xl-6 po-xl-3 po-lg-3 po-md-5 po-sm-12 po-mt-4">
+  <po-input
+    [p-placeholder]="literals['irrfReport']['infNameCpf']"
+    p-icon="po-icon po-icon-search"
+    (keyup)="debounce.next($event.target.value)">
+  </po-input>
+</div>
+
+<div class="po-lg-12 po-xl-12 po-md-12 po-sm-12">
+  <po-table
+    [p-columns]="columns"
+    [p-items]="itemsTable | filterPipe: filter"
+    [p-sort]="true"
+    [p-striped]="true"
+    [p-loading]="loadingTable"
+    [p-show-more-disabled]="hasNext"
+    (p-show-more)="showMoreRegisters($event)"
+    [p-loading-show-more]="loadingShowMore"
+    [p-hide-text-overflow]="true"
+    (p-expanded)="expandEmployeeDemonstratives($event)"
+    p-height="300"
+    p-container="shadow">
+    <ng-template
+      p-table-row-template
+      let-rowItem>
+      <detail-row [row]="rowItem">
+        <po-table
+          [p-columns]="detailColumns"
+          [p-items]="rowItem.demonstrative"
+          [p-hide-columns-manager]="true">
+        </po-table>   
+      </detail-row>
+    </ng-template>
+  </po-table>
+
+  <div class="faqButton">
+    <span
+      #faqButton
+      class="po-clickable po-icon po-icon-help"
+      (click)="openModalFAQ()"
+      (mouseover)="popup.toggle()"
+      (mouseout)="popup.toggle()">
+    </span>
+
+    <po-popup
+      #popup
+      p-position="left"
+      [p-target]="faqButton"
+      [p-actions]="faqModal.buttonPopUp">
+    </po-popup>
+  </div>
+</div>
+
+<app-faq-modal
+  [title]="faqModal.title"
+  [information-summary]="faqModal.summary"
+  [faq-questions-sections]="faqModal.questions"
+  [more-informations]="faqModal.moreInformations">
+</app-faq-modal>
+
+<app-irrf-report-table-modal
+  [is-taf-full]="isTAFFull"
+  (export-report)="exportReport(false, $event)">
+</app-irrf-report-table-modal>

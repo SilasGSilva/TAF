@@ -1,0 +1,13 @@
+<div [class]="componentClass">
+  <label class="po-field-title">{{ fieldTitle }}</label>
+  <span *ngIf="!isRequired" class="po-field-optional">(Opcional)</span>
+  <input
+    [class]="'po-input ' + inputClass"
+    [title]="inputTitleText"
+    [formControl]="control"
+    [maxlength]="maxLength"
+    currencyMask
+    [options]="maskOptions"
+    [required]="isRequired"
+  />
+</div>

@@ -1,0 +1,175 @@
+<form *ngIf="formGroup" [formGroup]="formGroup">
+  <div formGroupName="infoProcesso">
+    <p class="subtitle">
+      Informações de identificação do contribuinte (responsável direto), caso tenha havido imposição de responsabilidade indireta.
+    </p>
+
+    <div formGroupName="ideResp">
+      <div class="po-row line-container">
+        <po-combo
+          class="po-sm-3"
+          p-label="Tipo inscrição"
+          formControlName="tpInsc"
+          [p-options]="optionsTpInsc"
+          p-required="false"
+          p-optional
+          [p-disabled]="isExcluded"
+          (p-input-change)="renderTpInsc()"
+          (click)="renderTpInsc()"
+          #tpInsc
+        ></po-combo>
+
+        <po-input
+          class="po-sm-3"
+          p-label="Número inscrição"
+          formControlName="nrInsc"
+          [p-mask]="maskNrInsc"
+          p-required="false"
+          p-optional
+        ></po-input>
+      </div>
+    </div>
+
+    <div class="po-row">
+      <app-error-message
+        class="po-offset-md-3 po-offset-sm-3 po-offset-lg-3 po-offset-xl-3"
+        *ngIf="formGroup.get('infoProcesso.ideResp.nrInsc').errors?.cnpj"
+        message="CNPJ inválido"
+      ></app-error-message>
+
+      <app-error-message
+        class="po-offset-md-3 po-offset-sm-3 po-offset-lg-3 po-offset-xl-3"
+        *ngIf="formGroup.get('infoProcesso.ideResp.nrInsc').errors?.cpf"
+        message="CPF inválido"
+      ></app-error-message>
+    </div>
+
+    <p class="subtitle">
+      Informações do processo judicial ou de demanda submetida à Comissão de Conciliação Prévia (CCP) ou ao Núcleo Intersindical de Conciliação Trabalhista (NINTER).
+    </p>
+
+    <po-combo
+      class="po-sm-3"
+      p-label="Origem"
+      formControlName="origem"
+      [p-options]="optionsOrigem"
+      p-required
+      [p-disabled]="isEdit || isExcluded"
+      (p-change)="changeOrigem()"
+      (p-input-change)="renderOrigem()"
+      (click)="renderOrigem()"
+      #origem
+    ></po-combo>
+
+    <po-input
+      p-label="Número do processo"
+      class="po-sm-3"
+      formControlName="nrProcTrab"
+      [p-maxlength]="fieldLengthNrProcTrab"
+      [p-minlength]="fieldLengthNrProcTrab"
+      [p-tooltip]="tooltipMessageNrProcTrab"
+      p-tooltip-position="right"
+      p-pattern="^[a-zA-Z0-9-.]+$"
+      p-required
+      [p-disabled]="isEdit || isExcluded"
+    ></po-input>
+
+    <div class="text-area">
+      <po-textarea
+        p-label="Observação"
+        formControlName="obsProcTrab"
+        p-required="false"
+        p-optional
+        [p-disabled]="isExcluded"
+      ></po-textarea>
+    </div>
+
+    <p class="subtitle">
+      Informações complementares
+    </p>
+
+    <div formGroupName="dadosCompl">
+      <div class="po-row line-container" formGroupName="infoProcJud">
+        <po-datepicker
+          class="po-sm-3"
+          p-label="Data da sentença"
+          formControlName="dtSent"
+          [p-max-date]="maxDate"
+          p-required
+          [p-disabled]="isDisabledInfoProcJud || isExcluded"
+        ></po-datepicker>
+
+        <po-combo
+          class="po-sm-3"
+          p-label="UF"
+          formControlName="ufVara"
+          [p-options]="optionsUfVara"
+          p-required
+          [p-disabled]="isDisabledInfoProcJud || isExcluded"
+          (p-input-change)="renderUfVara()"
+          (click)="renderUfVara()"
+          #ufVara
+        ></po-combo>
+
+        <po-number
+          class="po-sm-3"
+          p-label="Município"
+          formControlName="codMunic"
+          p-maxlength="7"
+          p-required
+          [p-disabled]="isDisabledInfoProcJud || isExcluded"
+        ></po-number>
+
+        <po-number
+          class="po-sm-3"
+          p-label="Identificador da vara"
+          formControlName="idVara"
+          p-maxlength="4"
+          p-required
+          [p-disabled]="isDisabledInfoProcJud || isExcluded"
+        ></po-number>
+      </div>
+
+      <div class="po-row line-container" formGroupName="infoCCP">
+        <po-datepicker
+          class="po-sm-3"
+          p-label="Data da conciliação"
+          formControlName="dtCCP"
+          [p-max-date]="maxDate"
+          p-required
+          [p-disabled]="isDisabledInfoCCP || isExcluded"
+        ></po-datepicker>
+
+        <po-combo
+          class="po-sm-3"
+          p-label="Âmbito"
+          formControlName="tpCCP"
+          [p-options]="optionsTpCCP"
+          p-required
+          [p-disabled]="isDisabledInfoCCP || isExcluded"
+          (p-input-change)="renderTpCCP()"
+          (click)="renderTpCCP()"
+          #tpCCP
+        ></po-combo>
+
+        <po-input
+          p-label="CNPJ sindicato"
+          class="po-sm-3"
+          formControlName="cnpjCCP"
+          p-mask="99.999.999/9999-99"
+          [p-required]="isRequiredCnpjCCP"
+          [p-optional]="!isRequiredCnpjCCP"
+          [p-disabled]="isDisabledInfoCCP || isExcluded"
+        ></po-input>
+      </div>
+    </div>
+
+    <div class="po-row">
+      <app-error-message
+        class="po-offset-md-6 po-offset-sm-6 po-offset-lg-6 po-offset-xl-6"
+        *ngIf="formGroup.get('infoProcesso.dadosCompl.infoCCP.cnpjCCP').errors?.cnpj"
+        message="CNPJ inválido"
+      ></app-error-message>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,29 @@
+<po-table
+  [p-columns]="divergentDocumentsTableColumns"
+  [p-items]="divergentDocumentsTableItems"
+  [p-loading]="divergentDocumentTableLoading"
+  p-single-select="false"
+  (p-selected)="selectedItem()"
+  (p-unselected)="selectedItem()"
+  p-sort="true"
+  [p-selectable]="true"
+  (p-all-selected)="selectedItem()"
+  (p-all-unselected)="selectedItem()"
+  p-striped="false"
+  p-hide-text-overflow="true"
+  [p-hide-detail]="true"
+  [p-hide-select-all]="false"
+  [p-show-more-disabled]="!divergentDocumentTableHasNext"
+  p-hide-columns-manager="true"
+  (p-show-more)="showMoreRegisters()"
+  [p-literals]="customLiterals"
+  [p-height]="height"
+>
+<ng-template p-table-column-template [p-property]="columnDetails" let-value>
+  <span (click)="openMsg(value,this.literals['tsiDivergentDocuments']['detailsModalTitle'])">
+    {{value}}
+  </span>
+</ng-template>
+
+</po-table>
+<app-messenger></app-messenger>

@@ -1,0 +1,162 @@
+<div class="po-lg-3 po-xl-3 align-button-27">
+  <po-button
+    p-icon="po-icon po-icon-download"
+    [p-loading]="isLoadingButton"
+    [p-label]="literals['fgtsReport']['export']"
+    (p-click)="exportData()">
+  </po-button>
+</div>
+
+<div class="po-offset-lg-6 po-offset-xl-6 po-xl-3 po-lg-3 po-md-5 po-sm-12 space-20">
+  <po-input
+    [p-placeholder]="literals['auditEsocial']['InfNameCpf']"
+    p-icon="po-icon po-icon-search"
+    (keyup)="debounce.next($event.target.value)">
+  </po-input>
+</div>
+
+<div class="po-md-12 space-20">
+  <po-table
+    [p-columns]="columns"
+    [p-items]="itemsTable | filterPipe: filter"
+    [p-sort]="true"
+    [p-striped]="true"
+    [p-loading]="loadingTable"
+    [p-show-more-disabled]="hasNext"
+    (p-show-more)="showMoreRegisters($event)"
+    [p-loading-show-more]="loadingShowMore"
+    p-hide-text-overflow="true">
+  </po-table>
+</div>
+<po-modal
+  p-click-out="true"
+  p-size="auto"
+  [p-title]="modalTitle"
+  [p-primary-action]="primaryAction">
+  <p class="po-row po-font-text-large space-20 blueColor po-mr-5 po-ml-1">
+    {{ literals['auditEsocial']['eventCondition'] }}
+  </p>
+  <hr>
+
+  <po-tag
+    class="po-sm-7 po-md-7 po-lg-3 po-xl-3 po-ml-2"
+    p-inverse="false"
+    [p-label]="literals['auditEsocial']['status']"
+    [p-value]= "status"
+    [p-color]="colorTag">
+  </po-tag>
+  <div
+    class="po-sm-1 po-md-3 po-lg-1 po-xl-1 po-ml-lg-2">
+    <span
+      #nonAuthorizationAlert
+      class = 'po-icon po-icon-exclamation iconUnauthorizedEvents'
+      [style]="'color: ' + colorTagRGB">
+    </span>
+
+    <po-popover
+      p-trigger="hover"
+      p-position="top-right"
+      [p-target]="nonAuthorizationAlert">
+      <p
+        class="po-font-text-large-bold"
+        [style]="'color: ' + colorTagRGB">{{ literals['auditEsocial']['ruleDescription'] }}
+      </p>
+      <p
+        class="po-font-text po-ml-1 po-mb-2" >{{ ruleDescription }}
+      </p>
+      <p
+        class="po-font-text-large-bold"
+        [style]="'color: ' + colorTagRGB">{{ literals['auditEsocial']['deadlineDescription'] }}
+      </p>
+      <p
+        class="po-font-text po-ml-1 po-mb-2">{{ deadlineDescription }}
+      </p>
+      <p
+        *ngIf="transmissionObservation && transmissionObservation != 'N/A'"
+        class="po-font-text-large-bold"
+        [style]="'color: ' + colorTagRGB">{{ literals['auditEsocial']['transmissionObservation'] }}
+      </p>
+      <p
+        *ngIf="transmissionObservation && transmissionObservation != 'N/A'"
+        class="po-font-text po-ml-1">{{ transmissionObservation }}
+      </p>
+    </po-popover>
+  </div>
+  <po-info
+    class="po-sm-12 po-md-5 po-lg-3 po-xl-3 po-ml-md-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['transmissionDate']"
+    [p-value]="transmissionDate">
+  </po-info>
+
+  <po-info
+    class="po-sm-12 po-md-5 po-lg-3 po-xl-3 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['transmissionDeadline']"
+    [p-value]="transmissionDeadline">
+  </po-info>
+
+  <p class="po-row po-font-text-large space-20 blueColor po-ml-1">
+    {{ literals['auditEsocial']['eventInfo'] }}
+  </p>
+  <hr>
+
+  <po-info
+    class="po-sm-12 po-md-7 po-lg-3 po-xl-4 po-ml-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['event']"
+    [p-value]="event">
+  </po-info>
+
+  <po-info
+    class="po-sm-12 po-md-3 po-lg-2 po-xl-4 po-ml-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['indApur']"
+    [p-value]="indApur">
+  </po-info>
+
+  <po-info
+    class="po-sm-12 po-md-3 po-lg-2 po-xl-4 po-ml-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['eventDate']"
+    [p-value]="eventDate">
+  </po-info>
+
+  <po-info
+    class="po-sm-12 po-md-3 po-lg-1 po-xl-4 po-ml-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['type']"
+    [p-value]="type">
+  </po-info>
+
+  <po-info
+    class="po-sm-12 po-md-3 po-lg-1 po-xl-4 po-ml-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['receipt']"
+    [p-value]="receipt">
+  </po-info>
+  <hr>
+
+  <p class="po-row po-font-text-large space-20 blueColor po-ml-1">
+    {{ literals['auditEsocial']['workerInfo'] }}
+  </p>
+  <hr>
+
+  <po-info
+    class="po-sm-12 po-md-5 po-lg-1 po-xl-4 po-ml-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['branch']"
+    [p-value]="branch">
+  </po-info>
+
+  <po-info
+    class="po-sm-12 po-md-5 po-lg-2 po-xl-4 po-ml-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['cpf']"
+    [p-value]="cpf">
+  </po-info>
+
+  <po-info
+    class="po-sm-12 po-md-5 po-lg-2 po-xl-4 po-ml-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['registration']"
+    [p-value]="registration">
+  </po-info>
+
+  <po-info
+    class="po-sm-12 po-md-5 po-lg-3 po-xl-4 po-ml-2 po-ml-sm-2"
+    [p-label]="literals['auditEsocial']['name']"
+    [p-value]="name">
+  </po-info>
+</po-modal>
+

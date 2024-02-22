@@ -1,0 +1,228 @@
+<div class="space-50">
+  <po-widget class="po-lg-12 po-xl-12 po-md-12 po-sm-12">
+    <form class="po-row" [formGroup]="formFilter">
+      <div class="po-lg-8 po-xl-8 po-md-12 po-sm-12">
+        <po-input
+          class="po-lg-3 po-xl-3 po-md-12 po-sm-12"
+          name="period"
+          formControlName="period"
+          p-placeholder="AAAA/MM"
+          p-mask="9999/?99"
+          p-pattern="^(19[0-9]{2}|2[0-9]{3})(0[1-9]|1[0-2])?$"
+          p-required="true"
+          p-auto-focus="true"
+          p-icon="po-icon po-icon-calendar"
+          [p-label]="literals['fgtsReport']['period']"
+          (p-change)="onChangePeriodSelect($event, 'modalPeriod', 'period')"
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+        <po-input
+          class="po-lg-3 po-xl-3 po-md-12 po-sm-12"
+          name="cpf"
+          formControlName="cpf"
+          [p-label]="literals['fgtsReport']['cpf']"
+          p-mask="999.999.999-99"
+          p-mask-format-model="false"
+          (p-change)="onChangeCpfSelect($event, 'modalCpf', 'cpf')"
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+        <po-input
+          class="po-xl-3 po-lg-3 po-md-12 po-sm-12"
+          name="registration"
+          formControlName="registration"
+          p-clean="true"
+          [p-label]="literals['fgtsReport']['registration']"
+          (p-change)="
+            onChangeRegistrationSelect(
+              $event,
+              'modalRegistration',
+              'registration'
+            )
+          "
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+        <po-switch
+          class="po-lg-3 po-xl-3 po-md-12 po-sm-12"
+          name="differencesOnly"
+          formControlName="differencesOnly"
+          p-clean="true"
+          [p-label]="literals['fgtsReport']['differencesOnly']"
+          [p-label-off]="literals['fgtsReport']['no']"
+          [p-label-on]="literals['fgtsReport']['yes']"
+          (p-change)="
+            onChangeDivergencesSelect(
+              $event,
+              'modalDifferencesOnly',
+              'differencesOnly'
+            )
+          "
+          [p-disabled]="disabledInputs"
+        >
+        </po-switch>
+      </div>
+      <div class="po-lg-4 po-xl-4 po-md-12 po-sm-12 space-20">
+        <po-button
+          class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-09"
+          name="advancedSearch"
+          [p-label]="literals['fgtsReport']['advancedSearch']"
+          (p-click)="advancedSearch()"
+          [p-disabled]="disabledInputs"
+        >
+        </po-button>
+        <po-button
+          class="po-lg-6 po-xl-6 po-md-12 po-sm-12 space-09"
+          name="applyFilters"
+          [p-label]="literals['fgtsReport']['applyFilters']"
+          (p-click)="applyFilters('mainWindow')"
+          [p-disabled]="disableButton"
+          [p-loading]="loadFilter"
+        >
+        </po-button>
+      </div>
+    </form>
+    <div class="po-row po-xl-8 po-lg-8 po-md-12 po-sm-12 space-05">
+      <div class="po-xl-3 po-lg-3 po-md-12 po-sm-12">
+        <app-vmessage
+          class="po-lg-12 po-xl-12 po-md-12 po-sm-12"
+          [text]="literals['fgtsReport']['invalidPeriod']"
+          *ngIf="formFilter.get('period').errors?.pattern"
+        >
+        </app-vmessage>
+      </div>
+      <div class="po-xl-3 po-lg-3 po-md-12 po-sm-12">
+        <app-vmessage
+          class="po-lg-12 po-xl-12 po-md-12 po-sm-12"
+          [text]="literals['fgtsReport']['invalidCpf']"
+          *ngIf="formFilter.get('cpf').getError('cpfNotValid')"
+        >
+        </app-vmessage>
+      </div>
+    </div>
+    <div class="po-row po-lg-12 po-xl-12 po-md-12 po-sm-12">
+      <po-disclaimer-group
+        class="po-row po-lg-12 po-xl-12 po-md-12 po-sm-12"
+        [p-disclaimers]="selectedFilters"
+        (p-change)="onChangeDisclaimerSelect()"
+        (p-remove)="onRemoveEvents($event)"
+        (p-remove-all)="onClean()"
+        [p-hide-remove-all]="disabledInputs"
+      >
+      </po-disclaimer-group>
+    </div>
+  </po-widget>
+  <po-modal
+    name="modalAdvancedSearch"
+    p-size="md"
+    p-hide-close="true"
+    [p-title]="literals['fgtsReport']['advancedSearch']"
+    [p-primary-action]="confirm"
+    [p-secondary-action]="close"
+  >
+    <form [formGroup]="formFilterModal">
+      <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+        <po-input
+          class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+          name="modalPeriod"
+          formControlName="modalPeriod"
+          p-placeholder="AAAA/MM"
+          p-mask="9999/?99"
+          p-required="true"
+          p-pattern="^(19[0-9]{2}|2[0-9]{3})(0[1-9]|1[0-2])?$"
+          p-icon="po-icon po-icon-calendar"
+          p-clean="true"
+          [p-label]="literals['fgtsReport']['period']"
+          (p-change)="onChangePeriodSelect($event, 'period', 'modalPeriod')"
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+        <po-switch
+          class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+          name="modalDifferencesOnly"
+          formControlName="modalDifferencesOnly"
+          p-clean="true"
+          [p-label]="literals['fgtsReport']['differencesOnly']"
+          [p-label-off]="literals['fgtsReport']['no']"
+          [p-label-on]="literals['fgtsReport']['yes']"
+          (p-change)="
+            onChangeDivergencesSelect(
+              $event,
+              'differencesOnly',
+              'modalDifferencesOnly'
+            )
+          "
+          [p-disabled]="disabledInputs"
+        >
+        </po-switch>
+        <app-vmessage
+          class="po-xl-4 po-lg-4 po-md-12 po-sm-12 po-row space-05"
+          [text]="literals['fgtsReport']['invalidPeriod']"
+          *ngIf="formFilterModal.get('modalPeriod').errors?.pattern"
+        >
+        </app-vmessage>
+      </div>
+      <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+        <po-input
+          class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+          name="modalRegistration"
+          formControlName="modalRegistration"
+          p-clean="true"
+          [p-label]="literals['fgtsReport']['registration']"
+          (p-change)="
+            onChangeRegistrationSelect(
+              $event,
+              'registration',
+              'modalRegistration'
+            )
+          "
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+        <po-multiselect
+          class="po-xl-6 po-lg-6 po-md-12 po-sm-12"
+          formControlName="modalCategories"
+          name="modalCategories"
+          p-clean="true"
+          [p-label]="literals['fgtsReport']['categorie']"
+          [p-options]="categories"
+          (p-change)="onChangeCategoriesSelect($event)"
+          [p-disabled]="disabledInputs"
+        >
+        </po-multiselect>
+      </div>
+      <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20">
+        <po-input
+          class="po-xl-12 po-lg-12 po-md-12 po-sm-12"
+          name="modalCpf"
+          formControlName="modalCpf"
+          p-clean="true"
+          p-mask="999.999.999-99"
+          [p-label]="literals['fgtsReport']['cpf']"
+          (p-change)="onChangeCpfSelect($event, 'cpf', 'modalCpf')"
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+        <app-vmessage
+          class="po-xl-4 po-lg-4 po-md-12 po-sm-12 po-row space-05"
+          [text]="literals['fgtsReport']['invalidCpf']"
+          *ngIf="formFilterModal.get('modalCpf').getError('cpfNotValid')"
+        >
+        </app-vmessage>
+        <po-input
+          *ngIf="!isTafFull"
+          class="po-xl-12 po-lg-12 po-md-12 po-sm-12 po-row space-20"
+          name="modalNumberOfLines"
+          formControlName="modalNumberOfLines"
+          p-mask="99999"
+          p-clean="true"
+          (p-change)="onChangeNumberOfLinesSelect($event)"
+          [p-label]="literals['fgtsReport']['numberOfLines']"
+          [p-disabled]="disabledInputs"
+        >
+        </po-input>
+      </div>
+    </form>
+  </po-modal>
+</div>

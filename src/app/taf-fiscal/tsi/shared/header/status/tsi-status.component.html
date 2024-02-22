@@ -1,0 +1,18 @@
+
+
+<div class="statusHeader"
+  >
+  <form [formGroup]="formStatus">
+    <po-switch
+      [p-tooltip]="toolTipStatusService"
+      name="tsiStatusService"
+      p-label="{{literals['tsiStatus']['statusService']}}"
+      formControlName="tsiStatusService"
+      [p-label-off]="labelStatusServiceOff"
+      [p-label-on]="labelStatusServiceOn"
+      (p-change)="fakeClick()">
+    </po-switch>
+  </form>
+</div>
+
+

@@ -1,0 +1,86 @@
+<div class="po-wrapper">
+  <app-menu></app-menu>
+
+  <po-page-default>
+    <div class="container">
+      <div class="header">
+        <app-tsi-header [tsi-headerTitle]="headerTitle"></app-tsi-header>
+      </div>
+
+      <div class="filter">
+        <app-tsi-filter
+        (apply-filter-table)="applyFilterTable(true,$event)">
+        </app-tsi-filter>
+      </div>
+      <div class="container-space-between po-mr-2 po-ml-2">
+        <div >
+          <po-button
+            class="buttonReprocessAll "
+            [p-tooltip]="toolTipButtonAll"
+            [p-disabled]="disableButtonReprocessAll"
+            [hidden]="!showReprocessAll"
+            p-type="danger"
+            p-small="true"
+            [p-label]="this.literals['tsiMonitor']['reprocessAll']"
+            (p-click)="reprocessAllInvoices()">
+          </po-button>
+
+          <po-button class="buttonReprocess"
+            [hidden]="!showReprocessSelected"
+            [p-loading]="loadingTsiTable"
+            p-small="true"
+            [p-label]="this.literals['tsiMonitor']['reprocessSelecteds']"
+            (p-click)="reprocessSelecteds()">
+          </po-button>
+        </div>
+
+        <div >
+          <po-button class="buttonDoc"
+            p-icon="po-icon-document-filled"
+            p-small="true"
+            [p-label]="this.literals['tsiMonitor']['documentation']"
+            (p-click)="goToDocumentation()">
+          </po-button>
+          <app-tsi-export-report class="buttonExport  po-ml-2"
+            [tsi-disable-export]="buttonExportDisable"
+            [tsi-form-filter]="formFilter">
+          </app-tsi-export-report>
+        </div>
+
+      </div>
+
+
+      <div [hidden]="!showTable" class="table po-mt-1 po-xl-12 po-lg-12 po-md-12 po-sm-12">
+        <app-tsi-table
+          [tsi-table-loading]="loadingTsiTable"
+          [tsi-table-items]="tsiTableItems"
+          [tsi-table-hasNext]="hasNext"
+          (tsi-items-selecteds)="setItemsSelecteds($event)"
+          (tsi-table-showMore)="showMoreRegisters()"
+          (show-warning-message)="showWarningMessage()">
+        </app-tsi-table>
+
+        <div *ngIf="this.hasRemainingRecords" class="textRemaning" >
+          {{ this.textRemaning }}
+        </div>
+
+      </div>
+
+      <div class="satisfaction-survey po-xl-12 po-lg-12 po-md-12 po-sm-12">
+        <po-widget class="widget-satisfaction-survey po-ml-1 po-mr-1 po-mt-2 "
+          (p-click)= "goToSatisfactionSurvey()">
+            <div class=" po-row ">
+              <img class="img-satisfaction-survey" src="assets/_icon_satisfaction_survey.png">
+              <div class="label-satisfaction-survey po-ml-1 po-font-subtitle">{{this.literals['tsiMonitor']['labelSatisfactionSurvey']}}</div>
+            </div>
+        </po-widget>
+      </div>
+
+    </div>
+
+  </po-page-default>
+</div>
+
+<app-dialog-yes-no></app-dialog-yes-no>
+<app-messenger></app-messenger>
+

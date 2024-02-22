@@ -1,0 +1,82 @@
+<div class="flex-end po-row po-mt-1 po-mb-1">
+  <po-button
+    *ngIf="canCreateNewItem"
+    class="po-sm-2"
+    p-label=" Incluir dedução"
+    p-type="primary"
+    p-icon="po-icon po-icon-plus-circle"
+    (p-click)="create()"
+    [p-disabled]="isExcluded"
+  ></po-button>
+</div>
+
+<form class="po-sm-12 po-mb-3" [hidden]="!isSelected" [formGroup]="subFormGroup">
+  <div class="po-row line-container po-p-0">
+    <po-select
+      class="po-sm-6"
+      p-label="Indicativo do tipo de dedução"
+      formControlName="indTpDeducao"
+      [p-options]="optionsIndTpDeducao"
+      p-required
+      [p-disabled]="isExcluded"
+    ></po-select>
+
+    <app-financial-input
+      class="po-sm-6"
+      fieldTitle="Valor da dedução da base de cálculo do imposto de renda com exigibilidade suspensa"
+      [control]="subFormGroup.get('vlrDedSusp')"
+      [decimalLength]="14"
+      [isRequired]="false"
+      [isDisabled]="isDisabledVlrDedSusp"
+    ></app-financial-input>
+  </div>
+
+  <div class="po-row po-mb-2">
+    <app-error-message
+      *ngIf="subFormGroup.get('vlrDedSusp')?.errors?.isWrongDefaultValueVlrDedSusp"
+      class="po-sm-6 po-offset-sm-6 po-offset-md-6 po-offset-lg-6 po-offset-xl-6"
+      [message]="errorMessageVlrDedSusp"
+    ></app-error-message>
+  </div>
+
+  <po-accordion class="po-sm-12 po-mb-2">
+    <po-accordion-item p-label="Informação das deduções suspensas por dependentes e beneficiários da pensão alimentícia">
+      <app-deductions-and-beneficiaries
+        class="po-sm-12"
+        [mainModalFormGroup]="mainModalFormGroup"
+        [currentFormGroup]="subFormGroup"
+        [excluidoERP]="excluidoERP"
+      ></app-deductions-and-beneficiaries>
+    </po-accordion-item>
+  </po-accordion>
+
+  <div class="flex-end po-row po-mb-1">
+    <po-button
+      class="po-sm-2"
+      p-label="Cancelar"
+      (p-click)="cancel()"
+    ></po-button>
+
+    <po-button
+      class="po-sm-2"
+      [p-label]="isEdit ? ' Editar dedução' : ' Incluir dedução'"
+      p-type="primary"
+      p-icon="po-icon po-icon-plus-circle"
+      (p-click)="isEdit ? update() : save()"
+      [p-disabled]="subFormGroup.invalid"
+    ></po-button>
+  </div>
+</form>
+
+<p class="subtitle po-mb-1">
+  Deduções existentes
+</p>
+
+<po-table
+  class="po-sm-12 po-mb-2"
+  [p-height]="formArrayValue.length > 3 ? 170 : null"
+  [p-columns]="columns"
+  [p-items]="rows"
+  [p-actions]="actions"
+  p-hide-columns-manager
+></po-table>

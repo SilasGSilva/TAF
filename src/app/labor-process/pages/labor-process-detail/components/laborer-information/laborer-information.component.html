@@ -1,0 +1,146 @@
+<div class="content-detail">
+  <form *ngIf="formGroup" [formGroup]="formGroup">
+    <div formGroupName="ideTrab">
+      <p class="subtitle">
+        Identificação do trabalhador
+      </p>
+      <div class="po-row line-container">
+        <po-input
+          p-label="CPF"
+          class="po-sm-2 po-md-2"
+          p-required="true"
+          formControlName="cpfTrab"
+          p-mask="999.999.999-99"
+          [class.custom-invalid]="formGroup.errors?.cpfEqualityExternal"
+          [p-disabled]="isEditMode || excluidoERP === optionsAnswer.Yes"
+        >
+        </po-input>
+
+        <po-input
+          p-label="Nome"
+          class="po-sm-7 po-md-7"
+          formControlName="nmTrab"
+          p-maxlength="70"
+          [p-optional]="!isRequiredIdeTrabCondicionalFields"
+          [p-disabled]="excluidoERP === optionsAnswer.Yes"
+        >
+        </po-input>
+
+        <po-datepicker
+          name="datepicker"
+          p-label="Data de nascimento"
+          class="po-sm-3 po-md-3"
+          formControlName="dtNascto"
+          [p-max-date]="maxDate"
+          p-min-date="1890-01-01"
+          [p-optional]="!isRequiredIdeTrabCondicionalFields"
+          [p-disabled]="excluidoERP === optionsAnswer.Yes"
+        >
+        </po-datepicker>
+      </div>
+
+      <div class="po-row">
+        <app-error-message
+          *ngIf="formGroup.get('ideTrab.cpfTrab').errors?.cpf"
+          [message]="'CPF inválido'"
+        >
+        </app-error-message>
+      </div>
+      <div class="po-row">
+        <app-error-message
+          *ngIf="formGroup.errors?.cpfEqualityExternal"
+          [message]="'O CPF e o número de inscrição não devem ser iguais'"
+        >
+        </app-error-message>
+      </div>
+    </div>
+  </form>
+
+  <po-accordion class="po-sm-12 po-mt-1" *ngIf="formGroup && isV1">
+    <po-accordion-item p-label="Informações de dependentes">
+      <form [hidden]="!isSelected" [formGroup]="subFormGroup">
+        <div class="po-row line-container">
+          <po-input
+            p-label="CPF"
+            class="po-sm-2 po-md-2"
+            formControlName="cpfDep"
+            p-mask="999.999.999-99"
+            [class.custom-invalid]="subFormGroup.errors?.cpfEqualityInternal"
+            [p-disabled]="isEditMode && isEdit"
+          >
+          </po-input>
+          <po-select
+            name="optionsDep"
+            p-label="Tipo"
+            [p-options]="optionsDep"
+            class="po-sm-7 po-md-7"
+            formControlName="tpDep"
+            p-required="true"
+          ></po-select>
+
+          <po-input
+            p-label="Descrição da dependência"
+            class="po-sm-3 po-md-3"
+            formControlName="descDep"
+            p-maxlength="30"
+            p-optional="true"
+            [p-required]="
+              subFormGroup.value.tpDep == typeDependentEnum.AgregadoOutros
+                ? true
+                : false
+            "
+          >
+          </po-input>
+        </div>
+        <div class="po-row">
+          <app-error-message
+            *ngIf="showDuplicatedNrCpfMessage()"
+            [message]="'Os CPFs não podem ser iguais'"
+          >
+          </app-error-message>
+        </div>
+        <div class="po-row buttons-internal">
+          <po-button
+            p-label="Cancelar"
+            p-tooltip="Ao clicar neste botão o formulário será limpo, sem salvar suas alterações."
+            (p-click)="cancel()"
+          >
+          </po-button>
+
+          <po-button
+            [p-label]="isEdit ? ' Atualizar dependente' : ' Incluir dependente'"
+            p-icon="po-icon po-icon-plus-circle"
+            (p-click)="isEdit ? updateDependent() : saveDependent()"
+            [p-disabled]="subFormGroup.invalid"
+            class="po-sm-2 po-md-2"
+            p-type="primary"
+          ></po-button>
+        </div>
+      </form>
+      <div class="po-row space-btn">
+        <p class="subtitle">
+          Dependentes existentes
+        </p>
+        <po-button
+          class="po-offset-md-8 po-offset-lg-8 po-offset-xl-8"
+          p-label=" Incluir dependente"
+          p-icon="po-icon po-icon-plus-circle"
+          (p-click)="create()"
+          p-type="primary"
+          *ngIf="!isSelected && excluidoERP !== optionsAnswer.Yes"
+        >
+        </po-button>
+      </div>
+
+      <po-table
+        class="po-sm-12 po-mb-2"
+        [p-height]="formArray.value.length > 3 ? 170 : null"
+        [p-columns]="columns"
+        [p-items]="rows"
+        [p-actions]="excluidoERP === optionsAnswer.Yes ? [] : actions"
+        p-hide-columns-manager="true"
+      >
+      </po-table>
+    </po-accordion-item>
+  </po-accordion>
+</div>

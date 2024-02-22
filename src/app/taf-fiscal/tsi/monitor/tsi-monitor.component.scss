@@ -1,0 +1,46 @@
+.container-space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.textRemaning{
+  margin-top: -45px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.message {
+  align-items: center;
+  text-align: center;
+  color: #9b9b9b;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  height: 50%;
+}
+
+.satisfaction-survey {
+  position: absolute;
+  left: 0%;
+  bottom: 3%;
+}
+
+.widget-satisfaction-survey {
+  vertical-align : middle;
+  display: flex;
+  align-items: center;
+}
+
+.label-satisfaction-survey {
+  color:#49B3CE;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.img-satisfaction-survey {
+  width: 32px;
+  height: 32px;
+}

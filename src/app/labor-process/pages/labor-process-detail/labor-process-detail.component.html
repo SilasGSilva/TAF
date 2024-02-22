@@ -1,0 +1,57 @@
+<po-page-default
+  *ngIf="(breadCrumb$ | async) as breadCrumb"
+  [p-title]="title$ | async"
+  [p-breadcrumb]="breadCrumb"
+>
+  <div *ngIf="!isLoading" class="content po-sm-12 po-md-12">
+    <h3 *ngIf="isExcluded" class="po-mb-2 po-pl-1 warning">
+      Este processo foi excluído e por isso não pode mais ser editado.
+    </h3>
+
+    <div class="main custom-scroll">
+      <po-tabs>
+        <po-tab p-label="Identificação do processo" [p-active]="true">
+          <app-process-identification [formGroup]="formGroup" [isEdit]="isEdit">
+          </app-process-identification>
+        </po-tab>
+
+        <po-tab p-label="Identificação do trabalhador">
+          <app-laborer-information
+            [formGroup]="formGroup"
+            [isEditMode]="isEdit"
+          ></app-laborer-information>
+        </po-tab>
+
+        <po-tab p-label="Contrato de trabalho">
+          <app-list-of-employment-contract
+            [formGroup]="formGroup"
+            [isEditMode]="isEdit"
+          ></app-list-of-employment-contract>
+        </po-tab>
+      </po-tabs>
+    </div>
+
+    <div class="po-row buttons po-p-0">
+      <div class="po-sm-12 po-md-12 po-lg-12 po-xl-12">
+        <po-button
+          p-label="Cancelar"
+          (p-click)="goToPreviousPage()"
+          p-tooltip="Ao clicar neste botão você será redirecionado para a página anterior, sem salvar seus dados."
+        ></po-button>
+
+        <po-button
+          [p-tooltip]="isExcluded ? 'Não é possível salvar pois este processo foi excluído.' : ''"
+          p-label="Salvar"
+          p-type="primary"
+          class="po-ml-2"
+          (p-click)="save()"
+          [p-disabled]="!formGroup.valid || isLoading || isExcluded"
+        ></po-button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="sample-container">
+    <po-loading-overlay p-text="Carregando"></po-loading-overlay>
+  </div>
+</po-page-default>

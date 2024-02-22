@@ -1,0 +1,88 @@
+<div class="po-wrapper">
+  <app-menu></app-menu>
+  <po-page-default>
+    <app-header
+      showHeaderTitle="true"
+      headerTitle="{{ literals['monitorGeneral']['events'] }}"
+      [showHeaderBreadCrumb]="false"
+    >
+    </app-header>
+
+    <div>
+      <po-loading-overlay
+        *ngIf="isShowLoading"
+        p-screen-lock="true"
+        [p-text]="literals['monitorFilters']['loading']"
+      >
+      </po-loading-overlay>
+    </div>
+
+    <app-monitor-filter
+      (execFilter)="renderDetails($event['filters'])"
+      [disableButtonApplyFilters]="disableButtonApplyFilters"
+      [isLoadingExecuteFilter]="isLoadingExecuteFilter"
+    >
+    </app-monitor-filter>
+
+    <div *ngIf="showDetails">
+      <po-loading-overlay
+        [hidden]="isHideLoadingTransmission"
+        p-screen-lock="true"
+        [p-text]="literals['monitorFilters']['loadingTransmission']"
+      >
+      </po-loading-overlay>
+
+      <div class="po-sm-12 po-md-12 po-lg-12 po-xl-12 po-pt-2 po-pb-3 flex-end">
+        <po-switch
+          *ngIf="!isButtonTransmissionDisabled"
+          class="po-sm-2 po-md-2 po-lg-2 po-xl-2"
+          name="sendRejected"
+          [(ngModel)]="sendRejected"
+          [p-label-on]="literals['monitorFilters']['yes']"
+          [p-label-off]="literals['monitorFilters']['no']"
+          [p-label]="literals['monitorFilters']['sendRejected']"
+        >
+        </po-switch>
+
+        <app-monitor-header-actions
+          [eventCards]="eventCards"
+          [filters]="filters"
+          [total]="total"
+          [sendRejected]="sendRejected"
+          (startTransmission)="onStartTransmission()"
+          (finishTransmission)="onFinishTransmission()"
+          [isButtonTransmissionDisabled]="isButtonTransmissionDisabled"
+        >
+        </app-monitor-header-actions>
+      </div>
+
+      <div *ngFor="let eventCard of eventCards">
+        <app-monitor-events-cards
+          class="space-10"
+          (taf-event-selected)="onSelectEvent($event)"
+          [request]="request"
+          [taf-event]="eventCard"
+          [eventCards]="eventCards"
+          (total)="outputTotal($event)"
+        >
+        </app-monitor-events-cards>
+      </div>
+
+      <div *ngFor="let item of totalizerCards" class="space-10">
+        <app-monitor-totalizer-cards
+          [taf-event]="item.eventCode"
+          [taf-description]="item.eventDescription"
+          [taf-total]="item.total"
+        >
+        </app-monitor-totalizer-cards>
+      </div>
+    </div>
+
+    <div class="loadingCards">
+      <po-loading-overlay
+        [hidden]="!isLoadingExecuteFilter"
+        [p-text]="literals['monitorFilters']['loadingCards']"
+      ></po-loading-overlay>
+    </div>
+  </po-page-default>
+</div>

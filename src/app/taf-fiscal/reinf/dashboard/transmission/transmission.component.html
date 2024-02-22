@@ -1,0 +1,43 @@
+<po-page-default>
+  <app-header></app-header>
+  <div class="container">
+    <div class="container-row">
+      <app-button-back></app-button-back>
+      <div class="po-xl-11 po-lg-11 po-md-11 po-sm-11">
+        <app-stepper [taf-stepperItems]="stepperItems"> </app-stepper>
+      </div>
+    </div>
+    <div class="container-row po-mt-2">
+      <div class="text-muted po-font-title">
+        {{ literals['transmission']['title'] }}
+      </div>
+      <div class="text-muted po-font-subtitle">
+        {{ literals['transmission']['period'] }} :
+        {{ params.period | slice: 0:2 }}/{{ params.period | slice: 2:6 }}
+      </div>
+    </div>
+    <div class="environment">
+      <app-status-environment></app-status-environment>
+     </div>
+    <div class="container-row po-mt-2">
+      <div class="text-muted po-font-text-large-bold">
+        {{ params.event }} - {{ description }}
+      </div>
+      <app-send-event
+        [taf-events]="selectedEntry"
+        (taf-emit-sent)="transmissionSent()">
+        </app-send-event>
+    </div>
+    <div class="container po-mt-2">
+      <app-transmission-pending-table
+        [taf-event]="params.event"
+        [taf-eventSearch]="params.eventSearch"
+        [taf-period]="params.period"
+        [taf-path]="path"
+        (taf-selected-entry)="selectedEntry = $event"
+        (taf-button-emit)="toggleButton($event)"
+      >
+      </app-transmission-pending-table>
+    </div>
+  </div>
+</po-page-default>
